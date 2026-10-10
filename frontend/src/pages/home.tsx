@@ -34,9 +34,9 @@ export default function Home() {
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="relative h-[80vh] min-h-[540px] overflow-hidden grain">
         <img
-          src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1600&q=85"
-          alt="Haven collection"
-          className="absolute inset-0 w-full h-full object-cover object-top"
+          src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1600&q=85"
+          alt="Cut X protective clothing"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           loading="eager"
         />
         <div className="absolute inset-0 cinematic-overlay" />
@@ -70,7 +70,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PROMO STRIP — flows directly from hero (both dark) ── */}
+      {/* ── PROMO STRIP ── */}
       <section className="bg-primary text-primary-foreground">
         <div className="section-inner py-3">
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-1 text-xs sm:text-sm font-medium">
@@ -87,7 +87,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Wave: promo → categories divider */}
       <WaveDivider variant="cinematic" size="sm" />
 
       {/* ── SHOP BY CATEGORY ─────────────────────────────────── */}
@@ -104,12 +103,12 @@ export default function Home() {
           </Button>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {categories.filter((c) => c !== "All").map((cat) => {
+          {categories.filter((c) => c !== "All").slice(0, 4).map((cat) => {
             const meta = categoryMeta[cat];
             return (
               <button
                 key={cat}
-                onClick={() => navigate(`/shop?cat=${cat}`)}
+                onClick={() => navigate(`/shop?cat=${encodeURIComponent(cat)}`)}
                 className="group relative aspect-[3/4] overflow-hidden rounded-[var(--radius-lg)] bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 <img
@@ -122,7 +121,7 @@ export default function Home() {
                 <div className="absolute inset-0 vignette pointer-events-none z-10" />
                 <div className="absolute bottom-0 start-0 end-0 p-4 text-start z-20">
                   <p className="text-white font-bold text-xl leading-tight mb-0.5">
-                    {t.categories[cat as keyof typeof t.categories]}
+                    {t.categories[cat as keyof typeof t.categories] ?? cat}
                   </p>
                   <p className="text-white/60 text-xs mb-2.5">
                     {isRTL ? meta.descAr : meta.desc}
@@ -137,7 +136,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Wave: categories → new arrivals divider */}
       <WaveDivider variant="gentle" size="sm" />
 
       {/* ── NEW ARRIVALS ─────────────────────────────────────── */}
@@ -170,14 +168,13 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Wave: new arrivals → featured banner divider */}
       <WaveDivider variant="cinematic" size="sm" />
 
       {/* ── FEATURED BANNER ──────────────────────────────────── */}
       <section className="relative overflow-hidden bg-primary text-primary-foreground grain">
         <img
           src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1400&q=80"
-          alt="Featured collection"
+          alt="Featured protection"
           className="absolute inset-0 w-full h-full object-cover opacity-35 object-center"
           loading="lazy"
         />
@@ -203,7 +200,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Wave: featured banner → trending divider */}
       <WaveDivider flip variant="organic" size="sm" />
 
       {/* ── TRENDING NOW ─────────────────────────────────────── */}

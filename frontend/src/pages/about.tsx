@@ -1,6 +1,6 @@
 import { useLocation } from "wouter";
 import { motion } from "framer-motion";
-import { Leaf, Sparkles, Users, Zap, ArrowRight, type LucideIcon } from "lucide-react";
+import { ShieldCheck, Sparkles, Users, Zap, ArrowRight, type LucideIcon } from "lucide-react";
 import { Layout } from "@/components/layout";
 import { PageHero } from "@/components/page-hero";
 import { LottiePlayer, LOTTIE } from "@/components/lottie-player";
@@ -10,10 +10,11 @@ import { useLang } from "@/contexts/LangContext";
 import { useSEO } from "@/lib/useSEO";
 
 const VALUE_ICONS: Record<string, LucideIcon> = {
-  "leaf":     Leaf,
-  "sparkles": Sparkles,
-  "users":    Users,
-  "zap":      Zap,
+  "shield-check": ShieldCheck,
+  "sparkles":     Sparkles,
+  "users":        Users,
+  "zap":          Zap,
+  "leaf":         Sparkles,
 };
 
 const fadeUp = (delay = 0) => ({
@@ -27,10 +28,13 @@ const stagger = {
 };
 
 export default function AboutPage() {
-  const { t } = useLang();
+  const { t, isRTL } = useLang();
   const a = t.about;
   const [, navigate] = useLocation();
-  useSEO({ title: "About", description: "Learn the story behind HAVEN — a brand built on timeless style, quality materials, and sustainable fashion values." });
+  useSEO({
+    title: "About",
+    description: "Cut X — Egyptian brand for cut and penetration resistant clothing. Founded by Ahmed Ashraf and Ali Abdullah. Shark Tank Egypt 2023.",
+  });
 
   return (
     <Layout>
@@ -39,7 +43,7 @@ export default function AboutPage() {
         badge={t.brand}
         title={a.heroTitle}
         subtitle={a.heroSubtitle}
-        bgImage="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=1400&q=80"
+        bgImage="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1400&q=80"
         overlayOpacity={0.65}
         light
         className="min-h-[260px] sm:min-h-[320px]"
@@ -63,7 +67,9 @@ export default function AboutPage() {
               {a.missionTitle}
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-5">
-              Crafting timeless fashion<br className="hidden sm:block" /> for every individual.
+              {isRTL
+                ? "حماية مختبرة تناسب الحياة اليومية."
+                : "Tested protection designed for real life."}
             </h2>
             <p className="text-muted-foreground text-base leading-relaxed">{a.missionText}</p>
             <div className="flex flex-wrap gap-3 mt-8">
@@ -85,8 +91,8 @@ export default function AboutPage() {
           >
             <div className="aspect-[4/3] overflow-hidden rounded-[var(--radius-xl)] bg-muted shadow-lift-lg">
               <img
-                src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=800&q=80"
-                alt="Fashion store"
+                src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?w=800&q=80"
+                alt="Cut X protective clothing"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
@@ -94,10 +100,9 @@ export default function AboutPage() {
             {/* Floating accent */}
             <div className="absolute -bottom-5 -start-5 h-28 w-28 rounded-[var(--radius-xl)] bg-primary flex items-center justify-center shadow-lift-lg">
               <span className="text-primary-foreground text-sm font-black text-center leading-tight px-2">
-                Est.<br />2020
+                Est.<br />2022
               </span>
             </div>
-            {/* Lottie decoration top-right */}
             <div className="absolute -top-6 -end-4 opacity-80 hidden lg:block">
               <LottiePlayer src={LOTTIE.fashion2} width={110} height={110} />
             </div>
@@ -199,7 +204,11 @@ export default function AboutPage() {
         <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
           <p className="section-eyebrow opacity-70 mb-3">{t.brand}</p>
           <h2 className="text-2xl sm:text-3xl font-bold mb-3">{t.tagline}</h2>
-          <p className="opacity-70 mb-7 leading-relaxed">Browse our latest collection and find your perfect style.</p>
+          <p className="opacity-70 mb-7 leading-relaxed">
+            {isRTL
+              ? "تصفح أحدث مجموعة الحماية واختر القطع المناسبة لك."
+              : "Browse our latest protective collection and find the right pieces for you."}
+          </p>
           <Button variant="secondary" size="lg" className="h-11 px-8 gap-2" onClick={() => navigate("/shop")}>
             {t.shopNow} <ArrowRight className="h-4 w-4" />
           </Button>
