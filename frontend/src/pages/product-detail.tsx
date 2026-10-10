@@ -26,10 +26,7 @@ function StarRating({ rating, count }: { rating: number; count: number }) {
     <div className="flex items-center gap-2">
       <div className="flex items-center gap-0.5">
         {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            className={`h-3.5 w-3.5 ${star <= Math.round(rating) ? "fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" : "text-muted-foreground/30"}`}
-          />
+          <Star key={star} className={`h-3.5 w-3.5 ${star <= Math.round(rating) ? "fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" : "text-muted-foreground/30"}`} />
         ))}
       </div>
       <span className="text-sm font-medium">{rating}</span>
@@ -39,41 +36,26 @@ function StarRating({ rating, count }: { rating: number; count: number }) {
 }
 
 function ReviewCard({ review, index }: { review: Review; index: number }) {
+  const { t } = useLang();
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ duration: 0.4, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }}
-      className="py-5 border-b border-border/50 last:border-0"
-    >
+    <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-30px" }} transition={{ duration: 0.4, delay: index * 0.06, ease: [0.22, 1, 0.36, 1] }} className="py-5 border-b border-border/50 last:border-0">
       <div className="flex items-start gap-3">
-        <div className="h-9 w-9 rounded-[var(--radius-pill)] bg-primary/10 flex items-center justify-center shrink-0 text-primary font-bold text-xs">
-          {review.initials}
-        </div>
+        <div className="h-9 w-9 rounded-[var(--radius-pill)] bg-primary/10 flex items-center justify-center shrink-0 text-primary font-bold text-xs">{review.initials}</div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center flex-wrap gap-2 mb-1">
             <span className="font-semibold text-sm">{review.author}</span>
-            {review.verified && (
-              <Badge variant="secondary" className="text-[10px] h-4 px-1.5 font-normal">
-                Verified
-              </Badge>
-            )}
+            {review.verified && (<Badge variant="secondary" className="text-[10px] h-4 px-1.5 font-normal">{t.verified}</Badge>)}
             <span className="text-xs text-muted-foreground ms-auto">{review.date}</span>
           </div>
           <div className="flex items-center gap-0.5 mb-2">
             {[1, 2, 3, 4, 5].map((s) => (
-              <Star
-                key={s}
-                className={`h-3 w-3 ${s <= review.rating ? "fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" : "text-muted-foreground/20"}`}
-              />
+              <Star key={s} className={`h-3 w-3 ${s <= review.rating ? "fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" : "text-muted-foreground/20"}`} />
             ))}
           </div>
           <p className="font-semibold text-sm mb-1">{review.title}</p>
           <p className="text-sm text-muted-foreground leading-relaxed">{review.body}</p>
           <button className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors">
-            <ThumbsUp className="h-3 w-3" />
-            Helpful ({review.helpful})
+            <ThumbsUp className="h-3 w-3" />{t.helpful} ({review.helpful})
           </button>
         </div>
       </div>
@@ -96,11 +78,7 @@ export default function ProductDetail() {
   const displayDesc = product ? getProductDescription(product, lang) : "";
   const displayDetails = product ? (lang === "ar" ? product.detailsAr : product.details) : [];
 
-  useSEO({
-    title: displayName || undefined,
-    description: displayDesc || undefined,
-    image: product?.image,
-  });
+  useSEO({ title: displayName || undefined, description: displayDesc || undefined, image: product?.image });
 
   const [activeImg, setActiveImg] = useState(0);
   const [selectedSize, setSelectedSize] = useState(product?.sizes[0] ?? "");
@@ -113,19 +91,15 @@ export default function ProductDetail() {
   const [sortMode, setSortMode] = useState<SortMode>("recent");
   const [showAllReviews, setShowAllReviews] = useState(false);
 
-  const toggleWishlistRelated = (id: number) =>
-    setWishlist((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]));
-
+  const toggleWishlistRelated = (id: number) => setWishlist((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]));
   const allReviews = useMemo(() => getProductReviews(slug ?? ""), [slug]);
   const breakdown = useMemo(() => getRatingBreakdown(allReviews), [allReviews]);
-
   const sortedReviews = useMemo(() => {
     const copy = [...allReviews];
     if (sortMode === "highest") return copy.sort((a, b) => b.rating - a.rating);
     if (sortMode === "lowest") return copy.sort((a, b) => a.rating - b.rating);
     return copy;
   }, [allReviews, sortMode]);
-
   const visibleReviews = showAllReviews ? sortedReviews : sortedReviews.slice(0, 3);
 
   if (!product) {
@@ -148,12 +122,10 @@ export default function ProductDetail() {
 
   const handleAddToCart = () => {
     if (product.stock === 0) return;
-    const existingItem = cart.find(
-      (i) => i.id === product.id && i.selectedSize === selectedSize && i.selectedColor === selectedColor
-    );
+    const existingItem = cart.find((i) => i.id === product.id && i.selectedSize === selectedSize && i.selectedColor === selectedColor);
     addToCart({ ...product, quantity, selectedSize, selectedColor });
     toast({
-      title: existingItem ? "Quantity updated" : p.addedToCart,
+      title: existingItem ? t.qtyUpdated : p.addedToCart,
       description: `${displayName} — ${selectedSize}, ${localizeColorName(selectedColor, lang)}${existingItem ? ` (×${existingItem.quantity + quantity})` : ""}`,
     });
   };
@@ -161,7 +133,7 @@ export default function ProductDetail() {
   const handleWishlist = () => {
     setWishlisted((w) => !w);
     toast({
-      title: wishlisted ? "Removed from wishlist" : "Saved to wishlist",
+      title: wishlisted ? t.removedFromWishlist : t.savedToWishlist,
       description: wishlisted ? displayName : `${displayName} — ${t.wishlistNote}`,
     });
   };
@@ -188,53 +160,17 @@ export default function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
           <div className="flex flex-col gap-3">
             <div className="relative aspect-square overflow-hidden rounded-[var(--radius-lg)] bg-muted">
-              <div className="absolute inset-0 vignette pointer-events-none z-10" />
               {!imgLoaded && <Skeleton className="absolute inset-0 w-full h-full rounded-none" />}
               <AnimatePresence mode="wait" initial={false}>
-                <motion.img
-                  key={activeImg}
-                  src={product.images[activeImg] ?? product.image}
-                  alt={displayName}
-                  onLoad={() => setImgLoaded(true)}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: imgLoaded ? 1 : 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="w-full h-full object-cover"
-                />
+                <motion.img key={activeImg} src={product.images[activeImg] ?? product.image} alt={displayName} onLoad={() => setImgLoaded(true)} initial={{ opacity: 0 }} animate={{ opacity: imgLoaded ? 1 : 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="w-full h-full object-cover" />
               </AnimatePresence>
               {product.isNew && <Badge className="absolute top-3 start-3">{t.newArrival}</Badge>}
-              {product.originalPrice && <Badge variant="destructive" className="absolute top-3 end-3">{t.sale}</Badge>}
-              {product.isDemo && (
-                <Badge variant="outline" className="absolute bottom-3 start-3 bg-background/80 backdrop-blur">{t.demo}</Badge>
-              )}
-              {product.images.length > 1 && (
-                <>
-                  <button
-                    onClick={() => { setImgLoaded(false); setActiveImg((i) => (i - 1 + product.images.length) % product.images.length); }}
-                    className="absolute start-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-[var(--radius-pill)] bg-background/80 backdrop-blur flex items-center justify-center shadow hover:bg-background transition-colors z-20"
-                  >
-                    <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
-                  </button>
-                  <button
-                    onClick={() => { setImgLoaded(false); setActiveImg((i) => (i + 1) % product.images.length); }}
-                    className="absolute end-3 top-1/2 -translate-y-1/2 h-9 w-9 rounded-[var(--radius-pill)] bg-background/80 backdrop-blur flex items-center justify-center shadow hover:bg-background transition-colors z-20"
-                  >
-                    <ChevronRight className="h-4 w-4 rtl:rotate-180" />
-                  </button>
-                </>
-              )}
+              {product.isDemo && <Badge variant="outline" className="absolute bottom-3 start-3 bg-background/80 backdrop-blur">{t.demo}</Badge>}
             </div>
             {product.images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto pb-1">
                 {product.images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => { setImgLoaded(false); setActiveImg(i); }}
-                    className={`shrink-0 h-20 w-20 rounded-[var(--radius-md)] overflow-hidden border-2 transition-all ${
-                      i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
-                    }`}
-                  >
+                  <button key={i} onClick={() => { setImgLoaded(false); setActiveImg(i); }} className={`shrink-0 h-20 w-20 rounded-[var(--radius-md)] overflow-hidden border-2 transition-all ${i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"}`}>
                     <img src={img} alt={`${displayName} ${i + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
@@ -243,46 +179,18 @@ export default function ProductDetail() {
           </div>
 
           <div className="flex flex-col gap-5">
-            <div className="flex flex-wrap gap-1.5">
-              {product.tags.map((tag) => (
-                <span key={tag} className="text-xs bg-muted text-muted-foreground px-2.5 py-0.5 rounded-[var(--radius-pill)] capitalize">
-                  {tag}
-                </span>
-              ))}
-            </div>
-
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold leading-tight">{displayName}</h1>
-              {product.reviewCount > 0 ? (
-                <div className="mt-2">
-                  <StarRating rating={product.rating} count={product.reviewCount} />
-                </div>
-              ) : null}
+              {product.reviewCount > 0 && <div className="mt-2"><StarRating rating={product.rating} count={product.reviewCount} /></div>}
             </div>
-
             <div className="flex items-baseline gap-3">
               <span className="text-3xl font-black">{formatPrice(product.price)}</span>
-              {product.originalPrice && (
-                <>
-                  <span className="text-lg text-muted-foreground line-through">{formatPrice(product.originalPrice)}</span>
-                  <Badge variant="destructive" className="text-xs">
-                    {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
-                  </Badge>
-                </>
-              )}
             </div>
-
             <p className="text-muted-foreground leading-relaxed text-sm">{displayDesc}</p>
-            {product.isDemo && (
-              <p className="text-xs font-medium rounded-[var(--radius-md)] px-3 py-2 demo-strip w-fit">
-                {p.demoNote}
-              </p>
-            )}
+            {product.isDemo && <p className="text-xs font-medium rounded-[var(--radius-md)] px-3 py-2 demo-strip w-fit">{p.demoNote}</p>}
             {displayDetails.length > 0 && (
               <ul className="text-sm text-muted-foreground space-y-1 list-disc ps-5">
-                {displayDetails.map((d) => (
-                  <li key={d}>{d}</li>
-                ))}
+                {displayDetails.map((d) => <li key={d}>{d}</li>)}
               </ul>
             )}
             <Separator />
@@ -298,36 +206,19 @@ export default function ProductDetail() {
                 {product.sizes.map((size) => (
                   <div key={size}>
                     <RadioGroupItem value={size} id={`sz-${size}`} className="sr-only" />
-                    <Label
-                      htmlFor={`sz-${size}`}
-                      className={`cursor-pointer flex h-10 min-w-[2.5rem] px-3 items-center justify-center rounded-[var(--radius-sm)] border text-sm font-medium transition-all select-none ${
-                        selectedSize === size
-                          ? "bg-primary text-primary-foreground border-primary"
-                          : "border-border hover:border-primary/50"
-                      }`}
-                    >
-                      {size}
-                    </Label>
+                    <Label htmlFor={`sz-${size}`} className={`cursor-pointer flex h-10 min-w-[2.5rem] px-3 items-center justify-center rounded-[var(--radius-sm)] border text-sm font-medium transition-all select-none ${selectedSize === size ? "bg-primary text-primary-foreground border-primary" : "border-border hover:border-primary/50"}`}>{size}</Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
             <div className="space-y-3">
-              <Label className="font-semibold">
-                {p.selectColor}
-                {selectedColor && <span className="font-normal text-muted-foreground ms-1.5">— {localizeColorName(selectedColor, lang)}</span>}
-              </Label>
+              <Label className="font-semibold">{p.selectColor}{selectedColor && <span className="font-normal text-muted-foreground ms-1.5">— {localizeColorName(selectedColor, lang)}</span>}</Label>
               <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="flex flex-wrap gap-2">
                 {product.colors.map((color) => (
                   <div key={color.name}>
                     <RadioGroupItem value={color.name} id={`col-${color.name}`} className="sr-only" />
-                    <Label
-                      htmlFor={`col-${color.name}`}
-                      className={`cursor-pointer flex items-center gap-2 h-10 px-3 rounded-[var(--radius-sm)] border text-sm font-medium transition-all select-none ${
-                        selectedColor === color.name ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
-                      }`}
-                    >
+                    <Label htmlFor={`col-${color.name}`} className={`cursor-pointer flex items-center gap-2 h-10 px-3 rounded-[var(--radius-sm)] border text-sm font-medium transition-all select-none ${selectedColor === color.name ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}>
                       <span className="h-4 w-4 rounded-[var(--radius-pill)] border border-border/60 shrink-0" style={{ backgroundColor: color.hex }} />
                       {getColorName(color, lang)}
                     </Label>
@@ -344,21 +235,14 @@ export default function ProductDetail() {
                 <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.min(product.stock > 0 ? product.stock : 1, q + 1))} disabled={product.stock === 0 || quantity >= product.stock}>+</button>
               </div>
               {product.stock === 0 ? (
-                <span className="text-xs font-medium text-destructive">
-                  {p.outOfStock}
-                  {product.isDemo ? ` · ${t.demo}` : ""}
-                </span>
+                <span className="text-xs font-medium text-destructive">{p.outOfStock}{product.isDemo ? ` · ${t.demo}` : ""}</span>
               ) : (
                 <span className="text-xs text-muted-foreground">{product.stock} {p.inStock}</span>
               )}
             </div>
 
             <div className="flex gap-3 pt-1">
-              <Button
-                className="flex-1 h-12 text-base font-semibold gap-2"
-                onClick={handleAddToCart}
-                disabled={product.stock === 0}
-              >
+              <Button className="flex-1 h-12 text-base font-semibold gap-2" onClick={handleAddToCart} disabled={product.stock === 0}>
                 <ShoppingBag className="h-5 w-5" />
                 {product.stock === 0 ? p.outOfStock : t.addToCart}
               </Button>
@@ -369,98 +253,49 @@ export default function ProductDetail() {
 
             <div className="text-sm text-muted-foreground space-y-1.5 pt-2 border-t border-border">
               <p className="flex items-center gap-1.5"><Info className="h-3.5 w-3.5 shrink-0" /> {t.cart.shippingNote}</p>
-              <p>SKU: {product.slug}</p>
-              <p>
-                {p.tags}:{" "}
-                {product.tags.map((tag, i) => (
-                  <span key={tag}>
-                    <button onClick={() => navigate(`/shop?q=${tag}`)} className="capitalize hover:text-foreground transition-colors">{tag}</button>
-                    {i < product.tags.length - 1 && ", "}
-                  </span>
-                ))}
-              </p>
             </div>
           </div>
         </div>
 
-        {allReviews.length > 0 ? (
-          <motion.section
-            className="mt-16 sm:mt-20"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <Separator className="mb-10" />
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
-              <div>
-                <h2 className="text-2xl font-bold">{p.reviews}</h2>
-                <div className="mt-2"><StarRating rating={product.rating} count={product.reviewCount} /></div>
-              </div>
-              <Select value={sortMode} onValueChange={(v) => setSortMode(v as SortMode)}>
-                <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="recent">Most recent</SelectItem>
-                  <SelectItem value="highest">Highest rated</SelectItem>
-                  <SelectItem value="lowest">Lowest rated</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div>
-              {visibleReviews.map((review, i) => (
-                <ReviewCard key={review.id ?? i} review={review} index={i} />
-              ))}
-            </div>
-            {sortedReviews.length > 3 && !showAllReviews && (
-              <Button variant="outline" className="mt-6" onClick={() => setShowAllReviews(true)}>
-                Show all {sortedReviews.length} reviews
-              </Button>
-            )}
-          </motion.section>
-        ) : null}
+        {allReviews.length > 0 && (
+          <div className="mt-14 space-y-4">
+            <h2 className="text-xl font-bold">{p.reviews}</h2>
+            {visibleReviews.map((review, i) => <ReviewCard key={review.id} review={review} index={i} />)}
+          </div>
+        )}
 
         {related.length > 0 && (
-          <section className="mt-16 sm:mt-20">
-            <Separator className="mb-10" />
-            <h2 className="text-2xl font-bold mb-6">{p.relatedProducts}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          <div className="mt-14">
+            <h2 className="text-xl font-bold mb-6">{p.relatedProducts}</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {related.map((pr) => (
-                <ProductCard
-                  key={pr.id}
-                  product={pr}
-                  isWishlisted={wishlist.includes(pr.id)}
-                  onToggleWishlist={toggleWishlistRelated}
-                />
+                <ProductCard key={pr.id} product={pr} isWishlisted={wishlist.includes(pr.id)} onToggleWishlist={toggleWishlistRelated} />
               ))}
             </div>
-          </section>
+          </div>
         )}
       </div>
 
       <Dialog open={showSizeGuide} onOpenChange={setShowSizeGuide}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>{p.sizeGuideTitle}</DialogTitle>
-          </DialogHeader>
+        <DialogContent>
+          <DialogHeader><DialogTitle>{p.sizeGuideTitle}</DialogTitle></DialogHeader>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th className="py-2 text-start font-semibold">{p.sizeTable.size}</th>
-                  <th className="py-2 text-start font-semibold">{p.sizeTable.chest}</th>
-                  <th className="py-2 text-start font-semibold">{p.sizeTable.waist}</th>
-                  <th className="py-2 text-start font-semibold">{p.sizeTable.hips}</th>
+                  <th className="text-start py-2">{p.sizeTable.size}</th>
+                  <th className="text-start py-2">{p.sizeTable.chest}</th>
+                  <th className="text-start py-2">{p.sizeTable.waist}</th>
+                  <th className="text-start py-2">{p.sizeTable.hips}</th>
                 </tr>
               </thead>
               <tbody>
-                {sizeRows.map((sz) => {
-                  const row = p.sizeTable[sz as keyof typeof p.sizeTable];
+                {sizeRows.map((s) => {
+                  const row = p.sizeTable[s as keyof typeof p.sizeTable];
                   if (!Array.isArray(row)) return null;
                   return (
-                    <tr key={sz} className="border-b border-border/50">
-                      {row.map((cell, i) => (
-                        <td key={i} className="py-2">{cell}</td>
-                      ))}
+                    <tr key={s} className="border-b border-border/50">
+                      {row.map((cell, i) => <td key={i} className="py-2">{cell}</td>)}
                     </tr>
                   );
                 })}

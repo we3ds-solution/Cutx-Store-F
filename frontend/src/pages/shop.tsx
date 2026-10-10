@@ -15,7 +15,8 @@ import { useSEO } from "@/lib/useSEO";
 const ITEMS_PER_PAGE = 8;
 
 export default function ShopPage() {
-  useSEO({ title: "Shop", description: "Browse the Cut X Egypt range — daily essentials, athletic protection, security workwear and accessories. Demo catalog priced in EGP." });
+  const { t } = useLang();
+  useSEO({ title: t.shopPage.seoTitle, description: t.shopPage.seoDescription });
   const search = useSearch();
   const params = new URLSearchParams(search);
   const initialCat  = params.get("cat") || "All";
@@ -28,9 +29,7 @@ export default function ShopPage() {
   const [wishlist, setWishlist]                 = useState<number[]>([]);
   const [page, setPage]                         = useState(1);
   const [loading, setLoading]                   = useState(true);
-  const { t } = useLang();
 
-  /* Sync filters when URL search params change (e.g. footer/nav links) */
   useEffect(() => {
     const p = new URLSearchParams(search);
     setSelectedCategory(p.get("cat") || "All");
@@ -78,7 +77,6 @@ export default function ShopPage() {
 
   return (
     <Layout>
-      {/* ── HERO ─── */}
       <PageHero
         badge="Cut X"
         title={onlyNew ? t.home.newArrivals : t.nav.shop}
@@ -91,9 +89,8 @@ export default function ShopPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <p className="demo-strip rounded-[var(--radius-md)] px-4 py-2 text-center text-xs font-medium text-muted-foreground mb-6">
-          {t.demoNotice}
+          {t.viewOnlyBanner}
         </p>
-        {/* ── FILTERS BAR ─── */}
         <motion.div
           className="flex flex-col sm:flex-row gap-4 mb-8"
           initial={{ opacity: 0, y: 12 }}
@@ -120,7 +117,6 @@ export default function ShopPage() {
 
           <div className="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none flex-wrap">
             <SlidersHorizontal className="h-4 w-4 text-muted-foreground shrink-0" />
-            {/* New Arrivals pill */}
             <Button
               variant={onlyNew ? "default" : "outline"}
               size="sm"
@@ -142,33 +138,31 @@ export default function ShopPage() {
             ))}
             {hasFilters && (
               <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-xs h-9 shrink-0">
-                <X className="h-3 w-3" /> Clear
+                <X className="h-3 w-3" /> {t.shopPage.clear}
               </Button>
             )}
           </div>
         </motion.div>
 
-        {/* ── RESULTS META ─── */}
         <div className="flex items-center justify-between mb-6">
           <p className="text-sm text-muted-foreground">
             {loading ? (
               <span className="inline-block w-44 h-4 bg-muted rounded-[var(--radius-md)] animate-pulse" />
             ) : filteredProducts.length > 0 ? (
               <>
-                Showing {(safePage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(safePage * ITEMS_PER_PAGE, filteredProducts.length)}{" "}
-                of {filteredProducts.length} products
+                {t.shopPage.showing} {(safePage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(safePage * ITEMS_PER_PAGE, filteredProducts.length)}{" "}
+                {t.shopPage.of} {filteredProducts.length} {t.shopPage.products}
                 {selectedCategory !== "All" && (
-                  <> in <span className="font-medium text-foreground">{t.categories[selectedCategory as keyof typeof t.categories]}</span></>
+                  <> {t.shopPage.in} <span className="font-medium text-foreground">{t.categories[selectedCategory as keyof typeof t.categories]}</span></>
                 )}
-                {onlyNew && <> · <span className="font-medium text-foreground">New Arrivals</span></>}
+                {onlyNew && <> · <span className="font-medium text-foreground">{t.home.newArrivals}</span></>}
               </>
             ) : (
-              "No products found"
+              t.shopPage.noProductsFound
             )}
           </p>
         </div>
 
-        {/* ── GRID ─── */}
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
             {Array.from({ length: ITEMS_PER_PAGE }).map((_, i) => <ProductCardSkeleton key={i} />)}
@@ -200,7 +194,7 @@ export default function ShopPage() {
                   onClick={() => { setPage((p) => p - 1); scrollTop(); }}
                 >
                   <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
-                  <span className="hidden sm:inline">Previous</span>
+                  <span className="hidden sm:inline">{t.shopPage.previous}</span>
                 </Button>
 
                 <div className="flex items-center gap-1">
@@ -227,7 +221,7 @@ export default function ShopPage() {
                   disabled={safePage === totalPages}
                   onClick={() => { setPage((p) => p + 1); scrollTop(); }}
                 >
-                  <span className="hidden sm:inline">Next</span>
+                  <span className="hidden sm:inline">{t.shopPage.next}</span>
                   <ChevronRight className="h-4 w-4 rtl:rotate-180" />
                 </Button>
               </div>
@@ -241,10 +235,10 @@ export default function ShopPage() {
           >
             <NoResultsArt width={200} height={200} />
             <div>
-              <p className="font-semibold text-lg">No products found</p>
-              <p className="text-muted-foreground text-sm mt-1">Try a different search or category</p>
+              <p className="font-semibold text-lg">{t.shopPage.noProductsFound}</p>
+              <p className="text-muted-foreground text-sm mt-1">{t.shopPage.tryDifferent}</p>
             </div>
-            <Button variant="outline" onClick={clearFilters} className="mt-2">Clear filters</Button>
+            <Button variant="outline" onClick={clearFilters} className="mt-2">{t.shopPage.clearFilters}</Button>
           </motion.div>
         )}
       </div>

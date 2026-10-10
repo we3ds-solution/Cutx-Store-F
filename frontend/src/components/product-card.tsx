@@ -38,7 +38,7 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
     );
     addToCart({ ...product, quantity: 1, selectedSize: size, selectedColor: color });
     if (existingItem) {
-      toast({ title: "Quantity updated", description: `${displayName} — ${size}, ${getColorName(product.colors[0], lang)}` });
+      toast({ title: t.qtyUpdated, description: `${displayName} — ${size}, ${getColorName(product.colors[0], lang)}` });
     } else {
       toast({ title: t.product.addedToCart, description: `${displayName} — ${size}, ${getColorName(product.colors[0], lang)}` });
     }
@@ -48,7 +48,7 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
     e.stopPropagation();
     onToggleWishlist(product.id);
     toast({
-      title: isWishlisted ? "Removed from wishlist" : "Added to wishlist",
+      title: isWishlisted ? t.removedFromWishlist : t.addedToWishlist,
       description: isWishlisted ? displayName : `${displayName} — ${t.wishlistNote}`,
     });
   };
@@ -57,7 +57,6 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
 
   return (
     <Card className="rounded-[var(--radius-md)] overflow-hidden group border-card shadow-lift-sm hover:shadow-lift-md hover:-translate-y-[2px] transition-all duration-[var(--duration-base)] ease-[var(--ease-out-expo)] cursor-pointer">
-      {/* Image */}
       <div className="relative aspect-[3/4] overflow-hidden bg-muted rounded-t-[var(--radius-md)]" onClick={goToProduct}>
         {!imgLoaded && (
           <Skeleton className="absolute inset-0 w-full h-full rounded-t-[var(--radius-md)] rounded-b-none" />
@@ -71,7 +70,6 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
           }`}
           loading="lazy"
         />
-        {/* Badges */}
         <div className="absolute top-2 start-2 flex flex-col gap-1">
           {product.isNew && (
             <Badge className="text-[10px] py-0 px-2 h-5">{t.newArrival}</Badge>
@@ -86,7 +84,6 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
             <Badge variant="destructive" className="text-[10px] py-0 px-2 h-5">{t.product.outOfStock}</Badge>
           )}
         </div>
-        {/* Wishlist */}
         <button
           className="absolute top-2 end-2 h-8 w-8 rounded-[var(--radius-pill)] bg-background/80 backdrop-blur flex items-center justify-center hover:bg-background transition-colors"
           onClick={handleWishlist}
@@ -96,48 +93,28 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
             className={`h-4 w-4 transition-colors ${isWishlisted ? "fill-[color:var(--color-wishlist)] text-[color:var(--color-wishlist)]" : "text-muted-foreground"}`}
           />
         </button>
-        {/* Quick add on hover — hidden when unavailable */}
         {!unavailable && (
-          <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-[var(--duration-base)] ease-[var(--ease-out-expo)] p-2">
-            <Button className="w-full h-10 text-xs" onClick={handleQuickAdd}>
+          <div className="absolute inset-x-0 bottom-0 p-2 translate-y-full group-hover:translate-y-0 transition-transform duration-[var(--duration-base)]">
+            <Button size="sm" className="w-full" onClick={handleQuickAdd}>
               {t.addToCart}
             </Button>
           </div>
         )}
       </div>
-
-      {/* Info */}
-      <CardContent className="p-3 sm:p-4" onClick={goToProduct}>
-        <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-0.5">
-          {t.categories[product.category as keyof typeof t.categories] ?? product.category}
-        </p>
-        <h3 className="font-semibold text-sm leading-snug line-clamp-1 mb-1.5">{displayName}</h3>
-        {/* Rating — hidden until real reviews exist */}
-        {hasRatings && (
-          <div className="flex items-center gap-1 mb-2">
-            <Star className="h-3 w-3 fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" />
-            <span className="text-xs text-muted-foreground">{product.rating} ({product.reviewCount})</span>
+      <CardContent className="p-3 space-y-1" onClick={goToProduct}>
+        <p className="text-sm font-medium line-clamp-1">{displayName}</p>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-semibold">{formatPrice(product.price)}</span>
+            {product.originalPrice && (
+              <span className="text-xs text-muted-foreground line-through">{formatPrice(product.originalPrice)}</span>
+            )}
           </div>
-        )}
-        {/* Price */}
-        <div className="flex items-center gap-2">
-          <span className="font-bold text-sm">{formatPrice(product.price)}</span>
-          {product.originalPrice && (
-            <span className="text-xs text-muted-foreground line-through">{formatPrice(product.originalPrice)}</span>
-          )}
-        </div>
-        {/* Color dots */}
-        <div className="flex gap-1 mt-2">
-          {product.colors.slice(0, 4).map((c) => (
-            <span
-              key={c.name}
-              title={getColorName(c, lang)}
-              className="h-3 w-3 rounded-[var(--radius-pill)] border border-border/50"
-              style={{ backgroundColor: c.hex }}
-            />
-          ))}
-          {product.colors.length > 4 && (
-            <span className="text-[10px] text-muted-foreground self-center">+{product.colors.length - 4}</span>
+          {hasRatings && (
+            <span className="flex items-center gap-0.5 text-xs text-muted-foreground">
+              <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+              {product.rating.toFixed(1)}
+            </span>
           )}
         </div>
       </CardContent>
@@ -147,19 +124,12 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
 
 export function ProductCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-[var(--radius-md)] border-card bg-card">
-      <Skeleton className="aspect-[3/4] w-full rounded-t-[var(--radius-md)] rounded-b-none" />
-      <div className="p-3 sm:p-4 space-y-2.5">
-        <Skeleton className="h-2.5 w-16" />
-        <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-3 w-24" />
-        <Skeleton className="h-4 w-20" />
-        <div className="flex gap-1.5 pt-1">
-          <Skeleton className="h-3 w-3 rounded-[var(--radius-pill)]" />
-          <Skeleton className="h-3 w-3 rounded-[var(--radius-pill)]" />
-          <Skeleton className="h-3 w-3 rounded-[var(--radius-pill)]" />
-        </div>
-      </div>
-    </div>
+    <Card className="rounded-[var(--radius-md)] overflow-hidden border-card">
+      <div className="aspect-[3/4] bg-muted animate-pulse" />
+      <CardContent className="p-3 space-y-2">
+        <div className="h-4 bg-muted rounded animate-pulse" />
+        <div className="h-4 w-1/2 bg-muted rounded animate-pulse" />
+      </CardContent>
+    </Card>
   );
 }

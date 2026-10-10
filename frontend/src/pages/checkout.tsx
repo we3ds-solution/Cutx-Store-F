@@ -1,26 +1,20 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ShoppingBag, Package, Truck, ShieldAlert } from "lucide-react";
+import { motion } from "framer-motion";
+import { ShoppingBag, Package, Truck, ShieldAlert, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Layout } from "@/components/layout";
 import { useCart } from "@/contexts/CartContext";
 import { useLang } from "@/contexts/LangContext";
+import { useSEO } from "@/lib/useSEO";
+import { useToast } from "@/hooks/use-toast";
 import { formatPrice } from "@/lib/utils";
 import { DEMO_FREE_SHIPPING_THRESHOLD, DEMO_SHIPPING_FEE, getProductName, localizeColorName } from "@/lib/data";
-import { useToast } from "@/hooks/use-toast";
 
-/**
- * Demo checkout. There is no backend and no payment provider in this
- * repository, so this page deliberately does NOT process payments.
- * Submitting records a demo order reference in sessionStorage, clears the
- * bag, and routes to /success — which verifies that reference before
- * rendering anything order-like.
- */
 export default function CheckoutPage() {
   const [, navigate] = useLocation();
   const { cart, clearCart } = useCart();
@@ -28,10 +22,18 @@ export default function CheckoutPage() {
   const { toast } = useToast();
   const c = t.checkout;
 
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "", name: "", phone: "", address: "", city: "", country: lang === "ar" ? "مصر" : "Egypt", postalCode: "",
+  useSEO({ title: c.title, description: c.demoTitle });
+
+  const [form, setForm] = useState({
+    email: "",
+    fullName: "",
+    address: "",
+    city: "",
+    postalCode: "",
+    country: "Egypt",
+    phone: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shippingFree = subtotal >= DEMO_FREE_SHIPPING_THRESHOLD;
@@ -40,23 +42,23 @@ export default function CheckoutPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((p) => ({ ...p, [name]: value }));
+    setForm((f) => ({ ...f, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
+    await new Promise((r) => setTimeout(r, 1000));
     const ref = `CX-${Date.now().toString(36).toUpperCase()}`;
     try {
-      sessionStorage.setItem("cutx-demo-order", JSON.stringify({ ref, at: Date.now() }));
+      sessionStorage.setItem("cutx-demo-order", ref);
     } catch {
-      /* session-only fallback still navigates */
+      /* ignore */
     }
     clearCart();
     setLoading(false);
     toast({ title: c.proceedPayment, description: `${c.orderSummary} · ${formatPrice(total)}` });
-    navigate("/success");
+    navigate(`/success?ref=${encodeURIComponent(ref)}`);
   };
 
   if (cart.length === 0) {
@@ -65,9 +67,9 @@ export default function CheckoutPage() {
         <div className="min-h-[60vh] flex items-center justify-center">
           <div className="text-center space-y-4 px-4">
             <div className="h-20 w-20 mx-auto rounded-[var(--radius-pill)] bg-muted flex items-center justify-center">
-              <ShoppingBag className="h-9 w-9 text-muted-foreground/40" />
+              <ShoppingBag className="h-10 w-10 text-muted-foreground/40" />
             </div>
-            <h2 className="text-2xl font-bold">{c.emptyCart}</h2>
+            <h1 className="text-xl font-bold">{c.emptyCart}</h1>
             <Button onClick={() => navigate("/shop")}>{t.cart.continueShopping}</Button>
           </div>
         </div>
@@ -77,90 +79,74 @@ export default function CheckoutPage() {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-8">{c.title}</h1>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+        <div className="mb-6 rounded-[var(--radius-lg)] border border-amber-500/30 bg-amber-500/5 p-4 flex gap-3">
+          <ShieldAlert className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold text-sm">{c.demoTitle}</p>
+            <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{c.demoBody}</p>
+          </div>
+        </div>
+
+        <h1 className="text-2xl font-bold mb-8">{c.title}</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-          {/* ── FORM ── */}
-          <div className="lg:col-span-3 space-y-6">
-            <div className="rounded-[var(--radius-lg)] border border-border/60 bg-muted/30 px-4 py-3 flex gap-3">
-              <ShieldAlert className="h-5 w-5 shrink-0 text-primary" />
-              <div>
-                <p className="font-semibold text-sm">{c.demoTitle}</p>
-                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{c.demoBody}</p>
-              </div>
-            </div>
-
+          <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-6">
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base font-semibold">{c.shippingInfo}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4" id="checkout-form">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label htmlFor="email">{c.email}</Label>
-                      <Input id="email" name="email" type="email" required value={formData.email} onChange={handleChange} placeholder="you@example.com" className="h-10" />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="name">{c.fullName}</Label>
-                      <Input id="name" name="name" required value={formData.name} onChange={handleChange} placeholder="Ahmed Ali" className="h-10" />
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label htmlFor="phone">{c.phone}</Label>
-                      <Input id="phone" name="phone" type="tel" required value={formData.phone} onChange={handleChange} placeholder="01xxxxxxxxx" className="h-10" dir="ltr" />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="country">{c.country}</Label>
-                      <Input id="country" name="country" required value={formData.country} onChange={handleChange} className="h-10" />
-                    </div>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="fullName">{c.fullName}</Label>
+                    <Input id="fullName" name="fullName" required value={form.fullName} onChange={handleChange} className="h-10" />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="address">{c.address}</Label>
-                    <Input id="address" name="address" required value={formData.address} onChange={handleChange} placeholder="Street, building, apartment" className="h-10" />
+                    <Label htmlFor="email">{c.email}</Label>
+                    <Input id="email" name="email" type="email" required value={form.email} onChange={handleChange} className="h-10" />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label htmlFor="city">{c.city}</Label>
-                      <Input id="city" name="city" required value={formData.city} onChange={handleChange} placeholder="Cairo" className="h-10" />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="postalCode">{c.postalCode}</Label>
-                      <Input id="postalCode" name="postalCode" value={formData.postalCode} onChange={handleChange} className="h-10" dir="ltr" />
-                    </div>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="phone">{c.phone}</Label>
+                  <Input id="phone" name="phone" required value={form.phone} onChange={handleChange} className="h-10" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="address">{c.address}</Label>
+                  <Input id="address" name="address" required value={form.address} onChange={handleChange} className="h-10" />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="city">{c.city}</Label>
+                    <Input id="city" name="city" required value={form.city} onChange={handleChange} className="h-10" />
                   </div>
-                  <Button type="submit" form="checkout-form" className="w-full h-11 text-base font-semibold gap-2" disabled={loading}>
-                    <Package className="h-4 w-4" />
-                    {loading ? c.processing : `${c.proceedPayment} · ${formatPrice(total)}`}
-                  </Button>
-                </form>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="postalCode">{c.postalCode}</Label>
+                    <Input id="postalCode" name="postalCode" value={form.postalCode} onChange={handleChange} className="h-10" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="country">{c.country}</Label>
+                    <Input id="country" name="country" required value={form.country} onChange={handleChange} className="h-10" />
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            {/* Trust signals */}
-            <div className="grid grid-cols-3 gap-3 text-center text-xs text-muted-foreground">
-              {[
-                { icon: Truck, label: t.cart.shippingNote },
-                { icon: Package, label: c.demoTitle },
-                { icon: ShoppingBag, label: c.orderSummary },
-              ].map(({ icon: Icon, label }) => (
-                <div key={label} className="flex flex-col items-center gap-1.5 p-3 rounded-[var(--radius-lg)] border border-border/60">
-                  <Icon className="h-4 w-4 text-primary" />
-                  <span>{label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+            <Button type="submit" className="w-full h-11" disabled={loading}>
+              {loading ? (
+                <><Loader2 className="h-4 w-4 animate-spin me-2" />{c.processing}</>
+              ) : (
+                `${c.proceedPayment} · ${formatPrice(total)}`
+              )}
+            </Button>
+          </form>
 
-          {/* ── ORDER SUMMARY ── */}
           <div className="lg:col-span-2">
             <Card className="sticky top-24">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base font-semibold flex items-center justify-between">
                   {c.orderSummary}
-                  <Badge variant="secondary">{cart.reduce((s, i) => s + i.quantity, 0)} items</Badge>
+                  <Badge variant="secondary">{cart.reduce((s, i) => s + i.quantity, 0)} {t.cart.items}</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -173,39 +159,48 @@ export default function CheckoutPage() {
                           {item.quantity}
                         </Badge>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm line-clamp-1">{getProductName(item, lang)}</p>
-                        <p className="text-xs text-muted-foreground">{item.selectedSize} · {localizeColorName(item.selectedColor, lang)}</p>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium line-clamp-1">{getProductName(item, lang)}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {c.size} {item.selectedSize} · {localizeColorName(item.selectedColor, lang)}
+                        </p>
+                        <p className="text-sm font-semibold mt-0.5">{formatPrice(item.price * item.quantity)}</p>
                       </div>
-                      <p className="font-semibold text-sm shrink-0">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   ))}
                 </div>
-
-                <Separator />
-
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>{c.subtotal}</span>
+                <div className="border-t border-border/60 pt-3 space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">{c.subtotal}</span>
                     <span>{formatPrice(subtotal)}</span>
                   </div>
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>{c.shipping}</span>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">{c.shipping}</span>
                     <span className={shippingFree ? "text-green-600 font-medium" : ""}>
                       {shippingFree ? c.freeShipping : formatPrice(shipping)}
                     </span>
                   </div>
-                  <Separator />
-                  <div className="flex justify-between font-bold text-lg pt-1">
+                  <div className="flex justify-between font-bold text-base pt-1">
                     <span>{c.total}</span>
                     <span>{formatPrice(total)}</span>
                   </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 pt-2">
+                  {[
+                    { icon: Package, label: t.cart.shippingNote },
+                    { icon: Truck, label: t.cart.shippingNote },
+                    { icon: ShieldAlert, label: c.demoTitle },
+                  ].map(({ icon: Icon }, i) => (
+                    <div key={i} className="flex flex-col items-center gap-1.5 p-3 rounded-[var(--radius-lg)] border border-border/60">
+                      <Icon className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  ))}
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
-      </div>
+      </section>
     </Layout>
   );
 }

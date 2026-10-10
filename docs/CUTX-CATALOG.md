@@ -1,12 +1,12 @@
 # Cut X Egypt — Catalog Notes
 
-All 10 listings are **draft/demo records** (`isDemo: true`). Nothing here is presented as a confirmed Cut X product, price, or stock figure.
+All 10 listings are **draft/demo records** (`isDemo: true`). Prices and names remain unconfirmed. Sample `stock: 25` enables cart/checkout walkthroughs only — still not real inventory or sales.
 
 ## Why demo records
 
 No official price list, size chart, inventory, lab report, or product photography was publicly available at research time (see `CUTX-BRAND-RESEARCH.md`: Instagram/Facebook login-walled, `cutx-egy.com` unreachable). Per the brief, the grid is filled with clearly-identified drafts instead of invented "real" data or unrelated fashion stock.
 
-## Products (prices = EGP drafts, stock = 0/unconfirmed, ratings disabled)
+## Products (prices = EGP drafts, sample demo stock (25) for walkthroughs; still isDemo, ratings disabled)
 
 | ID | Slug | EN name | Category | Draft EGP |
 |----|------|---------|----------|-----------|
@@ -25,16 +25,13 @@ Each product carries: stable id/slug, EN + natural AR name/description, tags, si
 
 ## Images
 
-`frontend/public/images/products/*.svg` — garment-matched **illustrated previews** drawn per product type (tee, hoodie, long-sleeve, pants, zip jacket, duty jacket, overshirt, gloves, arm sleeves, gaiter + tee back view). Each is visibly tagged `ILLUSTRATED PREVIEW · PHOTO COMING SOON` inside the artwork: honest stylized drawings, never fake photos. **Exception: `everyday-protective-tee-photo.jpg` is a real product photo supplied by the brand side** (black tee with chest print) and is used as that product's primary image; its listing otherwise stays `isDemo` until price/stock are confirmed. Category tiles, banners and OG remain branded graphic tiles. No hotlinks; no stock photo misrepresented as a Cut X product. Regenerate illustrations with `node scripts/gen-product-art.mjs`.
-
-## Real product photos (supplied by the brand side, 2026-10-10)
-
-All 10 catalog products now use real supplied photos as primary images (each visually verified against its listing; chest prints like SPRTX/PROTEK/ARMOUR GRIP/TEKSHIELD are product-line marks shown as-is with no claims attached). Filenames use clean slugs under `frontend/public/images/products/` (the original `tisher.jpg` typo file was identical to the tee photo and removed). Each product keeps its matching SVG illustration as a secondary gallery image. Default color variant (`colors[0]`) matches the photographed colorway (hoodie → Charcoal, track jacket → Navy, duty jacket → Olive, overshirt → Charcoal).
+`frontend/public/images/products/*.svg` — garment-matched **illustrated previews** drawn per product type. Real brand-supplied photos are used as primary images where available; SVG illustrations remain secondary gallery images. No stock photo misrepresented as a Cut X product.
 
 ## Commerce defaults (configurable, NOT official policy)
 
 - `DEMO_FREE_SHIPPING_THRESHOLD = 2000` EGP, `DEMO_SHIPPING_FEE = 60` EGP (`frontend/src/lib/data.ts`).
 - No tax line (no verified tax handling). Checkout is demo-only: no backend, no payment provider.
+- Sample `stock: 25` on all SKUs is for **demo walkthroughs only** (cart + checkout). It is not confirmed inventory.
 
 ## Going live checklist
 

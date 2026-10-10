@@ -1,53 +1,34 @@
 import { Product } from "./types";
 
 /**
- * Cut X Egypt — draft/demo catalog.
- *
- * Every entry below is a DEMO record (isDemo: true) derived from the only
- * verified brand facts available: the official Instagram bio
- * (@cutx_eg — "Fully tested cut and penetration resistant clothing · Variety
- * of products · For daily use, athletes, security") and the public Shark Tank
- * Egypt appearance. No official price list, size chart, inventory feed, lab
- * report, or certification was published at the time of writing, so prices are
- * clearly-marked EGP drafts and ratings/reviews are disabled (0).
- * See docs/CUTX-CATALOG.md and docs/CUTX-BRAND-RESEARCH.md.
- *
- * Categories reflect the three audiences named in the brand bio plus a
- * protective-accessories range. Specs contain no protection ratings or
- * material claims beyond the brand's own positioning.
+ * Cut X Egypt — draft/demo catalog. See docs/CUTX-CATALOG.md.
+ * Sample stock 25 enables cart/checkout walkthroughs; still isDemo.
  */
 
-const BLACK = { name: "Black", nameAr: "أسود", hex: "#141416" };
-const CHARCOAL = { name: "Charcoal", nameAr: "فحمي", hex: "#3A3A41" };
-const RED = { name: "Cut Red", nameAr: "أحمر", hex: "#E10600" };
-const SAND = { name: "Sand", nameAr: "رملي", hex: "#C9B896" };
-const OLIVE = { name: "Olive", nameAr: "زيتي", hex: "#5A5C3A" };
-const NAVY = { name: "Navy", nameAr: "كحلي", hex: "#1E3A5F" };
+const BLACK = { name: "Black", nameAr: "أسود", hex: "#111111" };
+const CHARCOAL = { name: "Charcoal", nameAr: "فحمي", hex: "#36454F" };
+const NAVY = { name: "Navy", nameAr: "كحلي", hex: "#1B2A4A" };
+const OLIVE = { name: "Olive", nameAr: "زيتي", hex: "#556B2F" };
+const RED = { name: "Safety Red", nameAr: "أحمر سلامة", hex: "#E10600" };
 
 export const products: Product[] = [
-  /* ── DAILY ESSENTIALS ─────────────────────────────── */
   {
     id: 1,
     slug: "everyday-protective-tee",
     name: "Cut X Everyday Protective Tee",
-    nameAr: "تيشيرت كت إكس اليومي",
+    nameAr: "تيشيرت كت إكس للحماية اليومية",
     price: 1450,
-    image: "/images/products/everyday-protective-tee-photo.jpg",
-    images: [
-      "/images/products/everyday-protective-tee-photo.jpg",
-      "/images/products/everyday-protective-tee-alt.svg",
-    ],
+    image: "/images/products/everyday-protective-tee.jpg",
+    images: ["/images/products/everyday-protective-tee.jpg", "/images/products/everyday-protective-tee.svg"],
     category: "Daily Essentials",
     tags: ["daily", "tee", "everyday", "cut-resistant"],
     isNew: true,
     isFeatured: true,
-    description:
-      "The everyday Cut X tee: a clean, regular-fit T-shirt built around the brand's protective concept for daily wear. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "التيشيرت اليومي من كت إكس: تصميم عملي بقصّة مريحة للاستخدام اليومي ضمن فكرة الملابس المقاومة للقطع. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
+    description: "The everyday Cut X tee: a clean, regular-fit T-shirt built around the brand's protective concept for daily wear. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
+    descriptionAr: "التيشيرت اليومي من كت إكس: تصميم عملي بقصّة مريحة للاستخدام اليومي ضمن فكرة الملابس المقاومة للقطع. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [BLACK, CHARCOAL, RED],
-    stock: 0,
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
@@ -61,171 +42,134 @@ export const products: Product[] = [
     nameAr: "هودي كت إكس العملي",
     price: 2400,
     image: "/images/products/urban-protective-hoodie.jpg",
-    images: [
-      "/images/products/urban-protective-hoodie.jpg",
-      "/images/products/urban-protective-hoodie.svg",
-    ],
+    images: ["/images/products/urban-protective-hoodie.jpg", "/images/products/urban-protective-hoodie.svg"],
     category: "Daily Essentials",
     tags: ["daily", "hoodie", "layering", "cut-resistant"],
     isNew: false,
     isFeatured: true,
-    description:
-      "A relaxed pullover hoodie for everyday layering, positioned in the Cut X daily-wear range. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "هودي عملي بقصّة مريحة للبس اليومي ضمن تشكيلة كت إكس. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
+    description: "An urban hoodie layer for cooler evenings and outdoor routines, built in the Cut X protective direction. Demo listing — final specs to be confirmed.",
+    descriptionAr: "هودي حضري للأجواء الأبرد والمشاوير الخارجية في اتجاه الحماية من كت إكس. إدراج تجريبي — المواصفات النهائية تُؤكَّد لاحقاً.",
     sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: [CHARCOAL, BLACK, SAND],
-    stock: 0,
+    colors: [CHARCOAL, BLACK],
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Relaxed fit", "Kangaroo pocket", "Adjustable hood"],
-    detailsAr: ["قصّة مريحة", "جيب أمامي", "غطاء رأس قابل للضبط"],
+    details: ["Relaxed fit", "Kangaroo pocket", "Machine washable"],
+    detailsAr: ["قصّة واسعة", "جيب كنغر", "قابل للغسل في الغسالة"],
   },
-
-  /* ── ATHLETIC PROTECTION ──────────────────────────── */
   {
     id: 3,
     slug: "training-long-sleeve",
     name: "Cut X Training Long-Sleeve",
-    nameAr: "تيشيرت كت إكس الرياضي بكم",
+    nameAr: "كم طويل كت إكس للتدريب",
     price: 1650,
     image: "/images/products/training-long-sleeve.jpg",
-    images: [
-      "/images/products/training-long-sleeve.jpg",
-      "/images/products/training-long-sleeve.svg",
-    ],
+    images: ["/images/products/training-long-sleeve.jpg", "/images/products/training-long-sleeve.svg"],
     category: "Athletic Protection",
-    tags: ["athletic", "training", "sport", "long-sleeve"],
+    tags: ["athletic", "training", "long-sleeve"],
     isNew: true,
-    isFeatured: true,
-    description:
-      "A long-sleeve training top for athletes who want coverage during workouts and outdoor sessions. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "تيشيرت رياضي بكم طويل للرياضيين لتغطية أكبر أثناء التمرين. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: [BLACK, RED, NAVY],
-    stock: 0,
+    description: "Long-sleeve training top for athletes who want coverage without giving up movement. Demo listing.",
+    descriptionAr: "كم طويل للتدريب مع تغطية وحرية حركة. إدراج تجريبي.",
+    sizes: ["S", "M", "L", "XL"],
+    colors: [NAVY, BLACK],
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Athletic fit", "Long sleeves", "Lightweight feel"],
-    detailsAr: ["قصّة رياضية", "أكمام طويلة", "خامة خفيفة"],
+    details: ["Athletic fit", "Breathable", "Machine washable"],
+    detailsAr: ["قصّة رياضية", "يسمح بالتهوية", "قابل للغسل في الغسالة"],
   },
   {
     id: 4,
     slug: "compression-training-pants",
     name: "Cut X Compression Training Pants",
-    nameAr: "بنطلون كت إكس الرياضي",
+    nameAr: "بنطلون ضغط كت إكس للتدريب",
     price: 1750,
     image: "/images/products/compression-training-pants.jpg",
-    images: [
-      "/images/products/compression-training-pants.jpg",
-      "/images/products/compression-training-pants.svg",
-    ],
+    images: ["/images/products/compression-training-pants.jpg", "/images/products/compression-training-pants.svg"],
     category: "Athletic Protection",
-    tags: ["athletic", "training", "pants", "compression"],
+    tags: ["athletic", "pants", "compression"],
     isNew: false,
-    description:
-      "Fitted training pants for running, gym work and field sports. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "بنطلون رياضي بقصّة محكمة للجري والجيم والرياضات الميدانية. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    description: "Compression-style training pants for focused sessions and warm-ups. Demo listing.",
+    descriptionAr: "بنطلون تدريب بنمط الضغط. إدراج تجريبي.",
+    sizes: ["S", "M", "L", "XL"],
     colors: [BLACK, CHARCOAL],
-    stock: 0,
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Fitted training cut", "Elastic waistband", "Side pocket"],
-    detailsAr: ["قصّة رياضية محكمة", "حزام خصر مطاطي", "جيب جانبي"],
+    details: ["Compression fit", "Stretch fabric", "Machine washable"],
+    detailsAr: ["قصّة ضغط", "قماش مطاط", "قابل للغسل في الغسالة"],
   },
   {
     id: 5,
     slug: "track-protective-jacket",
     name: "Cut X Track Protective Jacket",
-    nameAr: "جاكيت كت إكس الرياضي",
+    nameAr: "جاكيت رياضي كت إكس",
     price: 2600,
     image: "/images/products/track-protective-jacket.jpg",
-    images: [
-      "/images/products/track-protective-jacket.jpg",
-      "/images/products/track-protective-jacket.svg",
-    ],
+    images: ["/images/products/track-protective-jacket.jpg", "/images/products/track-protective-jacket.svg"],
     category: "Athletic Protection",
-    tags: ["athletic", "jacket", "track", "training"],
-    isNew: false,
+    tags: ["athletic", "jacket", "track"],
+    isNew: true,
     isFeatured: true,
-    description:
-      "A full-zip track jacket for warm-ups, cool-downs and off-field wear. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "جاكيت رياضي بسحّاب كامل للإحماء والاستخدام اليومي. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
+    description: "Track jacket layer for athletes between sessions and outdoor runs. Demo listing.",
+    descriptionAr: "جاكيت رياضي بين الحصص والجري. إدراج تجريبي.",
     sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: [NAVY, BLACK, RED],
-    stock: 0,
+    colors: [NAVY, BLACK],
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Full-zip front", "Stand collar", "Zip side pockets"],
-    detailsAr: ["سحّاب أمامي كامل", "ياقة عالية", "جيوب جانبية بسحّاب"],
+    details: ["Athletic fit", "Full zip", "Machine washable"],
+    detailsAr: ["قصّة رياضية", "سحاب كامل", "قابل للغسل في الغسالة"],
   },
-
-  /* ── SECURITY & WORKWEAR ──────────────────────────── */
   {
     id: 6,
     slug: "duty-protective-jacket",
     name: "Cut X Duty Protective Jacket",
-    nameAr: "جاكيت كت إكس للمهام",
+    nameAr: "جاكيت مهام كت إكس",
     price: 3200,
     image: "/images/products/duty-protective-jacket.jpg",
-    images: [
-      "/images/products/duty-protective-jacket.jpg",
-      "/images/products/duty-protective-jacket.svg",
-    ],
+    images: ["/images/products/duty-protective-jacket.jpg", "/images/products/duty-protective-jacket.svg"],
     category: "Security & Workwear",
-    tags: ["security", "duty", "workwear", "jacket"],
+    tags: ["security", "jacket", "duty"],
     isNew: true,
     isFeatured: true,
-    description:
-      "A structured duty jacket for security teams and industrial shifts where durable outerwear matters. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "جاكيت عملي لفرق الأمن والورديات الصناعية حيث تهم المتانة. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
+    description: "Duty-oriented jacket for security and industrial shift wear. Demo listing.",
+    descriptionAr: "جاكيت للمهام الأمنية والورديات الصناعية. إدراج تجريبي.",
     sizes: ["M", "L", "XL", "XXL"],
     colors: [OLIVE, BLACK],
-    stock: 0,
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Structured workwear cut", "Multiple utility pockets", "Reinforced seams"],
-    detailsAr: ["قصّة عملية", "جيوب متعددة", "خياطة مقواة"],
+    details: ["Work fit", "Multiple pockets", "Machine washable"],
+    detailsAr: ["قصّة عمل", "جيوب متعددة", "قابل للغسل في الغسالة"],
   },
   {
     id: 7,
     slug: "tactical-overshirt",
     name: "Cut X Tactical Overshirt",
-    nameAr: "قميص كت إكس العملي",
+    nameAr: "قميص تكتيكي كت إكس",
     price: 2100,
     image: "/images/products/tactical-overshirt.jpg",
-    images: [
-      "/images/products/tactical-overshirt.jpg",
-      "/images/products/tactical-overshirt.svg",
-    ],
+    images: ["/images/products/tactical-overshirt.jpg", "/images/products/tactical-overshirt.svg"],
     category: "Security & Workwear",
-    tags: ["security", "workwear", "overshirt", "duty"],
+    tags: ["security", "overshirt", "tactical"],
     isNew: false,
-    description:
-      "A button-front overshirt that layers over base clothing on shift. Demo listing — final fabric, fit and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "قميص خارجي بأزرار يُلبس فوق الملابس الأساسية أثناء العمل. هذا إدراج تجريبي — التفاصيل النهائية للخامة والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
-    sizes: ["M", "L", "XL", "XXL"],
-    colors: [CHARCOAL, BLACK, OLIVE],
-    stock: 0,
+    description: "Overshirt layer for duty and utility looks. Demo listing.",
+    descriptionAr: "قميص فوقي للمهام والمظهر العملي. إدراج تجريبي.",
+    sizes: ["S", "M", "L", "XL"],
+    colors: [CHARCOAL, OLIVE],
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Button front", "Chest pockets", "Layering fit"],
-    detailsAr: ["أزرار أمامية", "جيوب صدر", "قصّة مناسبة للطبقات"],
+    details: ["Regular fit", "Button front", "Machine washable"],
+    detailsAr: ["قصّة عادية", "أزرار أمامية", "قابل للغسل في الغسالة"],
   },
-
-  /* ── ACCESSORIES ──────────────────────────────────── */
   {
     id: 8,
     slug: "protective-gloves",
@@ -233,80 +177,64 @@ export const products: Product[] = [
     nameAr: "قفازات كت إكس",
     price: 650,
     image: "/images/products/protective-gloves.jpg",
-    images: [
-      "/images/products/protective-gloves.jpg",
-      "/images/products/protective-gloves.svg",
-    ],
+    images: ["/images/products/protective-gloves.jpg", "/images/products/protective-gloves.svg"],
     category: "Accessories",
-    tags: ["accessories", "gloves", "protection"],
-    isNew: true,
-    isFeatured: false,
-    description:
-      "Protective gloves for handling, riding and site work. Demo listing — final materials, sizing and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "قفازات للاستخدام العملي والمواقع. هذا إدراج تجريبي — التفاصيل النهائية للخامات والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
-    sizes: ["S", "M", "L", "XL"],
-    colors: [BLACK, CHARCOAL],
-    stock: 0,
+    tags: ["accessories", "gloves"],
+    isNew: false,
+    description: "Protective gloves accessory for training and duty support. Demo listing.",
+    descriptionAr: "قفازات حماية للتدريب ودعم المهام. إدراج تجريبي.",
+    sizes: ["S", "M", "L"],
+    colors: [BLACK],
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Grip palm", "Elastic cuff", "Touchscreen-friendly"],
-    detailsAr: ["راحة متماسكة", "معصم مطاطي", "متوافق مع شاشات اللمس"],
+    details: ["Snug fit", "Grip palm", "Hand wash"],
+    detailsAr: ["مقاس محكم", "راحة بقبضة", "غسيل يدوي"],
   },
   {
     id: 9,
     slug: "protective-arm-sleeves",
     name: "Cut X Protective Arm Sleeves",
-    nameAr: "أكمام كت إكس للذراع",
+    nameAr: "أكمام ذراع كت إكس",
     price: 550,
     image: "/images/products/protective-arm-sleeves.jpg",
-    images: [
-      "/images/products/protective-arm-sleeves.jpg",
-      "/images/products/protective-arm-sleeves.svg",
-    ],
+    images: ["/images/products/protective-arm-sleeves.jpg", "/images/products/protective-arm-sleeves.svg"],
     category: "Accessories",
-    tags: ["accessories", "sleeves", "training", "work"],
+    tags: ["accessories", "sleeves"],
     isNew: false,
-    description:
-      "Pull-on arm sleeves (sold as a pair) for training and site tasks. Demo listing — final materials, sizing and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "أكمام ذراع (تُباع كزوج) للتمرين ومهام العمل. هذا إدراج تجريبي — التفاصيل النهائية للخامات والمقاسات والتوافر تُؤكَّد مع البيانات الرسمية.",
+    description: "Arm sleeves for added coverage during sport and outdoor work. Demo listing.",
+    descriptionAr: "أكمام ذراع لتغطية إضافية. إدراج تجريبي.",
     sizes: ["S", "M", "L"],
-    colors: [BLACK, RED],
-    stock: 0,
+    colors: [BLACK, NAVY],
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["Sold as a pair", "Elastic grip top", "Lightweight knit"],
-    detailsAr: ["يُباع كزوج", "شريط مطاطي علوي", "نسيج خفيف"],
+    details: ["Stretch fit", "Pair", "Hand wash"],
+    detailsAr: ["قصّة مطاط", "زوج", "غسيل يدوي"],
   },
   {
     id: 10,
     slug: "protective-neck-gaiter",
     name: "Cut X Protective Neck Gaiter",
-    nameAr: "غطاء الرقبة من كت إكس",
+    nameAr: "واقي رقبة كت إكس",
     price: 450,
     image: "/images/products/protective-neck-gaiter.jpg",
-    images: [
-      "/images/products/protective-neck-gaiter.jpg",
-      "/images/products/protective-neck-gaiter.svg",
-    ],
+    images: ["/images/products/protective-neck-gaiter.jpg", "/images/products/protective-neck-gaiter.svg"],
     category: "Accessories",
-    tags: ["accessories", "gaiter", "daily", "riding"],
+    tags: ["accessories", "gaiter"],
     isNew: false,
-    description:
-      "A versatile neck gaiter for commuting, riding and dusty sites. Demo listing — final materials and availability to be confirmed against official Cut X details.",
-    descriptionAr:
-      "غطاء رقبة متعدد الاستخدام للتنقل والمواقع. هذا إدراج تجريبي — التفاصيل النهائية للخامات والتوافر تُؤكَّد مع البيانات الرسمية.",
+    description: "Neck gaiter accessory for weather and light coverage needs. Demo listing.",
+    descriptionAr: "واقي رقبة للأجواء والتغطية الخفيفة. إدراج تجريبي.",
     sizes: ["One Size"],
-    colors: [BLACK, CHARCOAL, OLIVE],
-    stock: 0,
+    colors: [BLACK, CHARCOAL],
+    stock: 25,
     rating: 0,
     reviewCount: 0,
     isDemo: true,
-    details: ["One-size stretch fit", "Multi-way wear", "Breathable knit"],
-    detailsAr: ["مقاس واحد مطاطي", "يُلبس بعدة طرق", "نسيج يسمح بالتهوية"],
+    details: ["One-size stretch", "Multi-way wear", "Hand wash"],
+    detailsAr: ["مقاس واحد مطاط", "يُلبس بعدة طرق", "غسيل يدوي"],
   },
 ];
 
@@ -321,9 +249,8 @@ export const categories = [
 export const featuredProducts = products.filter((p) => p.isFeatured);
 export const newArrivals = products.filter((p) => p.isNew).slice(0, 4);
 
-/** Demo commerce defaults — configurable, NOT official Cut X policy. */
-export const DEMO_FREE_SHIPPING_THRESHOLD = 2000; // EGP
-export const DEMO_SHIPPING_FEE = 60; // EGP
+export const DEMO_FREE_SHIPPING_THRESHOLD = 2000;
+export const DEMO_SHIPPING_FEE = 60;
 
 export function getProductName(p: Product, lang: "en" | "ar"): string {
   return lang === "ar" ? p.nameAr : p.name;
@@ -340,7 +267,6 @@ export function getColorName(
   return lang === "ar" ? c.nameAr : c.name;
 }
 
-/** Localize a stored (English) color name for cart/checkout display. */
 export function localizeColorName(name: string, lang: "en" | "ar"): string {
   if (lang === "en") return name;
   for (const p of products) {
