@@ -12,45 +12,45 @@ const fadeUp = (delay = 0) => ({
 const sections = [
   {
     title: "Information We Collect",
-    body: `When you visit or shop at HAVEN, we may collect the following information:\n\n• **Personal identifiers**: name, email address, shipping and billing address, phone number.\n• **Payment information**: processed securely via Stripe — we never store full card numbers.\n• **Device & usage data**: IP address, browser type, pages visited, and time spent on the site.\n• **Order history**: purchases, returns, and preferences to improve your shopping experience.`,
+    body: `When you use this Cut X Egypt demo storefront, the following may be stored **locally in your own browser only**:\n\n• **Cart contents** and language preference (localStorage).\n• **Demo order reference** for the current session (sessionStorage).\n• **Contact form input** — the demo form does not transmit anywhere.\n\nThere is no backend server in this project, so no personal data leaves your device.`,
   },
   {
     title: "How We Use Your Information",
-    body: `We use the information we collect to:\n\n• Process and fulfill your orders, including shipping and customer support.\n• Send order confirmations, shipping updates, and return notifications.\n• Personalise your shopping experience and recommend products you may love.\n• Improve our website, detect fraud, and comply with legal obligations.\n• Send promotional emails — only if you have opted in. You may unsubscribe at any time.`,
+    body: `Locally stored data is used only to:\n\n• Keep your bag and language choice between visits on the same device.\n• Show the demo order confirmation after a demo checkout.\n\nNo analytics, advertising trackers, or third-party data sharing are built into this storefront.`,
   },
   {
     title: "Sharing of Information",
-    body: `We do not sell, trade, or rent your personal data to third parties. We may share data with trusted service providers who assist in operating our website (e.g., Stripe for payments, shipping carriers for delivery). All partners are bound by confidentiality obligations and may not use your data for any other purpose.`,
+    body: `We do not sell, trade, or rent personal data. Because there is no backend, there are no service providers receiving your data from this site. When live commerce launches with real payment and shipping providers, this policy will be updated to name them.`,
   },
   {
     title: "Cookies & Tracking",
-    body: `HAVEN uses cookies to maintain your session, remember cart contents, and measure site performance. You can disable cookies in your browser settings, though doing so may affect the functionality of certain features. We do not use advertising trackers or sell your browsing data to ad networks.`,
+    body: `This demo uses browser storage (localStorage/sessionStorage) to remember cart contents and language — not third-party cookies. You can clear site data in your browser settings at any time. The cookie banner's preferences apply to these local mechanisms only.`,
   },
   {
     title: "Data Retention",
-    body: `We retain your personal data only as long as necessary to fulfill the purposes outlined in this policy, or as required by law. Order records are retained for up to 7 years for accounting and legal compliance. You may request deletion of your account data at any time.`,
+    body: `Local data stays on your device until you clear it or use the in-app controls (e.g. clearing the bag). No order records are retained anywhere else because no orders are transmitted.`,
   },
   {
     title: "Your Rights",
-    body: `Depending on your location you may have the right to:\n\n• **Access** the personal data we hold about you.\n• **Correct** inaccurate or incomplete data.\n• **Delete** your account and associated data.\n• **Object** to or restrict certain processing activities.\n• **Portability** — request a copy of your data in a structured, machine-readable format.\n\nTo exercise any of these rights, please contact us at privacy@haven.style.`,
+    body: `Because all demo data lives in your own browser, you can access or delete it at any time by clearing this site's storage. Once official sales channels open, contact details for privacy requests will be published here.`,
   },
   {
     title: "Security",
-    body: `We implement industry-standard security measures including HTTPS/TLS encryption, secure payment processing via Stripe, and access controls on our infrastructure. While we take every precaution, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security.`,
+    body: `Demo sign-in is local-only and unverified — do not reuse real passwords on this site. No payment details are ever requested or processed here.`,
   },
   {
     title: "Changes to This Policy",
-    body: `We may update this Privacy Policy from time to time. We will notify you of material changes by posting a prominent notice on our website. Continued use of HAVEN after such changes constitutes your acceptance of the updated policy.`,
+    body: `We may update this Privacy Policy as the storefront moves from demo to live commerce. Material changes will be noted by updating the date below.`,
   },
   {
     title: "Contact Us",
-    body: `If you have any questions about this Privacy Policy, please contact us:\n\n**HAVEN Fashion**\n123 Fashion Street, Style City, SC 10001\nprivacy@haven.style\n+1 (555) 234-5678`,
+    body: `Questions about this policy? Reach Cut X through the official public channels:\n\n**Cut X Egypt**\nInstagram: @cutx_eg\nFacebook: Cut X\n\nNo official support email, phone or address is published yet.`,
   },
 ];
 
 export default function PrivacyPage() {
   const { t } = useLang();
-  useSEO({ title: "Privacy Policy", description: "Read HAVEN's Privacy Policy to understand how we collect, use, and protect your personal information." });
+  useSEO({ title: "Privacy Policy", description: "Cut X Egypt demo privacy policy — local-only data, no backend, no payment processing." });
 
   return (
     <Layout>
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
         badge="Legal"
         title="Privacy Policy"
         subtitle="How we collect, use, and protect your information"
-        bgImage="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1400&q=80"
+        bgImage="/images/banners/cta.svg"
         overlayOpacity={0.72}
         light
         className="min-h-[220px] sm:min-h-[260px]"
@@ -79,9 +79,8 @@ export default function PrivacyPage() {
         {/* Introduction */}
         <motion.div className="mb-10" variants={fadeUp(0.05)} initial="hidden" animate="show">
           <p className="text-muted-foreground leading-relaxed">
-            At HAVEN, your privacy is a priority. This Privacy Policy explains what personal data we collect when you
-            use our website, how we use it, and the choices you have. By shopping with us, you agree to the practices
-            described below.
+            At Cut X Egypt, honesty comes first. This Privacy Policy explains what demo data stays in your browser
+            when you use this storefront, and what will change once real commerce launches.
           </p>
         </motion.div>
 

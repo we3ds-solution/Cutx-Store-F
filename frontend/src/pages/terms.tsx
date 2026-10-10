@@ -12,57 +12,49 @@ const fadeUp = (delay = 0) => ({
 const sections = [
   {
     title: "Acceptance of Terms",
-    body: `By accessing or using HAVEN's website and services, you confirm that you are at least 18 years of age (or have the consent of a parent or guardian), and that you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.`,
+    body: `By accessing or using Cut X Egypt's demo storefront, you confirm that you agree to be bound by these Terms of Service. If you do not agree, please do not use this site.`,
+  },
+  {
+    title: "Demo Storefront Status",
+    body: `This website is a **demonstration storefront**. Product listings, prices in EGP, availability, shipping rates and checkout are illustrative drafts — not offers for sale. No payment is processed and no order placed here creates a purchase contract.`,
   },
   {
     title: "Products & Availability",
-    body: `All products listed on HAVEN are subject to availability. We reserve the right to limit quantities, discontinue products, or modify descriptions at any time without notice. Product images are for illustrative purposes; slight variations in colour may occur due to screen calibration.`,
+    body: `All products shown are draft listings based on the public Cut X brand positioning. Specifications, sizes, colours and availability will be confirmed when official product details are published. Placeholder graphics are used instead of product photography until official imagery is available.`,
   },
   {
-    title: "Pricing & Payment",
-    body: `All prices are displayed in USD and are inclusive of applicable taxes unless stated otherwise. We reserve the right to adjust prices at any time. Payment is processed securely via Stripe. By placing an order, you represent that you are authorised to use the payment method provided.\n\nIn the event of a pricing error, we reserve the right to cancel the order and issue a full refund.`,
+    title: "Protective Claims",
+    body: `Cut X describes its concept as cut and penetration resistant clothing. This site makes **no certified protection ratings, laboratory claims, or material specifications** — such details will only appear here once officially published and substantiated by the brand. Protective apparel does not guarantee safety in all situations.`,
   },
   {
-    title: "Order Cancellation",
-    body: `Orders may be cancelled within **1 hour** of placement, provided they have not yet entered the fulfilment process. To cancel, please contact us immediately at orders@haven.style. Once an order has been shipped, it cannot be cancelled — please refer to our Returns policy instead.`,
-  },
-  {
-    title: "Shipping & Delivery",
-    body: `We offer free standard shipping on orders over $50. Estimated delivery times are provided at checkout and are indicative only — HAVEN is not liable for delays caused by carriers or customs.\n\nRisk of loss and title for products pass to you upon delivery to the carrier.`,
-  },
-  {
-    title: "Returns & Refunds",
-    body: `We accept returns within **30 days** of delivery for items in their original, unworn condition with all tags attached. To initiate a return, email returns@haven.style with your order number.\n\nRefunds will be processed to your original payment method within 5–10 business days of receiving the returned item. Sale items are final sale and non-refundable unless defective.`,
+    title: "Pricing",
+    body: `All prices are shown in **Egyptian Pounds (EGP)** as configurable demo values. They are not confirmed retail prices and may change when official pricing is announced.`,
   },
   {
     title: "Intellectual Property",
-    body: `All content on HAVEN's website — including text, graphics, logos, product images, and software — is the exclusive property of HAVEN or its content suppliers and is protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.`,
+    body: `All content on this website — including text, graphics, placeholder artwork, and software — is the property of its respective owners. Product photography rights remain with Cut X. You may not reproduce or distribute site content without permission.`,
   },
   {
     title: "User Accounts",
-    body: `If you create an account, you are responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account. You agree to notify us immediately at security@haven.style of any unauthorised use. HAVEN reserves the right to terminate accounts that violate these Terms.`,
+    body: `Account sign-in on this demo is local-only: credentials are not verified against any server and sessions are not persisted. Do not reuse real passwords here.`,
   },
   {
     title: "Limitation of Liability",
-    body: `To the fullest extent permitted by law, HAVEN shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of — or inability to use — our website or products. Our total liability for any claim shall not exceed the amount you paid for the order in question.`,
-  },
-  {
-    title: "Governing Law",
-    body: `These Terms shall be governed by and construed in accordance with the laws of the State of South Carolina, USA, without regard to conflict of law principles. Any disputes shall be subject to the exclusive jurisdiction of the courts located in Style City, SC.`,
+    body: `To the fullest extent permitted by law, the operators of this demo storefront shall not be liable for any damages arising from the use of — or inability to use — this website or its draft listings.`,
   },
   {
     title: "Changes to These Terms",
-    body: `We reserve the right to update these Terms of Service at any time. We will provide notice of material changes by updating the date at the top of this page. Continued use of HAVEN after any changes constitutes your acceptance of the revised Terms.`,
+    body: `We may update these Terms of Service at any time as the storefront moves from demo to live commerce. Continued use of the site after changes constitutes acceptance of the revised Terms.`,
   },
   {
     title: "Contact",
-    body: `Questions about these Terms? Reach us at:\n\n**HAVEN Fashion**\n123 Fashion Street, Style City, SC 10001\nlegal@haven.style\n+1 (555) 234-5678`,
+    body: `Questions about these Terms? Reach Cut X through the official public channels:\n\n**Cut X Egypt**\nInstagram: @cutx_eg\nFacebook: Cut X\n\nNo official phone, address or support email is published yet.`,
   },
 ];
 
 export default function TermsPage() {
   const { t } = useLang();
-  useSEO({ title: "Terms of Service", description: "Read HAVEN's Terms of Service governing the use of our website, products, and services." });
+  useSEO({ title: "Terms of Service", description: "Cut X Egypt demo storefront terms — draft listings, EGP demo pricing, and no live payment processing." });
 
   return (
     <Layout>
@@ -70,7 +62,7 @@ export default function TermsPage() {
         badge="Legal"
         title="Terms of Service"
         subtitle="Please read these terms carefully before using our services"
-        bgImage="https://images.unsplash.com/photo-1554774853-aae0a22c8aa4?w=1400&q=80"
+        bgImage="/images/banners/cta.svg"
         overlayOpacity={0.72}
         light
         className="min-h-[220px] sm:min-h-[260px]"
@@ -91,9 +83,8 @@ export default function TermsPage() {
         {/* Introduction */}
         <motion.div className="mb-10" variants={fadeUp(0.05)} initial="hidden" animate="show">
           <p className="text-muted-foreground leading-relaxed">
-            Welcome to HAVEN. These Terms of Service (&ldquo;Terms&rdquo;) constitute a legally binding agreement between
-            you and HAVEN Fashion regarding your access to and use of our website, products, and services. Please
-            read them carefully.
+            Welcome to Cut X Egypt. These Terms of Service (&ldquo;Terms&rdquo;) govern your use of this demo
+            storefront for Cut X protective apparel. Please read them carefully.
           </p>
         </motion.div>
 

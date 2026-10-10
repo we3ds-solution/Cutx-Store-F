@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ArrowRight, ChevronRight, Truck, RotateCcw, Sparkles, ShieldCheck, type LucideIcon } from "lucide-react";
+import {
+  ArrowRight, ChevronRight, Truck, ShieldCheck, Sparkles, BadgeCheck,
+  Sun, Zap, Flag, Users, type LucideIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Layout } from "@/components/layout";
@@ -12,9 +15,18 @@ import { useSEO } from "@/lib/useSEO";
 
 const PROMO_ICONS: Record<string, LucideIcon> = {
   "truck":        Truck,
-  "rotate-ccw":  RotateCcw,
-  "sparkles":    Sparkles,
   "shield-check": ShieldCheck,
+  "sparkles":    Sparkles,
+  "badge-check": BadgeCheck,
+};
+
+const AUDIENCE_ICONS: Record<string, LucideIcon> = {
+  "sun":          Sun,
+  "zap":          Zap,
+  "users":        Users,
+  "flag":         Flag,
+  "shield-check": ShieldCheck,
+  "sparkles":    Sparkles,
 };
 
 export default function Home() {
@@ -27,15 +39,22 @@ export default function Home() {
   const toggleWishlist = (id: number) =>
     setWishlist((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]));
 
-  const trending = products.filter((p) => !p.isNew).slice(0, 4);
+  const exploreRange = products.slice(0, 4);
 
   return (
     <Layout>
-      {/* ── HERO ─────────────────────────────────────────────── */}
+      {/* ── DEMO CATALOG STRIP ───────────────────────────── */}
+      <div className="demo-strip">
+        <p className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 text-center text-xs font-medium text-muted-foreground">
+          {t.demoNotice}
+        </p>
+      </div>
+
+      {/* ── HERO ─────────────────────────────────────────── */}
       <section className="relative h-[80vh] min-h-[540px] overflow-hidden grain">
         <img
-          src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1600&q=85"
-          alt="Cut X protective clothing"
+          src="/images/banners/hero.svg"
+          alt="Cut X Egypt — cut-resistant apparel"
           className="absolute inset-0 w-full h-full object-cover object-center"
           loading="eager"
         />
@@ -70,7 +89,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── PROMO STRIP ── */}
+      {/* ── PROMO STRIP — flows directly from hero (both dark) ── */}
       <section className="bg-primary text-primary-foreground">
         <div className="section-inner py-3">
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-1 text-xs sm:text-sm font-medium">
@@ -87,6 +106,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Wave: promo → categories divider */}
       <WaveDivider variant="cinematic" size="sm" />
 
       {/* ── SHOP BY CATEGORY ─────────────────────────────────── */}
@@ -103,7 +123,7 @@ export default function Home() {
           </Button>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-          {categories.filter((c) => c !== "All").slice(0, 4).map((cat) => {
+          {categories.filter((c) => c !== "All").map((cat) => {
             const meta = categoryMeta[cat];
             return (
               <button
@@ -121,7 +141,7 @@ export default function Home() {
                 <div className="absolute inset-0 vignette pointer-events-none z-10" />
                 <div className="absolute bottom-0 start-0 end-0 p-4 text-start z-20">
                   <p className="text-white font-bold text-xl leading-tight mb-0.5">
-                    {t.categories[cat as keyof typeof t.categories] ?? cat}
+                    {t.categories[cat as keyof typeof t.categories]}
                   </p>
                   <p className="text-white/60 text-xs mb-2.5">
                     {isRTL ? meta.descAr : meta.desc}
@@ -136,6 +156,7 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Wave: categories → new arrivals divider */}
       <WaveDivider variant="gentle" size="sm" />
 
       {/* ── NEW ARRIVALS ─────────────────────────────────────── */}
@@ -168,14 +189,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Wave: new arrivals → featured banner divider */}
       <WaveDivider variant="cinematic" size="sm" />
 
       {/* ── FEATURED BANNER ──────────────────────────────────── */}
       <section className="relative overflow-hidden bg-primary text-primary-foreground grain">
         <img
-          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1400&q=80"
-          alt="Featured protection"
-          className="absolute inset-0 w-full h-full object-cover opacity-35 object-center"
+          src="/images/banners/cta.svg"
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-cover opacity-60 object-center"
           loading="lazy"
         />
         <div className="absolute inset-0 vignette pointer-events-none" />
@@ -200,33 +223,61 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Wave: featured banner → audiences divider */}
       <WaveDivider flip variant="organic" size="sm" />
 
-      {/* ── TRENDING NOW ─────────────────────────────────────── */}
+      {/* ── BUILT FOR THREE FRONTS ───────────────────────────── */}
       <section className="section-inner">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold">{h.trending}</h2>
-            <p className="text-muted-foreground text-sm mt-1">{h.trendingSubtitle}</p>
-          </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="gap-1 text-muted-foreground hover:text-foreground"
-            onClick={() => navigate("/shop")}
-          >
-            {t.viewAll} <ChevronRight className="h-4 w-4" />
-          </Button>
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold">{h.audiencesTitle}</h2>
+          <p className="text-muted-foreground text-sm mt-1">{h.audiencesSubtitle}</p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
-          {trending.map((p) => (
-            <ProductCard
-              key={p.id}
-              product={p}
-              isWishlisted={wishlist.includes(p.id)}
-              onToggleWishlist={toggleWishlist}
-            />
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {h.audiences.map((a) => {
+            const Icon = AUDIENCE_ICONS[a.iconId] ?? ShieldCheck;
+            return (
+              <div key={a.title} className="value-card">
+                <div className="icon-block mx-auto mb-4">
+                  <Icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="font-bold text-base mb-2">{a.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{a.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Wave: audiences → explore divider */}
+      <WaveDivider variant="gentle" size="sm" />
+
+      {/* ── EXPLORE THE RANGE ────────────────────────────────── */}
+      <section className="section-tinted">
+        <div className="section-inner">
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-bold">{h.trending}</h2>
+              <p className="text-muted-foreground text-sm mt-1">{h.trendingSubtitle}</p>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-1 text-muted-foreground hover:text-foreground"
+              onClick={() => navigate("/shop")}
+            >
+              {t.viewAll} <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
+            {exploreRange.map((p) => (
+              <ProductCard
+                key={p.id}
+                product={p}
+                isWishlisted={wishlist.includes(p.id)}
+                onToggleWishlist={toggleWishlist}
+              />
+            ))}
+          </div>
         </div>
       </section>
     </Layout>

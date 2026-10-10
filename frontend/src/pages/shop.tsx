@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Layout } from "@/components/layout";
 import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
 import { PageHero } from "@/components/page-hero";
-import { LottiePlayer, LOTTIE } from "@/components/lottie-player";
+import { NoResultsArt } from "@/components/empty-state-art";
 import { products, categories } from "@/lib/data";
 import { useLang } from "@/contexts/LangContext";
 import { useSEO } from "@/lib/useSEO";
@@ -15,7 +15,7 @@ import { useSEO } from "@/lib/useSEO";
 const ITEMS_PER_PAGE = 8;
 
 export default function ShopPage() {
-  useSEO({ title: "Shop", description: "Browse HAVEN's full collection of premium T-Shirts, Jeans, Hoodies, and Jackets. Free shipping on orders over $50." });
+  useSEO({ title: "Shop", description: "Browse the Cut X Egypt range — daily essentials, athletic protection, security workwear and accessories. Demo catalog priced in EGP." });
   const search = useSearch();
   const params = new URLSearchParams(search);
   const initialCat  = params.get("cat") || "All";
@@ -52,10 +52,13 @@ export default function ShopPage() {
     () =>
       products.filter((p) => {
         const catMatch = selectedCategory === "All" || p.category === selectedCategory;
+        const q = searchQuery.trim().toLowerCase();
         const searchMatch =
-          searchQuery === "" ||
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+          q === "" ||
+          p.name.toLowerCase().includes(q) ||
+          p.nameAr.includes(searchQuery.trim()) ||
+          p.description.toLowerCase().includes(q) ||
+          p.tags.some((tag) => tag.toLowerCase().includes(q));
         const newMatch = !onlyNew || p.isNew;
         return catMatch && searchMatch && newMatch;
       }),
@@ -77,16 +80,19 @@ export default function ShopPage() {
     <Layout>
       {/* ── HERO ─── */}
       <PageHero
-        badge={t.brand}
+        badge="Cut X"
         title={onlyNew ? t.home.newArrivals : t.nav.shop}
         subtitle={onlyNew ? t.home.newArrivalsSubtitle : t.tagline}
-        bgImage="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1400&q=80"
+        bgImage="/images/banners/cta.svg"
         overlayOpacity={0.68}
         light
         className="min-h-[220px] sm:min-h-[260px]"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <p className="demo-strip rounded-[var(--radius-md)] px-4 py-2 text-center text-xs font-medium text-muted-foreground mb-6">
+          {t.demoNotice}
+        </p>
         {/* ── FILTERS BAR ─── */}
         <motion.div
           className="flex flex-col sm:flex-row gap-4 mb-8"
@@ -233,7 +239,7 @@ export default function ShopPage() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center justify-center py-16 text-center gap-3"
           >
-            <LottiePlayer src={LOTTIE.noResults} width={200} height={200} />
+            <NoResultsArt width={200} height={200} />
             <div>
               <p className="font-semibold text-lg">No products found</p>
               <p className="text-muted-foreground text-sm mt-1">Try a different search or category</p>

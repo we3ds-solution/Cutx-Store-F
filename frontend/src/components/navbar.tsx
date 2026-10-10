@@ -47,10 +47,18 @@ export function Navbar() {
           {/* Logo */}
           <button
             onClick={() => navigate("/")}
-            className="font-black text-xl uppercase select-none hover:opacity-75 transition-opacity shrink-0 tracking-[0.25em]"
-            aria-label={t.brand}
+            className="flex items-center gap-2 shrink-0 hover:opacity-80 transition-opacity"
+            aria-label="Cut X Egypt — home"
           >
-            {t.brand}
+            <span className="brand-x h-8 w-8 text-sm" aria-hidden>
+              X
+            </span>
+            <span className="font-black text-lg uppercase select-none tracking-[0.18em] leading-none">
+              {t.brand}
+              <span className="block text-[9px] font-bold tracking-[0.3em] text-muted-foreground">
+                {t.brandSuffix}
+              </span>
+            </span>
           </button>
 
           {/* Desktop nav */}

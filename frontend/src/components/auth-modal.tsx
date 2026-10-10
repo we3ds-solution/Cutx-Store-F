@@ -90,8 +90,8 @@ export function AuthModal() {
                 {/* Header */}
                 <div className="bg-gradient-to-br from-primary/8 to-primary/12 px-6 py-5 flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-[var(--radius-pill)] bg-primary flex items-center justify-center shrink-0">
-                      <span className="text-primary-foreground text-xs font-black tracking-widest">H</span>
+                    <div className="shrink-0">
+                      <span className="brand-x h-9 w-9 text-sm" aria-hidden>X</span>
                     </div>
                     <div>
                       <p className="font-bold text-base">{t.brand}</p>
@@ -111,6 +111,7 @@ export function AuthModal() {
 
                 {/* Tab switcher */}
                 <div className="px-6 pt-4">
+                  <p className="text-[11px] text-muted-foreground text-center mb-2">{a.demoNote}</p>
                   <div className="flex bg-muted rounded-[var(--radius-sm)] p-1 gap-1">
                     {(["login", "register"] as const).map((tab) => (
                       <button

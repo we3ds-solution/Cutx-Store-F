@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const STORAGE_KEY = "haven-cookies";
+const STORAGE_KEY = "cutx-cookies";
+const LEGACY_KEY = "haven-cookies";
 
 type CookieChoice = "all" | "essential" | null;
 
@@ -11,7 +12,15 @@ export function CookieBanner() {
   const [choice, setChoice] = useState<CookieChoice | undefined>(undefined);
 
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY) as CookieChoice | null;
+    let saved = localStorage.getItem(STORAGE_KEY) as CookieChoice | null;
+    if (!saved) {
+      const legacy = localStorage.getItem(LEGACY_KEY) as CookieChoice | null;
+      if (legacy) {
+        localStorage.setItem(STORAGE_KEY, legacy);
+        localStorage.removeItem(LEGACY_KEY);
+        saved = legacy;
+      }
+    }
     setChoice(saved);
   }, []);
 
@@ -50,7 +59,7 @@ export function CookieBanner() {
                   </button>
                 </div>
                 <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                  HAVEN uses cookies to remember your cart, preferences, and to improve your experience.
+                  Cut X stores your bag and preferences in this browser to improve your experience.
                   We never sell your data.{" "}
                   <a href="/privacy" className="underline hover:text-foreground transition-colors">
                     Privacy Policy

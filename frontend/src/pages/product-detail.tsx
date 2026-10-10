@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Layout } from "@/components/layout";
 import { ProductCard } from "@/components/product-card";
-import { products } from "@/lib/data";
+import { products, getProductName, getProductDescription, getColorName, localizeColorName } from "@/lib/data";
 import { getProductReviews, getRatingBreakdown, type Review } from "@/lib/reviews";
 import { useCart } from "@/contexts/CartContext";
 import { useLang } from "@/contexts/LangContext";
@@ -90,15 +90,18 @@ export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [, navigate] = useLocation();
   const { addToCart, cart } = useCart();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { toast } = useToast();
   const p = t.product;
 
   const product = products.find((pr) => pr.slug === slug);
+  const displayName = product ? getProductName(product, lang) : "";
+  const displayDesc = product ? getProductDescription(product, lang) : "";
+  const displayDetails = product ? (lang === "ar" ? product.detailsAr : product.details) : [];
 
   useSEO({
-    title: product?.name,
-    description: product?.description,
+    title: displayName || undefined,
+    description: displayDesc || undefined,
     image: product?.image,
   });
 
@@ -141,9 +144,10 @@ export default function ProductDetail() {
     );
   }
 
-  const related = products
-    .filter((pr) => pr.category === product.category && pr.id !== product.id)
-    .slice(0, 4);
+  const related = [
+    ...products.filter((pr) => pr.category === product.category && pr.id !== product.id),
+    ...products.filter((pr) => pr.category !== product.category && pr.id !== product.id),
+  ].slice(0, 4);
 
   const handleAddToCart = () => {
     const existingItem = cart.find(
@@ -151,8 +155,8 @@ export default function ProductDetail() {
     );
     addToCart({ ...product, quantity, selectedSize, selectedColor });
     toast({
-      title: existingItem ? "Quantity updated" : "Added to bag!",
-      description: `${product.name} — ${selectedSize}, ${selectedColor}${existingItem ? ` (×${existingItem.quantity + quantity})` : ""}`,
+      title: existingItem ? "Quantity updated" : p.addedToCart,
+      description: `${displayName} — ${selectedSize}, ${localizeColorName(selectedColor, lang)}${existingItem ? ` (×${existingItem.quantity + quantity})` : ""}`,
     });
   };
 
@@ -160,7 +164,7 @@ export default function ProductDetail() {
     setWishlisted((w) => !w);
     toast({
       title: wishlisted ? "Removed from wishlist" : "Saved to wishlist",
-      description: product.name,
+      description: displayName,
     });
   };
 
@@ -175,11 +179,11 @@ export default function ProductDetail() {
           <ChevronRight className="h-3 w-3 rtl:rotate-180" />
           <button onClick={() => navigate("/shop")} className="hover:text-foreground transition-colors">{t.nav.shop}</button>
           <ChevronRight className="h-3 w-3 rtl:rotate-180" />
-          <button onClick={() => navigate(`/shop?cat=${product.category}`)} className="hover:text-foreground transition-colors">
+          <button onClick={() => navigate(`/shop?cat=${encodeURIComponent(product.category)}`)} className="hover:text-foreground transition-colors">
             {t.categories[product.category as keyof typeof t.categories] ?? product.category}
           </button>
           <ChevronRight className="h-3 w-3 rtl:rotate-180" />
-          <span className="text-foreground font-medium truncate max-w-[180px]">{product.name}</span>
+          <span className="text-foreground font-medium truncate max-w-[180px]">{displayName}</span>
         </nav>
       </div>
 
@@ -196,7 +200,7 @@ export default function ProductDetail() {
                 <motion.img
                   key={activeImg}
                   src={product.images[activeImg] ?? product.image}
-                  alt={product.name}
+                  alt={displayName}
                   onLoad={() => setImgLoaded(true)}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: imgLoaded ? 1 : 0 }}
@@ -207,6 +211,9 @@ export default function ProductDetail() {
               </AnimatePresence>
               {product.isNew && <Badge className="absolute top-3 start-3">{t.newArrival}</Badge>}
               {product.originalPrice && <Badge variant="destructive" className="absolute top-3 end-3">{t.sale}</Badge>}
+              {product.isDemo && (
+                <Badge variant="outline" className="absolute bottom-3 start-3 bg-background/80 backdrop-blur">{t.demo}</Badge>
+              )}
               {product.images.length > 1 && (
                 <>
                   <button
@@ -234,7 +241,7 @@ export default function ProductDetail() {
                       i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                     }`}
                   >
-                    <img src={img} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`${displayName} ${i + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
@@ -252,10 +259,12 @@ export default function ProductDetail() {
             </div>
 
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold leading-tight">{product.name}</h1>
-              <div className="mt-2">
-                <StarRating rating={product.rating} count={product.reviewCount} />
-              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold leading-tight">{displayName}</h1>
+              {product.reviewCount > 0 ? (
+                <div className="mt-2">
+                  <StarRating rating={product.rating} count={product.reviewCount} />
+                </div>
+              ) : null}
             </div>
 
             <div className="flex items-baseline gap-3">
@@ -270,7 +279,19 @@ export default function ProductDetail() {
               )}
             </div>
 
-            <p className="text-muted-foreground leading-relaxed text-sm">{product.description}</p>
+            <p className="text-muted-foreground leading-relaxed text-sm">{displayDesc}</p>
+            {product.isDemo && (
+              <p className="text-xs font-medium rounded-[var(--radius-md)] px-3 py-2 demo-strip w-fit">
+                {p.demoNote}
+              </p>
+            )}
+            {displayDetails.length > 0 && (
+              <ul className="text-sm text-muted-foreground space-y-1 list-disc ps-5">
+                {displayDetails.map((d) => (
+                  <li key={d}>{d}</li>
+                ))}
+              </ul>
+            )}
             <Separator />
 
             {/* Size */}
@@ -304,7 +325,7 @@ export default function ProductDetail() {
             <div className="space-y-3">
               <Label className="font-semibold">
                 {p.selectColor}
-                {selectedColor && <span className="font-normal text-muted-foreground ms-1.5">— {selectedColor}</span>}
+                {selectedColor && <span className="font-normal text-muted-foreground ms-1.5">— {localizeColorName(selectedColor, lang)}</span>}
               </Label>
               <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="flex flex-wrap gap-2">
                 {product.colors.map((color) => (
@@ -317,22 +338,26 @@ export default function ProductDetail() {
                       }`}
                     >
                       <span className="h-4 w-4 rounded-[var(--radius-pill)] border border-border/60 shrink-0" style={{ backgroundColor: color.hex }} />
-                      {color.name}
+                      {getColorName(color, lang)}
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
-            {/* Quantity */}
+            {/* Quantity — demo listings have no live inventory, cap at 5 for testing */}
             <div className="flex items-center gap-3">
               <Label className="font-semibold">{p.quantity}</Label>
               <div className="flex items-center gap-0 border border-border rounded-[var(--radius-sm)] overflow-hidden">
                 <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}>−</button>
                 <span className="w-10 text-center text-sm font-semibold tabular-nums">{quantity}</span>
-                <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))} disabled={quantity >= product.stock}>+</button>
+                <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.min(product.isDemo ? 5 : product.stock, q + 1))} disabled={quantity >= (product.isDemo ? 5 : product.stock)}>+</button>
               </div>
-              <span className="text-xs text-muted-foreground">{product.stock} {p.inStock}</span>
+              {product.isDemo ? (
+                <span className="text-xs text-muted-foreground">{t.demo}</span>
+              ) : (
+                <span className="text-xs text-muted-foreground">{product.stock} {p.inStock}</span>
+              )}
             </div>
 
             {/* Actions */}
@@ -359,12 +384,11 @@ export default function ProductDetail() {
                   </span>
                 ))}
               </p>
-            </div>
-          </div>
+            </div>          </div>
         </div>
 
-        {/* ── REVIEWS SECTION ── */}
-        {allReviews.length > 0 && (
+        {/* ── REVIEWS SECTION (hidden until real reviews exist) ── */}
+        {allReviews.length > 0 ? (
           <motion.section
             className="mt-16 sm:mt-20"
             initial={{ opacity: 0, y: 20 }}
@@ -452,6 +476,11 @@ export default function ProductDetail() {
               </div>
             </div>
           </motion.section>
+        ) : (
+          <div className="mt-16 sm:mt-20">
+            <Separator className="mb-6" />
+            <p className="text-sm text-muted-foreground text-center">{p.noReviews}</p>
+          </div>
         )}
 
         {/* ── RELATED PRODUCTS ── */}
@@ -460,7 +489,7 @@ export default function ProductDetail() {
             <Separator className="mb-10" />
             <div className="flex items-end justify-between mb-7">
               <h2 className="text-xl sm:text-2xl font-bold">{p.relatedProducts}</h2>
-              <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground" onClick={() => navigate(`/shop?cat=${product.category}`)}>
+              <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground" onClick={() => navigate(`/shop?cat=${encodeURIComponent(product.category)}`)}>
                 {t.viewAll} <ChevronRight className="h-4 w-4 rtl:rotate-180" />
               </Button>
             </div>
