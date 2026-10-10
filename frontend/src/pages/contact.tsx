@@ -53,7 +53,6 @@ export default function ContactPage() {
 
   return (
     <Layout>
-      {/* ── HERO ─── */}
       <PageHero
         badge="Cut X"
         title={c.heroTitle}
@@ -66,8 +65,6 @@ export default function ContactPage() {
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-16 items-start">
-
-          {/* ── FORM ─── */}
           <motion.div className="lg:col-span-3" variants={fadeUp(0.05)} initial="hidden" animate="show">
             <Card className="border-border/60 shadow-sm">
               <CardContent className="pt-7 pb-7 px-6 sm:px-8">
@@ -77,6 +74,9 @@ export default function ContactPage() {
                   <div className="flex flex-col items-center gap-3 py-10 text-center">
                     <SuccessCheckArt width={160} height={160} />
                     <p className="font-semibold text-base">{c.successMsg}</p>
+                    <p className="text-xs text-muted-foreground max-w-sm leading-relaxed demo-strip rounded-[var(--radius-md)] px-3 py-2">
+                      {c.successMsg}
+                    </p>
                     <Button
                       variant="outline"
                       className="mt-2"
@@ -105,6 +105,7 @@ export default function ContactPage() {
                       <Label htmlFor="message">{c.message}</Label>
                       <Textarea id="message" name="message" required value={form.message} onChange={handleChange} rows={5} className="resize-none" placeholder="How can we help?" />
                     </div>
+                    <p className="text-xs text-muted-foreground">{c.successMsg}</p>
                     <Button type="submit" className="w-full h-11 gap-2" disabled={loading}>
                       {loading
                         ? <><Loader2 className="h-4 w-4 animate-spin" /> {c.sending}</>
@@ -116,7 +117,6 @@ export default function ContactPage() {
             </Card>
           </motion.div>
 
-          {/* ── CONTACT INFO + SOCIAL ─── */}
           <motion.div className="lg:col-span-2 space-y-5" variants={fadeUp(0.15)} initial="hidden" animate="show">
             <div>
               <h2 className="text-xl font-bold mb-1">{c.infoTitle}</h2>
