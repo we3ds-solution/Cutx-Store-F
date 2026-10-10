@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#1B1B20"/><stop offset="1" stop-color="#101013"/>
+</linearGradient>
+<pattern id="diag" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<rect width="28" height="28" fill="none"/><line x1="0" y1="0" x2="0" y2="28" stroke="#ffffff" stroke-opacity="0.05" stroke-width="2"/>
+</pattern>
+</defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<rect width="1200" height="630" fill="url(#diag)"/>
+
+<g transform="translate(600 250)" opacity="0.95" stroke="#E10600" stroke-width="31.2" stroke-linecap="round">
+<line x1="-65" y1="-65" x2="65" y2="65"/><line x1="65" y1="-65" x2="-65" y2="65"/>
+</g>
+<text x="600" y="450" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="96" letter-spacing="17.28" fill="#fff">CUT X</text>
+<text x="600" y="510" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="30" letter-spacing="8" fill="#8E8E96">CUT X EGYPT</text>
+
+</svg>
