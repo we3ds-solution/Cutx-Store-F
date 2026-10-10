@@ -44,21 +44,21 @@ export function AuthModal() {
     await new Promise((r) => setTimeout(r, 800));
     login(loginData.email, "");
     setLoading(false);
-    toast({ title: "Demo session started", description: loginData.email });
+    toast({ title: a.demoSessionStarted, description: loginData.email });
   };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     if (registerData.password !== registerData.confirm) {
-      setError("Passwords do not match.");
+      setError(a.passwordMismatch);
       return;
     }
     setLoading(true);
     await new Promise((r) => setTimeout(r, 800));
     login(registerData.email, registerData.name);
     setLoading(false);
-    toast({ title: "Demo session started", description: registerData.name || registerData.email });
+    toast({ title: a.demoSessionStarted, description: registerData.name || registerData.email });
   };
 
   return createPortal(
@@ -88,11 +88,7 @@ export function AuthModal() {
                 <div className="bg-gradient-to-br from-primary/8 to-primary/12 px-6 py-5 flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div className="shrink-0">
-                      <img
-                        src="/images/brand/logo.jpg"
-                        alt="Cut X"
-                        className="h-9 w-auto rounded-md"
-                      />
+                      <img src="/images/brand/logo.jpg" alt="Cut X" className="h-9 w-auto rounded-md" />
                     </div>
                     <div>
                       <p className="font-bold text-base">{t.brand}</p>
