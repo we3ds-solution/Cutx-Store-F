@@ -88,7 +88,11 @@ export function AuthModal() {
                 <div className="bg-gradient-to-br from-primary/8 to-primary/12 px-6 py-5 flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div className="shrink-0">
-                      <span className="brand-x h-9 w-9 text-sm" aria-hidden>X</span>
+                      <img
+                        src="/images/brand/logo.jpg"
+                        alt="Cut X"
+                        className="h-9 w-auto rounded-md"
+                      />
                     </div>
                     <div>
                       <p className="font-bold text-base">{t.brand}</p>

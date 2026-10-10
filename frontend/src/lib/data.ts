@@ -352,22 +352,22 @@ export function localizeColorName(name: string, lang: "en" | "ar"): string {
 
 export const categoryMeta: Record<string, { image: string; desc: string; descAr: string }> = {
   "Daily Essentials": {
-    image: "/images/categories/daily-essentials.svg",
+    image: "/images/categories/daily-essentials.jpg",
     desc: "Protective wear for every day",
     descAr: "ملابس حماية للاستخدام اليومي",
   },
   "Athletic Protection": {
-    image: "/images/categories/athletic-protection.svg",
+    image: "/images/categories/athletic-protection.jpg",
     desc: "Coverage for training & sport",
     descAr: "تغطية للتمرين والرياضة",
   },
   "Security & Workwear": {
-    image: "/images/categories/security-workwear.svg",
+    image: "/images/categories/security-workwear.jpg",
     desc: "Duty-ready outerwear",
     descAr: "ملابس جاهزة للمهام",
   },
   Accessories: {
-    image: "/images/categories/accessories.svg",
+    image: "/images/categories/accessories.jpg",
     desc: "Gloves, sleeves & extras",
     descAr: "قفازات وأكمام وإضافات",
   },

@@ -39,7 +39,7 @@ export default function AboutPage() {
         badge="Cut X"
         title={a.heroTitle}
         subtitle={a.heroSubtitle}
-        bgImage="/images/banners/hero.svg"
+        bgImage="/images/banners/cta.jpg"
         overlayOpacity={0.65}
         light
         className="min-h-[260px] sm:min-h-[320px]"
@@ -85,7 +85,7 @@ export default function AboutPage() {
           >
             <div className="aspect-[4/3] overflow-hidden rounded-[var(--radius-xl)] bg-muted shadow-lift-lg">
               <img
-                src="/images/categories/security-workwear.svg"
+                src="/images/banners/hero.jpg"
                 alt="Cut X protective apparel"
                 className="w-full h-full object-cover"
                 loading="lazy"
@@ -186,7 +186,7 @@ export default function AboutPage() {
       <section className="relative overflow-hidden bg-primary text-primary-foreground">
         <div className="absolute inset-0 opacity-20">
           <img
-            src="/images/banners/cta.svg"
+            src="/images/banners/cta.jpg"
             alt=""
             aria-hidden
             className="w-full h-full object-cover"

@@ -62,7 +62,7 @@ export default function TermsPage() {
         badge="Legal"
         title="Terms of Service"
         subtitle="Please read these terms carefully before using our services"
-        bgImage="/images/banners/cta.svg"
+        bgImage="/images/banners/cta.jpg"
         overlayOpacity={0.72}
         light
         className="min-h-[220px] sm:min-h-[260px]"

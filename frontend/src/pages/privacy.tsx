@@ -58,7 +58,7 @@ export default function PrivacyPage() {
         badge="Legal"
         title="Privacy Policy"
         subtitle="How we collect, use, and protect your information"
-        bgImage="/images/banners/cta.svg"
+        bgImage="/images/banners/cta.jpg"
         overlayOpacity={0.72}
         light
         className="min-h-[220px] sm:min-h-[260px]"

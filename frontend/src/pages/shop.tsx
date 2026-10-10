@@ -83,7 +83,7 @@ export default function ShopPage() {
         badge="Cut X"
         title={onlyNew ? t.home.newArrivals : t.nav.shop}
         subtitle={onlyNew ? t.home.newArrivalsSubtitle : t.tagline}
-        bgImage="/images/banners/cta.svg"
+        bgImage="/images/banners/cta.jpg"
         overlayOpacity={0.68}
         light
         className="min-h-[220px] sm:min-h-[260px]"

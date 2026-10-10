@@ -16,9 +16,12 @@ export function Footer() {
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-3">
-              <span className="brand-x h-8 w-8 text-xs" aria-hidden>
-                X
-              </span>
+              <img
+                src="/images/brand/logo.jpg"
+                alt="Cut X"
+                className="h-8 w-auto rounded-md"
+                loading="lazy"
+              />
               <span className="font-black text-base tracking-[0.18em] uppercase leading-none">
                 {t.brand}
                 <span className="block text-[9px] font-bold tracking-[0.3em] text-muted-foreground">

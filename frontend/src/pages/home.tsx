@@ -53,9 +53,9 @@ export default function Home() {
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="relative h-[80vh] min-h-[540px] overflow-hidden grain">
         <img
-          src="/images/banners/hero.svg"
+          src="/images/banners/hero.jpg"
           alt="Cut X Egypt — cut-resistant apparel"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className="absolute inset-0 w-full h-full object-cover object-right"
           loading="eager"
         />
         <div className="absolute inset-0 cinematic-overlay" />
@@ -195,7 +195,7 @@ export default function Home() {
       {/* ── FEATURED BANNER ──────────────────────────────────── */}
       <section className="relative overflow-hidden bg-primary text-primary-foreground grain">
         <img
-          src="/images/banners/cta.svg"
+          src="/images/banners/cta.jpg"
           alt=""
           aria-hidden
           className="absolute inset-0 w-full h-full object-cover opacity-60 object-center"

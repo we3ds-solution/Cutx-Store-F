@@ -50,9 +50,12 @@ export function Navbar() {
             className="flex items-center gap-2 shrink-0 hover:opacity-80 transition-opacity"
             aria-label="Cut X Egypt — home"
           >
-            <span className="brand-x h-8 w-8 text-sm" aria-hidden>
-              X
-            </span>
+            <img
+              src="/images/brand/logo.jpg"
+              alt="Cut X"
+              className="h-8 w-auto rounded-md"
+              loading="eager"
+            />
             <span className="font-black text-lg uppercase select-none tracking-[0.18em] leading-none">
               {t.brand}
               <span className="block text-[9px] font-bold tracking-[0.3em] text-muted-foreground">

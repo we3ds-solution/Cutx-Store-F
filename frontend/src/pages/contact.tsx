@@ -57,7 +57,7 @@ export default function ContactPage() {
         badge="Cut X"
         title={c.heroTitle}
         subtitle={c.heroSubtitle}
-        bgImage="/images/banners/cta.svg"
+        bgImage="/images/banners/cta.jpg"
         overlayOpacity={0.7}
         light
         className="min-h-[240px] sm:min-h-[280px]"
