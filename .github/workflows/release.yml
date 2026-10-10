@@ -20,21 +20,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - uses: pnpm/action-setup@v4
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
+
       - name: Install frontend dependencies
         working-directory: ./frontend
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
+
       - name: Typecheck
         working-directory: ./frontend
         run: pnpm run typecheck
+
       - name: Build
         working-directory: ./frontend
         env:
           VITE_API_URL: /api
-          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
         run: pnpm run build
 
   release:
@@ -56,17 +64,18 @@ jobs:
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
 
       - name: Install semantic-release and plugins
         run: |
           npm install -g \
-            semantic-release \
-            @semantic-release/changelog \
-            @semantic-release/git \
-            @semantic-release/github
+            semantic-release@24 \
+            @semantic-release/changelog@6 \
+            @semantic-release/git@10 \
+            @semantic-release/github@11
 
       - name: Run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
-
