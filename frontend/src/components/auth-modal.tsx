@@ -44,7 +44,7 @@ export function AuthModal() {
     await new Promise((r) => setTimeout(r, 800));
     login(loginData.email, "");
     setLoading(false);
-    toast({ title: "Welcome back!", description: loginData.email });
+    toast({ title: "Demo session started", description: loginData.email });
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -58,14 +58,13 @@ export function AuthModal() {
     await new Promise((r) => setTimeout(r, 800));
     login(registerData.email, registerData.name);
     setLoading(false);
-    toast({ title: "Account created!", description: `Welcome, ${registerData.name || registerData.email}!` });
+    toast({ title: "Demo session started", description: registerData.name || registerData.email });
   };
 
   return createPortal(
     <AnimatePresence>
       {isModalOpen && (
         <>
-          {/* Backdrop */}
           <motion.div
             key="backdrop"
             className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
@@ -76,7 +75,6 @@ export function AuthModal() {
             onClick={closeModal}
           />
 
-          {/* Modal container */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
               key="modal"
@@ -87,7 +85,6 @@ export function AuthModal() {
               transition={{ type: "spring", duration: 0.45, bounce: 0.18 }}
             >
               <div className="bg-background rounded-[var(--radius-lg)] shadow-lift-lg overflow-hidden border border-border/60">
-                {/* Header */}
                 <div className="bg-gradient-to-br from-primary/8 to-primary/12 px-6 py-5 flex items-start justify-between">
                   <div className="flex items-center gap-3">
                     <div className="shrink-0">
@@ -109,7 +106,6 @@ export function AuthModal() {
                   </button>
                 </div>
 
-                {/* Tab switcher */}
                 <div className="px-6 pt-4">
                   <p className="text-[11px] text-muted-foreground text-center mb-2">{a.demoNote}</p>
                   <div className="flex bg-muted rounded-[var(--radius-sm)] p-1 gap-1">
@@ -129,7 +125,6 @@ export function AuthModal() {
                   </div>
                 </div>
 
-                {/* Forms */}
                 <AnimatePresence mode="wait" initial={false}>
                   {activeTab === "login" ? (
                     <motion.div

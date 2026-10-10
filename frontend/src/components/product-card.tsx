@@ -26,9 +26,11 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
   const [imgLoaded, setImgLoaded] = useState(false);
   const displayName = getProductName(product, lang);
   const hasRatings = product.reviewCount > 0;
+  const unavailable = product.stock === 0;
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (unavailable) return;
     const size = product.sizes[0];
     const color = product.colors[0].name;
     const existingItem = cart.find(
@@ -80,6 +82,9 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
           {product.isDemo && (
             <Badge variant="outline" className="text-[10px] py-0 px-2 h-5 bg-background/80 backdrop-blur">{t.demo}</Badge>
           )}
+          {unavailable && (
+            <Badge variant="destructive" className="text-[10px] py-0 px-2 h-5">{t.product.outOfStock}</Badge>
+          )}
         </div>
         {/* Wishlist */}
         <button
@@ -91,12 +96,14 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
             className={`h-4 w-4 transition-colors ${isWishlisted ? "fill-[color:var(--color-wishlist)] text-[color:var(--color-wishlist)]" : "text-muted-foreground"}`}
           />
         </button>
-        {/* Quick add on hover */}
-        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-[var(--duration-base)] ease-[var(--ease-out-expo)] p-2">
-          <Button className="w-full h-10 text-xs" onClick={handleQuickAdd}>
-            {t.addToCart}
-          </Button>
-        </div>
+        {/* Quick add on hover — hidden when unavailable */}
+        {!unavailable && (
+          <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-[var(--duration-base)] ease-[var(--ease-out-expo)] p-2">
+            <Button className="w-full h-10 text-xs" onClick={handleQuickAdd}>
+              {t.addToCart}
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Info */}
