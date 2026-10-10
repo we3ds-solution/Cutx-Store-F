@@ -25,7 +25,7 @@ Each product carries: stable id/slug, EN + natural AR name/description, tags, si
 
 ## Images
 
-`frontend/public/images/products/*.svg` — garment-matched **illustrated previews** drawn per product type (tee, hoodie, long-sleeve, pants, zip jacket, duty jacket, overshirt, gloves, arm sleeves, gaiter + tee back view). Each is visibly tagged `ILLUSTRATED PREVIEW · PHOTO COMING SOON` inside the artwork: honest stylized drawings, never fake photos. Category tiles, banners and OG remain branded graphic tiles. No hotlinks; no stock photo misrepresented as a Cut X product. Regenerate with `node scripts/gen-product-art.mjs`.
+`frontend/public/images/products/*.svg` — garment-matched **illustrated previews** drawn per product type (tee, hoodie, long-sleeve, pants, zip jacket, duty jacket, overshirt, gloves, arm sleeves, gaiter + tee back view). Each is visibly tagged `ILLUSTRATED PREVIEW · PHOTO COMING SOON` inside the artwork: honest stylized drawings, never fake photos. **Exception: `everyday-protective-tee-photo.jpg` is a real product photo supplied by the brand side** (black tee with chest print) and is used as that product's primary image; its listing otherwise stays `isDemo` until price/stock are confirmed. Category tiles, banners and OG remain branded graphic tiles. No hotlinks; no stock photo misrepresented as a Cut X product. Regenerate illustrations with `node scripts/gen-product-art.mjs`.
 
 ## Commerce defaults (configurable, NOT official policy)
 

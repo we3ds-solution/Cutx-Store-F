@@ -32,9 +32,9 @@ export const products: Product[] = [
     name: "Cut X Everyday Protective Tee",
     nameAr: "تيشيرت كت إكس اليومي",
     price: 1450,
-    image: "/images/products/everyday-protective-tee.svg",
+    image: "/images/products/everyday-protective-tee-photo.jpg",
     images: [
-      "/images/products/everyday-protective-tee.svg",
+      "/images/products/everyday-protective-tee-photo.jpg",
       "/images/products/everyday-protective-tee-alt.svg",
     ],
     category: "Daily Essentials",
