@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ShoppingBag, Package, Truck, ShieldAlert } from "lucide-react";
+import { motion } from "framer-motion";
+import { ShoppingBag, Package, Truck, ShieldAlert, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,12 +12,12 @@ import { useCart } from "@/contexts/CartContext";
 import { useLang } from "@/contexts/LangContext";
 import { useSEO } from "@/lib/useSEO";
 import { useToast } from "@/hooks/use-toast";
-import { formatPrice, getProductName, getColorName } from "@/lib/utils";
-import { DEMO_FREE_SHIPPING_THRESHOLD, DEMO_SHIPPING_FEE } from "@/lib/data";
+import { formatPrice } from "@/lib/utils";
+import { DEMO_FREE_SHIPPING_THRESHOLD, DEMO_SHIPPING_FEE, getProductName, localizeColorName } from "@/lib/data";
 
 export default function CheckoutPage() {
   const [, navigate] = useLocation();
-  const { items: cart, clearCart, totalPrice } = useCart();
+  const { cart, clearCart } = useCart();
   const { t, lang } = useLang();
   const { toast } = useToast();
   const c = t.checkout;
@@ -34,11 +35,15 @@ export default function CheckoutPage() {
   });
   const [loading, setLoading] = useState(false);
 
-  const shipping = totalPrice >= DEMO_FREE_SHIPPING_THRESHOLD ? 0 : DEMO_SHIPPING_FEE;
-  const total = totalPrice + shipping;
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const shippingFree = subtotal >= DEMO_FREE_SHIPPING_THRESHOLD;
+  const shipping = shippingFree ? 0 : DEMO_SHIPPING_FEE;
+  const total = subtotal + shipping;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +94,7 @@ export default function CheckoutPage() {
           <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-6">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">{c.shippingInfo}</CardTitle>
+                <CardTitle className="text-base font-semibold">{c.shippingInfo}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -128,7 +133,11 @@ export default function CheckoutPage() {
             </Card>
 
             <Button type="submit" className="w-full h-11" disabled={loading}>
-              {loading ? c.processing : c.proceedPayment}
+              {loading ? (
+                <><Loader2 className="h-4 w-4 animate-spin me-2" />{c.processing}</>
+              ) : (
+                `${c.proceedPayment} · ${formatPrice(total)}`
+              )}
             </Button>
           </form>
 
@@ -153,7 +162,7 @@ export default function CheckoutPage() {
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium line-clamp-1">{getProductName(item, lang)}</p>
                         <p className="text-xs text-muted-foreground">
-                          {c.size} {item.selectedSize} · {item.selectedColor}
+                          {c.size} {item.selectedSize} · {localizeColorName(item.selectedColor, lang)}
                         </p>
                         <p className="text-sm font-semibold mt-0.5">{formatPrice(item.price * item.quantity)}</p>
                       </div>
@@ -163,11 +172,13 @@ export default function CheckoutPage() {
                 <div className="border-t border-border/60 pt-3 space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{c.subtotal}</span>
-                    <span>{formatPrice(totalPrice)}</span>
+                    <span>{formatPrice(subtotal)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">{c.shipping}</span>
-                    <span>{shipping === 0 ? c.freeShipping : formatPrice(shipping)}</span>
+                    <span className={shippingFree ? "text-green-600 font-medium" : ""}>
+                      {shippingFree ? c.freeShipping : formatPrice(shipping)}
+                    </span>
                   </div>
                   <div className="flex justify-between font-bold text-base pt-1">
                     <span>{c.total}</span>
@@ -175,7 +186,11 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <div className="grid grid-cols-3 gap-2 pt-2">
-                  {[Package, Truck, ShieldAlert].map((Icon, i) => (
+                  {[
+                    { icon: Package, label: t.cart.shippingNote },
+                    { icon: Truck, label: t.cart.shippingNote },
+                    { icon: ShieldAlert, label: c.demoTitle },
+                  ].map(({ icon: Icon }, i) => (
                     <div key={i} className="flex flex-col items-center gap-1.5 p-3 rounded-[var(--radius-lg)] border border-border/60">
                       <Icon className="h-4 w-4 text-muted-foreground" />
                     </div>
