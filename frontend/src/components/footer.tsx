@@ -14,7 +14,7 @@ export function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             <div className="flex items-center gap-2 mb-3">
               <div className="h-8 w-8 rounded-[var(--radius-sm)] bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground text-xs font-bold">H</span>
+                <span className="text-primary-foreground text-xs font-bold">X</span>
               </div>
               <span className="font-bold text-base tracking-widest uppercase">{t.brand}</span>
             </div>
@@ -27,10 +27,10 @@ export function Footer() {
             <ul className="space-y-2.5 text-sm text-muted-foreground">
               {[
                 { href: "/shop?new=true", label: f.links.newArrivals },
-                { href: "/shop?cat=T-Shirts", label: f.links.tshirts },
-                { href: "/shop?cat=Jeans", label: f.links.jeans },
-                { href: "/shop?cat=Hoodies", label: f.links.hoodies },
-                { href: "/shop?cat=Jackets", label: f.links.jackets },
+                { href: "/shop?cat=Protective+Tees", label: f.links.tshirts },
+                { href: "/shop?cat=Protective+Hoodies", label: f.links.hoodies },
+                { href: "/shop?cat=Protective+Jackets", label: f.links.jackets },
+                { href: "/shop?cat=Protective+Pants", label: f.links.jeans },
               ].map((l) => (
                 <li key={l.href}>
                   <Link href={l.href}>
@@ -63,7 +63,7 @@ export function Footer() {
           {/* Newsletter */}
           <div>
             <h4 className="font-semibold text-sm mb-4">{f.newsletterTitle}</h4>
-            <p className="text-sm text-muted-foreground mb-3">Stay updated on new arrivals and special offers.</p>
+            <p className="text-sm text-muted-foreground mb-3">Stay updated on new protective products and offers.</p>
             <div className="flex p-1 bg-background border border-subtle rounded-[var(--radius-pill)] shadow-sm">
               <input
                 type="email"

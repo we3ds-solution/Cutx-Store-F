@@ -32,7 +32,7 @@ export default function ContactPage() {
 
   useSEO({
     title: "Contact Us",
-    description: "Get in touch with HAVEN. We're here to help with orders, returns, and any questions you have.",
+    description: "Get in touch with Cut X. Orders, partnerships, and product questions for cut-resistant clothing in Egypt.",
   });
 
   const [form, setForm]       = useState({ name: "", email: "", subject: "", message: "" });
@@ -90,7 +90,7 @@ export default function ContactPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div className="space-y-1.5">
                         <Label htmlFor="name">{c.name}</Label>
-                        <Input id="name" name="name" required value={form.name} onChange={handleChange} placeholder="Jane Doe" className="h-10" />
+                        <Input id="name" name="name" required value={form.name} onChange={handleChange} placeholder="Your name" className="h-10" />
                       </div>
                       <div className="space-y-1.5">
                         <Label htmlFor="email">{c.email}</Label>
@@ -146,7 +146,7 @@ export default function ContactPage() {
               })}
             </div>
 
-            {/* ── Embedded Map (OpenStreetMap, no API key) ── */}
+            {/* ── Embedded Map (Cairo) ── */}
             <motion.div
               variants={fadeUp(0.3)}
               initial="hidden"
@@ -154,8 +154,8 @@ export default function ContactPage() {
               className="rounded-[var(--radius-xl)] overflow-hidden border border-border/60 shadow-sm"
             >
               <iframe
-                title="HAVEN Store Location — SoHo, New York"
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-74.0058%2C40.7210%2C-73.9960%2C40.7265&layer=mapnik&marker=40.7237%2C-74.0009"
+                title="Cut X — Cairo, Egypt"
+                src="https://www.openstreetmap.org/export/embed.html?bbox=31.20%2C30.02%2C31.30%2C30.08&layer=mapnik&marker=30.0444%2C31.2357"
                 width="100%"
                 height="220"
                 style={{ border: 0, display: "block" }}
@@ -165,7 +165,7 @@ export default function ContactPage() {
               <div className="px-3 py-2 bg-muted/30 border-t border-border/40">
                 <p className="text-xs text-muted-foreground flex items-center gap-1.5">
                   <MapPin className="h-3 w-3 shrink-0" />
-                  123 Fashion Street, SoHo, New York, NY 10012
+                  Cairo, Egypt · Follow @cutx_eg
                 </p>
               </div>
             </motion.div>
