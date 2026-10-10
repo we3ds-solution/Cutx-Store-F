@@ -164,7 +164,7 @@ export default function ProductDetail() {
     setWishlisted((w) => !w);
     toast({
       title: wishlisted ? "Removed from wishlist" : "Saved to wishlist",
-      description: displayName,
+      description: wishlisted ? displayName : `${displayName} — ${t.wishlistNote}`,
     });
   };
 
@@ -355,16 +355,22 @@ export default function ProductDetail() {
               </div>
               {product.isDemo ? (
                 <span className="text-xs text-muted-foreground">{t.demo}</span>
+              ) : product.stock === 0 ? (
+                <span className="text-xs font-medium text-destructive">{p.outOfStock}</span>
               ) : (
                 <span className="text-xs text-muted-foreground">{product.stock} {p.inStock}</span>
               )}
             </div>
 
-            {/* Actions */}
+            {/* Actions — never purchasable when availability is unconfirmed */}
             <div className="flex gap-3 pt-1">
-              <Button className="flex-1 h-12 text-base font-semibold gap-2" onClick={handleAddToCart}>
+              <Button
+                className="flex-1 h-12 text-base font-semibold gap-2"
+                onClick={handleAddToCart}
+                disabled={!product.isDemo && product.stock === 0}
+              >
                 <ShoppingBag className="h-5 w-5" />
-                {t.addToCart}
+                {!product.isDemo && product.stock === 0 ? p.outOfStock : t.addToCart}
               </Button>
               <Button variant="outline" size="icon" className="h-12 w-12 shrink-0 rounded-[var(--radius-sm)]" onClick={handleWishlist} aria-label={t.wishlist}>
                 <Heart className={`h-5 w-5 transition-colors ${wishlisted ? "fill-[color:var(--color-wishlist)] text-[color:var(--color-wishlist)]" : ""}`} />

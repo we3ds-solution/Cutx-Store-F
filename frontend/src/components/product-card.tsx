@@ -47,7 +47,7 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
     onToggleWishlist(product.id);
     toast({
       title: isWishlisted ? "Removed from wishlist" : "Added to wishlist",
-      description: displayName,
+      description: isWishlisted ? displayName : `${displayName} — ${t.wishlistNote}`,
     });
   };
 

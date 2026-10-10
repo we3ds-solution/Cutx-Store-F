@@ -1,9 +1,11 @@
 import { Link } from "wouter";
 import { Instagram, Facebook, Globe } from "lucide-react";
 import { useLang } from "@/contexts/LangContext";
+import { useToast } from "@/hooks/use-toast";
 
 export function Footer() {
   const { t } = useLang();
+  const { toast } = useToast();
   const f = t.footer;
   const year = new Date().getFullYear();
 
@@ -104,7 +106,10 @@ export function Footer() {
                 aria-label={f.newsletterTitle}
                 className="flex-1 min-w-0 bg-transparent px-4 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none"
               />
-              <button className="h-9 px-5 rounded-[var(--radius-pill)] bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shrink-0 whitespace-nowrap">
+              <button
+                onClick={() => toast({ title: f.newsletterTitle, description: f.newsletterNote })}
+                className="h-9 px-5 rounded-[var(--radius-pill)] bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity shrink-0 whitespace-nowrap"
+              >
                 {f.newsletterBtn}
               </button>
             </div>

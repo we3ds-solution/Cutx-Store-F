@@ -154,9 +154,6 @@ export function Navbar() {
                     <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem>{t.auth.profile}</DropdownMenuItem>
-                  <DropdownMenuItem>{t.auth.orders}</DropdownMenuItem>
-                  <DropdownMenuSeparator />
                   <DropdownMenuItem className="text-destructive focus:text-destructive" onClick={handleLogout}>
                     {t.auth.logout}
                   </DropdownMenuItem>

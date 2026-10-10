@@ -24,10 +24,7 @@ const CartContext = createContext<CartContextType>({
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      // Migrate legacy HAVEN cart key once, then use the Cut X key.
-      const legacy = localStorage.getItem("haven-cart");
-      const saved = localStorage.getItem("cutx-cart") ?? legacy;
-      if (legacy) localStorage.removeItem("haven-cart");
+      const saved = localStorage.getItem("cutx-cart");
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];

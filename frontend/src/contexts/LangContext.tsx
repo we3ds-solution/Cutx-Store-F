@@ -27,6 +27,7 @@ export const translations = {
     demo: "Demo",
     addToCart: "Add to Cart",
     wishlist: "Wishlist",
+    wishlistNote: "Wishlist is kept for this session only.",
     viewAll: "View All",
     shopNow: "Shop Now",
     explore: "Our Story",
@@ -124,7 +125,7 @@ export const translations = {
       profile: "Profile",
       orders: "My Orders",
       logout: "Sign Out",
-      demoNote: "Demo sign-in — kept on this device only.",
+      demoNote: "Demo sign-in (not connected) — kept on this device only.",
     },
     product: {
       relatedProducts: "You May Also Like",
@@ -186,7 +187,7 @@ export const translations = {
       message: "Message",
       send: "Send Message",
       sending: "Sending...",
-      successMsg: "Message noted! This demo form does not send anywhere yet.",
+      successMsg: "Demo only — message is not sent. This form does not transmit anywhere yet.",
       infoTitle: "Official Channels",
       infoNote: "Verified public pages — official phone, address and email are not published yet.",
       info: [
@@ -244,6 +245,7 @@ export const translations = {
     demo: "تجريبي",
     addToCart: "أضف للحقيبة",
     wishlist: "المفضلة",
+    wishlistNote: "المفضلة تُحفظ لهذه الجلسة فقط.",
     viewAll: "عرض الكل",
     shopNow: "تسوق الآن",
     explore: "قصتنا",
@@ -341,7 +343,7 @@ export const translations = {
       profile: "الملف الشخصي",
       orders: "طلباتي",
       logout: "خروج",
-      demoNote: "تسجيل تجريبي — يُحفظ على جهازك فقط.",
+      demoNote: "تسجيل دخول تجريبي (غير مرتبط بأي نظام) — يُحفظ على جهازك فقط.",
     },
     product: {
       relatedProducts: "قد يعجبك أيضاً",
@@ -403,7 +405,7 @@ export const translations = {
       message: "الرسالة",
       send: "إرسال",
       sending: "جارٍ الإرسال...",
-      successMsg: "تم تسجيل رسالتك! هذا النموذج تجريبي ولا يُرسل لأي مكان بعد.",
+      successMsg: "تجريبي فقط — الرسالة لا تُرسَل. هذا النموذج لا ينقل البيانات لأي مكان بعد.",
       infoTitle: "القنوات الرسمية",
       infoNote: "صفحات عامة موثقة — الهاتف والعنوان والبريد الرسمي غير منشورين بعد.",
       info: [

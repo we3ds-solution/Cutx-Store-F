@@ -4,7 +4,6 @@ import { Cookie, X, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const STORAGE_KEY = "cutx-cookies";
-const LEGACY_KEY = "haven-cookies";
 
 type CookieChoice = "all" | "essential" | null;
 
@@ -12,16 +11,7 @@ export function CookieBanner() {
   const [choice, setChoice] = useState<CookieChoice | undefined>(undefined);
 
   useEffect(() => {
-    let saved = localStorage.getItem(STORAGE_KEY) as CookieChoice | null;
-    if (!saved) {
-      const legacy = localStorage.getItem(LEGACY_KEY) as CookieChoice | null;
-      if (legacy) {
-        localStorage.setItem(STORAGE_KEY, legacy);
-        localStorage.removeItem(LEGACY_KEY);
-        saved = legacy;
-      }
-    }
-    setChoice(saved);
+    setChoice(localStorage.getItem(STORAGE_KEY) as CookieChoice | null);
   }, []);
 
   const accept = (value: "all" | "essential") => {
