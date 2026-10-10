@@ -6,13 +6,13 @@ interface SEOProps {
   image?: string;
 }
 
-const BASE_TITLE = "HAVEN — Premium Fashion Store";
+const BASE_TITLE = "Cut X Egypt — Cut-Resistant Apparel";
 const BASE_DESC =
-  "HAVEN is your destination for premium clothing. Discover T-Shirts, Jeans, Hoodies, and Jackets. Free shipping on orders over $50.";
+  "Cut X Egypt: cut and penetration resistant clothing for daily use, athletes and security teams. Browse the demo catalog in EGP, in English and Arabic.";
 
 export function useSEO({ title, description, image }: SEOProps = {}) {
   useEffect(() => {
-    const fullTitle = title ? `${title} — HAVEN` : BASE_TITLE;
+    const fullTitle = title ? `${title} — Cut X Egypt` : BASE_TITLE;
     document.title = fullTitle;
 
     const setMeta = (selector: string, content: string) => {

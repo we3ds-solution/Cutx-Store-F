@@ -24,7 +24,10 @@ const CartContext = createContext<CartContextType>({
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      const saved = localStorage.getItem("haven-cart");
+      // Migrate legacy HAVEN cart key once, then use the Cut X key.
+      const legacy = localStorage.getItem("haven-cart");
+      const saved = localStorage.getItem("cutx-cart") ?? legacy;
+      if (legacy) localStorage.removeItem("haven-cart");
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -32,7 +35,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    localStorage.setItem("haven-cart", JSON.stringify(cart));
+    try {
+      localStorage.setItem("cutx-cart", JSON.stringify(cart));
+    } catch {
+      /* storage unavailable — cart still works for this session */
+    }
   }, [cart]);
 
   const addToCart = (item: CartItem): "added" | "merged" => {
@@ -86,7 +93,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = () => {
     setCart([]);
-    localStorage.removeItem("haven-cart");
+    try {
+      localStorage.removeItem("cutx-cart");
+    } catch {
+      /* no-op */
+    }
   };
 
   const isInCart = (id: number, size: string, color: string) =>
