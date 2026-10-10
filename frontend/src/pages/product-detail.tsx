@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Layout } from "@/components/layout";
 import { ProductCard } from "@/components/product-card";
-import { products } from "@/lib/data";
+import { products, getProductName, getProductDescription, getColorName, localizeColorName } from "@/lib/data";
 import { getProductReviews, getRatingBreakdown, type Review } from "@/lib/reviews";
 import { useCart } from "@/contexts/CartContext";
 import { useLang } from "@/contexts/LangContext";
@@ -48,7 +48,6 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
       className="py-5 border-b border-border/50 last:border-0"
     >
       <div className="flex items-start gap-3">
-        {/* Avatar */}
         <div className="h-9 w-9 rounded-[var(--radius-pill)] bg-primary/10 flex items-center justify-center shrink-0 text-primary font-bold text-xs">
           {review.initials}
         </div>
@@ -62,7 +61,6 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
             )}
             <span className="text-xs text-muted-foreground ms-auto">{review.date}</span>
           </div>
-          {/* Stars */}
           <div className="flex items-center gap-0.5 mb-2">
             {[1, 2, 3, 4, 5].map((s) => (
               <Star
@@ -73,7 +71,6 @@ function ReviewCard({ review, index }: { review: Review; index: number }) {
           </div>
           <p className="font-semibold text-sm mb-1">{review.title}</p>
           <p className="text-sm text-muted-foreground leading-relaxed">{review.body}</p>
-          {/* Helpful */}
           <button className="flex items-center gap-1.5 mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <ThumbsUp className="h-3 w-3" />
             Helpful ({review.helpful})
@@ -90,39 +87,42 @@ export default function ProductDetail() {
   const { slug } = useParams<{ slug: string }>();
   const [, navigate] = useLocation();
   const { addToCart, cart } = useCart();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { toast } = useToast();
   const p = t.product;
 
   const product = products.find((pr) => pr.slug === slug);
+  const displayName = product ? getProductName(product, lang) : "";
+  const displayDesc = product ? getProductDescription(product, lang) : "";
+  const displayDetails = product ? (lang === "ar" ? product.detailsAr : product.details) : [];
 
   useSEO({
-    title: product?.name,
-    description: product?.description,
+    title: displayName || undefined,
+    description: displayDesc || undefined,
     image: product?.image,
   });
 
-  const [activeImg, setActiveImg]           = useState(0);
-  const [selectedSize, setSelectedSize]     = useState(product?.sizes[0] ?? "");
-  const [selectedColor, setSelectedColor]   = useState(product?.colors[0]?.name ?? "");
-  const [quantity, setQuantity]             = useState(1);
-  const [wishlisted, setWishlisted]         = useState(false);
-  const [showSizeGuide, setShowSizeGuide]   = useState(false);
-  const [imgLoaded, setImgLoaded]           = useState(false);
-  const [wishlist, setWishlist]             = useState<number[]>([]);
-  const [sortMode, setSortMode]             = useState<SortMode>("recent");
+  const [activeImg, setActiveImg] = useState(0);
+  const [selectedSize, setSelectedSize] = useState(product?.sizes[0] ?? "");
+  const [selectedColor, setSelectedColor] = useState(product?.colors[0]?.name ?? "");
+  const [quantity, setQuantity] = useState(1);
+  const [wishlisted, setWishlisted] = useState(false);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+  const [wishlist, setWishlist] = useState<number[]>([]);
+  const [sortMode, setSortMode] = useState<SortMode>("recent");
   const [showAllReviews, setShowAllReviews] = useState(false);
 
   const toggleWishlistRelated = (id: number) =>
     setWishlist((c) => (c.includes(id) ? c.filter((x) => x !== id) : [...c, id]));
 
   const allReviews = useMemo(() => getProductReviews(slug ?? ""), [slug]);
-  const breakdown  = useMemo(() => getRatingBreakdown(allReviews), [allReviews]);
+  const breakdown = useMemo(() => getRatingBreakdown(allReviews), [allReviews]);
 
   const sortedReviews = useMemo(() => {
     const copy = [...allReviews];
     if (sortMode === "highest") return copy.sort((a, b) => b.rating - a.rating);
-    if (sortMode === "lowest")  return copy.sort((a, b) => a.rating - b.rating);
+    if (sortMode === "lowest") return copy.sort((a, b) => a.rating - b.rating);
     return copy;
   }, [allReviews, sortMode]);
 
@@ -141,18 +141,20 @@ export default function ProductDetail() {
     );
   }
 
-  const related = products
-    .filter((pr) => pr.category === product.category && pr.id !== product.id)
-    .slice(0, 4);
+  const related = [
+    ...products.filter((pr) => pr.category === product.category && pr.id !== product.id),
+    ...products.filter((pr) => pr.category !== product.category && pr.id !== product.id),
+  ].slice(0, 4);
 
   const handleAddToCart = () => {
+    if (product.stock === 0) return;
     const existingItem = cart.find(
       (i) => i.id === product.id && i.selectedSize === selectedSize && i.selectedColor === selectedColor
     );
     addToCart({ ...product, quantity, selectedSize, selectedColor });
     toast({
-      title: existingItem ? "Quantity updated" : "Added to bag!",
-      description: `${product.name} — ${selectedSize}, ${selectedColor}${existingItem ? ` (×${existingItem.quantity + quantity})` : ""}`,
+      title: existingItem ? "Quantity updated" : p.addedToCart,
+      description: `${displayName} — ${selectedSize}, ${localizeColorName(selectedColor, lang)}${existingItem ? ` (×${existingItem.quantity + quantity})` : ""}`,
     });
   };
 
@@ -160,7 +162,7 @@ export default function ProductDetail() {
     setWishlisted((w) => !w);
     toast({
       title: wishlisted ? "Removed from wishlist" : "Saved to wishlist",
-      description: product.name,
+      description: wishlisted ? displayName : `${displayName} — ${t.wishlistNote}`,
     });
   };
 
@@ -168,26 +170,22 @@ export default function ProductDetail() {
 
   return (
     <Layout>
-      {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-2">
         <nav className="flex items-center gap-1.5 text-xs text-muted-foreground flex-wrap">
           <button onClick={() => navigate("/")} className="hover:text-foreground transition-colors">{t.nav.home}</button>
           <ChevronRight className="h-3 w-3 rtl:rotate-180" />
           <button onClick={() => navigate("/shop")} className="hover:text-foreground transition-colors">{t.nav.shop}</button>
           <ChevronRight className="h-3 w-3 rtl:rotate-180" />
-          <button onClick={() => navigate(`/shop?cat=${product.category}`)} className="hover:text-foreground transition-colors">
+          <button onClick={() => navigate(`/shop?cat=${encodeURIComponent(product.category)}`)} className="hover:text-foreground transition-colors">
             {t.categories[product.category as keyof typeof t.categories] ?? product.category}
           </button>
           <ChevronRight className="h-3 w-3 rtl:rotate-180" />
-          <span className="text-foreground font-medium truncate max-w-[180px]">{product.name}</span>
+          <span className="text-foreground font-medium truncate max-w-[180px]">{displayName}</span>
         </nav>
       </div>
 
-      {/* Main product grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
-
-          {/* ── IMAGE GALLERY ── */}
           <div className="flex flex-col gap-3">
             <div className="relative aspect-square overflow-hidden rounded-[var(--radius-lg)] bg-muted">
               <div className="absolute inset-0 vignette pointer-events-none z-10" />
@@ -196,7 +194,7 @@ export default function ProductDetail() {
                 <motion.img
                   key={activeImg}
                   src={product.images[activeImg] ?? product.image}
-                  alt={product.name}
+                  alt={displayName}
                   onLoad={() => setImgLoaded(true)}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: imgLoaded ? 1 : 0 }}
@@ -207,6 +205,9 @@ export default function ProductDetail() {
               </AnimatePresence>
               {product.isNew && <Badge className="absolute top-3 start-3">{t.newArrival}</Badge>}
               {product.originalPrice && <Badge variant="destructive" className="absolute top-3 end-3">{t.sale}</Badge>}
+              {product.isDemo && (
+                <Badge variant="outline" className="absolute bottom-3 start-3 bg-background/80 backdrop-blur">{t.demo}</Badge>
+              )}
               {product.images.length > 1 && (
                 <>
                   <button
@@ -234,14 +235,13 @@ export default function ProductDetail() {
                       i === activeImg ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
                     }`}
                   >
-                    <img src={img} alt={`${product.name} ${i + 1}`} className="w-full h-full object-cover" />
+                    <img src={img} alt={`${displayName} ${i + 1}`} className="w-full h-full object-cover" />
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* ── PRODUCT INFO ── */}
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap gap-1.5">
               {product.tags.map((tag) => (
@@ -252,10 +252,12 @@ export default function ProductDetail() {
             </div>
 
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold leading-tight">{product.name}</h1>
-              <div className="mt-2">
-                <StarRating rating={product.rating} count={product.reviewCount} />
-              </div>
+              <h1 className="text-2xl sm:text-3xl font-bold leading-tight">{displayName}</h1>
+              {product.reviewCount > 0 ? (
+                <div className="mt-2">
+                  <StarRating rating={product.rating} count={product.reviewCount} />
+                </div>
+              ) : null}
             </div>
 
             <div className="flex items-baseline gap-3">
@@ -270,10 +272,21 @@ export default function ProductDetail() {
               )}
             </div>
 
-            <p className="text-muted-foreground leading-relaxed text-sm">{product.description}</p>
+            <p className="text-muted-foreground leading-relaxed text-sm">{displayDesc}</p>
+            {product.isDemo && (
+              <p className="text-xs font-medium rounded-[var(--radius-md)] px-3 py-2 demo-strip w-fit">
+                {p.demoNote}
+              </p>
+            )}
+            {displayDetails.length > 0 && (
+              <ul className="text-sm text-muted-foreground space-y-1 list-disc ps-5">
+                {displayDetails.map((d) => (
+                  <li key={d}>{d}</li>
+                ))}
+              </ul>
+            )}
             <Separator />
 
-            {/* Size */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <Label className="font-semibold">{p.selectSize}</Label>
@@ -300,11 +313,10 @@ export default function ProductDetail() {
               </RadioGroup>
             </div>
 
-            {/* Color */}
             <div className="space-y-3">
               <Label className="font-semibold">
                 {p.selectColor}
-                {selectedColor && <span className="font-normal text-muted-foreground ms-1.5">— {selectedColor}</span>}
+                {selectedColor && <span className="font-normal text-muted-foreground ms-1.5">— {localizeColorName(selectedColor, lang)}</span>}
               </Label>
               <RadioGroup value={selectedColor} onValueChange={setSelectedColor} className="flex flex-wrap gap-2">
                 {product.colors.map((color) => (
@@ -317,36 +329,44 @@ export default function ProductDetail() {
                       }`}
                     >
                       <span className="h-4 w-4 rounded-[var(--radius-pill)] border border-border/60 shrink-0" style={{ backgroundColor: color.hex }} />
-                      {color.name}
+                      {getColorName(color, lang)}
                     </Label>
                   </div>
                 ))}
               </RadioGroup>
             </div>
 
-            {/* Quantity */}
             <div className="flex items-center gap-3">
               <Label className="font-semibold">{p.quantity}</Label>
               <div className="flex items-center gap-0 border border-border rounded-[var(--radius-sm)] overflow-hidden">
-                <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1}>−</button>
+                <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.max(1, q - 1))} disabled={quantity <= 1 || product.stock === 0}>−</button>
                 <span className="w-10 text-center text-sm font-semibold tabular-nums">{quantity}</span>
-                <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))} disabled={quantity >= product.stock}>+</button>
+                <button className="h-10 w-10 flex items-center justify-center hover:bg-muted transition-colors disabled:opacity-40" onClick={() => setQuantity((q) => Math.min(product.stock > 0 ? product.stock : 1, q + 1))} disabled={product.stock === 0 || quantity >= product.stock}>+</button>
               </div>
-              <span className="text-xs text-muted-foreground">{product.stock} {p.inStock}</span>
+              {product.stock === 0 ? (
+                <span className="text-xs font-medium text-destructive">
+                  {p.outOfStock}
+                  {product.isDemo ? ` · ${t.demo}` : ""}
+                </span>
+              ) : (
+                <span className="text-xs text-muted-foreground">{product.stock} {p.inStock}</span>
+              )}
             </div>
 
-            {/* Actions */}
             <div className="flex gap-3 pt-1">
-              <Button className="flex-1 h-12 text-base font-semibold gap-2" onClick={handleAddToCart}>
+              <Button
+                className="flex-1 h-12 text-base font-semibold gap-2"
+                onClick={handleAddToCart}
+                disabled={product.stock === 0}
+              >
                 <ShoppingBag className="h-5 w-5" />
-                {t.addToCart}
+                {product.stock === 0 ? p.outOfStock : t.addToCart}
               </Button>
               <Button variant="outline" size="icon" className="h-12 w-12 shrink-0 rounded-[var(--radius-sm)]" onClick={handleWishlist} aria-label={t.wishlist}>
                 <Heart className={`h-5 w-5 transition-colors ${wishlisted ? "fill-[color:var(--color-wishlist)] text-[color:var(--color-wishlist)]" : ""}`} />
               </Button>
             </div>
 
-            {/* Details */}
             <div className="text-sm text-muted-foreground space-y-1.5 pt-2 border-t border-border">
               <p className="flex items-center gap-1.5"><Info className="h-3.5 w-3.5 shrink-0" /> {t.cart.shippingNote}</p>
               <p>SKU: {product.slug}</p>
@@ -363,8 +383,7 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        {/* ── REVIEWS SECTION ── */}
-        {allReviews.length > 0 && (
+        {allReviews.length > 0 ? (
           <motion.section
             className="mt-16 sm:mt-20"
             initial={{ opacity: 0, y: 20 }}
@@ -373,139 +392,74 @@ export default function ProductDetail() {
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <Separator className="mb-10" />
-
-            {/* Section header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold">Customer Reviews</h2>
-                <p className="text-sm text-muted-foreground mt-1">{allReviews.length} reviews for {product.name}</p>
+                <h2 className="text-2xl font-bold">{p.reviews}</h2>
+                <div className="mt-2"><StarRating rating={product.rating} count={product.reviewCount} /></div>
               </div>
               <Select value={sortMode} onValueChange={(v) => setSortMode(v as SortMode)}>
-                <SelectTrigger className="w-44 h-9">
-                  <SelectValue />
-                </SelectTrigger>
+                <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="recent">Most Recent</SelectItem>
-                  <SelectItem value="highest">Highest Rated</SelectItem>
-                  <SelectItem value="lowest">Lowest Rated</SelectItem>
+                  <SelectItem value="recent">Most recent</SelectItem>
+                  <SelectItem value="highest">Highest rated</SelectItem>
+                  <SelectItem value="lowest">Lowest rated</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-14">
-              {/* ── Rating summary ── */}
-              <div className="lg:col-span-1">
-                <div className="sticky top-24 space-y-4">
-                  {/* Big score */}
-                  <div className="text-center py-6 rounded-[var(--radius-lg)] bg-muted/30 border border-border/50">
-                    <span className="text-6xl font-black leading-none">{product.rating}</span>
-                    <div className="flex items-center justify-center gap-1 mt-2 mb-1">
-                      {[1, 2, 3, 4, 5].map((s) => (
-                        <Star key={s} className={`h-4 w-4 ${s <= Math.round(product.rating) ? "fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" : "text-muted-foreground/25"}`} />
-                      ))}
-                    </div>
-                    <p className="text-sm text-muted-foreground">{product.reviewCount.toLocaleString()} reviews</p>
-                  </div>
-
-                  {/* Breakdown bars */}
-                  <div className="space-y-2">
-                    {[5, 4, 3, 2, 1].map((star) => {
-                      const pct = breakdown[star] ?? 0;
-                      return (
-                        <div key={star} className="flex items-center gap-2 text-xs">
-                          <span className="w-3 text-right text-muted-foreground shrink-0">{star}</span>
-                          <Star className="h-3 w-3 fill-[color:var(--color-rating)] text-[color:var(--color-rating)] shrink-0" />
-                          <div className="flex-1 bg-muted rounded-[var(--radius-pill)] h-1.5 overflow-hidden">
-                            <motion.div
-                              className="h-full bg-[color:var(--color-rating)] rounded-[var(--radius-pill)]"
-                              initial={{ width: 0 }}
-                              whileInView={{ width: `${pct}%` }}
-                              viewport={{ once: true }}
-                              transition={{ duration: 0.7, delay: (5 - star) * 0.07, ease: "easeOut" }}
-                            />
-                          </div>
-                          <span className="w-7 text-right text-muted-foreground shrink-0">{pct}%</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-
-              {/* ── Review cards ── */}
-              <div className="lg:col-span-2">
-                <AnimatePresence>
-                  {visibleReviews.map((review, i) => (
-                    <ReviewCard key={review.id} review={review} index={i} />
-                  ))}
-                </AnimatePresence>
-
-                {sortedReviews.length > 3 && (
-                  <motion.div className="mt-6 text-center" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-                    <Button variant="outline" onClick={() => setShowAllReviews((v) => !v)} className="gap-2">
-                      {showAllReviews
-                        ? "Show fewer reviews"
-                        : `Show all ${sortedReviews.length} reviews`}
-                    </Button>
-                  </motion.div>
-                )}
-              </div>
-            </div>
-          </motion.section>
-        )}
-
-        {/* ── RELATED PRODUCTS ── */}
-        {related.length > 0 && (
-          <div className="mt-16 sm:mt-20">
-            <Separator className="mb-10" />
-            <div className="flex items-end justify-between mb-7">
-              <h2 className="text-xl sm:text-2xl font-bold">{p.relatedProducts}</h2>
-              <Button variant="ghost" size="sm" className="gap-1 text-muted-foreground" onClick={() => navigate(`/shop?cat=${product.category}`)}>
-                {t.viewAll} <ChevronRight className="h-4 w-4 rtl:rotate-180" />
-              </Button>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-5">
-              {related.map((rp, i) => (
-                <motion.div
-                  key={rp.id}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.35, delay: i * 0.07 }}
-                >
-                  <ProductCard product={rp} isWishlisted={wishlist.includes(rp.id)} onToggleWishlist={toggleWishlistRelated} />
-                </motion.div>
+            <div>
+              {visibleReviews.map((review, i) => (
+                <ReviewCard key={review.id ?? i} review={review} index={i} />
               ))}
             </div>
-          </div>
+            {sortedReviews.length > 3 && !showAllReviews && (
+              <Button variant="outline" className="mt-6" onClick={() => setShowAllReviews(true)}>
+                Show all {sortedReviews.length} reviews
+              </Button>
+            )}
+          </motion.section>
+        ) : null}
+
+        {related.length > 0 && (
+          <section className="mt-16 sm:mt-20">
+            <Separator className="mb-10" />
+            <h2 className="text-2xl font-bold mb-6">{p.relatedProducts}</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+              {related.map((pr) => (
+                <ProductCard
+                  key={pr.id}
+                  product={pr}
+                  isWishlisted={wishlist.includes(pr.id)}
+                  onToggleWishlist={toggleWishlistRelated}
+                />
+              ))}
+            </div>
+          </section>
         )}
       </div>
 
-      {/* ── SIZE GUIDE MODAL ── */}
       <Dialog open={showSizeGuide} onOpenChange={setShowSizeGuide}>
-        <DialogContent className="sm:max-w-lg w-[95vw] rounded-[var(--radius-lg)]">
+        <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Ruler className="h-4 w-4" /> {p.sizeGuideTitle}
-            </DialogTitle>
+            <DialogTitle>{p.sizeGuideTitle}</DialogTitle>
           </DialogHeader>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-border">
-                  {[p.sizeTable.size, p.sizeTable.chest, p.sizeTable.waist, p.sizeTable.hips].map((h) => (
-                    <th key={h} className="py-2 px-3 text-start font-semibold text-muted-foreground whitespace-nowrap">{h}</th>
-                  ))}
+                <tr className="border-b">
+                  <th className="py-2 text-start font-semibold">{p.sizeTable.size}</th>
+                  <th className="py-2 text-start font-semibold">{p.sizeTable.chest}</th>
+                  <th className="py-2 text-start font-semibold">{p.sizeTable.waist}</th>
+                  <th className="py-2 text-start font-semibold">{p.sizeTable.hips}</th>
                 </tr>
               </thead>
               <tbody>
-                {sizeRows.map((s, i) => {
-                  const row = p.sizeTable[s as keyof typeof p.sizeTable] as string[];
-                  if (!row) return null;
+                {sizeRows.map((sz) => {
+                  const row = p.sizeTable[sz as keyof typeof p.sizeTable];
+                  if (!Array.isArray(row)) return null;
                   return (
-                    <tr key={s} className={`border-b border-border/50 ${i % 2 === 0 ? "bg-muted/30" : ""}`}>
-                      {row.map((cell, j) => (
-                        <td key={j} className={`py-2.5 px-3 whitespace-nowrap ${j === 0 ? "font-bold" : ""}`}>{cell}</td>
+                    <tr key={sz} className="border-b border-border/50">
+                      {row.map((cell, i) => (
+                        <td key={i} className="py-2">{cell}</td>
                       ))}
                     </tr>
                   );
@@ -513,7 +467,6 @@ export default function ProductDetail() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-muted-foreground mt-2">Measurements in inches. When between sizes, size up.</p>
         </DialogContent>
       </Dialog>
     </Layout>

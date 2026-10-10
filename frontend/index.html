@@ -5,51 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
 
     <!-- Primary SEO -->
-    <title>Cut X — Cut & Penetration Resistant Clothing | Egypt</title>
-    <meta name="description" content="Cut X is an Egyptian brand specializing in cut and penetration resistant clothing for daily use, athletes, security companies, and industrial safety. Protect yourself with tested high-performance garments." />
-    <meta name="keywords" content="Cut X, cut resistant clothing, penetration resistant, protective wear, Egypt, security clothing, industrial safety, cut proof, slash resistant" />
+    <title>Cut X Egypt — Cut-Resistant Apparel</title>
+    <meta name="description" content="Cut X Egypt: cut and penetration resistant clothing for daily use, athletes and security teams. Browse the catalog in EGP, in English and Arabic." />
+    <meta name="keywords" content="cut x, cut x egypt, cut-resistant clothing, protective apparel egypt, workwear egypt, athletic protection" />
     <meta name="robots" content="index, follow" />
-    <meta name="author" content="Cut X" />
+    <meta name="author" content="Cut X Egypt" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Cut X" />
-    <meta property="og:title" content="Cut X — Cut & Penetration Resistant Clothing" />
-    <meta property="og:description" content="Egyptian brand for cut and penetration resistant clothing. Designed for daily use, athletes, security & industrial safety." />
-    <meta property="og:image" content="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=80" />
+    <meta property="og:site_name" content="Cut X Egypt" />
+    <meta property="og:title" content="Cut X Egypt — Cut-Resistant Apparel" />
+    <meta property="og:description" content="Cut and penetration resistant clothing for daily use, athletes and security teams across Egypt." />
+    <meta property="og:image" content="/images/brand/social-share.jpg" />
     <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:image:height" content="634" />
+    <meta property="og:locale" content="en" />
     <meta property="og:locale:alternate" content="ar_EG" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Cut X — Cut & Penetration Resistant Clothing" />
-    <meta name="twitter:description" content="Egyptian brand for cut and penetration resistant clothing. Protect yourself with tested high-performance garments." />
-    <meta name="twitter:image" content="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=1200&q=80" />
+    <meta name="twitter:title" content="Cut X Egypt — Cut-Resistant Apparel" />
+    <meta name="twitter:description" content="Cut-resistant apparel for daily life, sport and duty. Demo storefront in EGP." />
+    <meta name="twitter:image" content="/images/brand/social-share.jpg" />
 
-    <!-- Structured Data -->
+    <!-- Structured Data — only verified facts: name + public social pages -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ClothingStore",
-      "name": "Cut X",
-      "description": "Egyptian brand specializing in cut and penetration resistant clothing for security, industrial safety, athletes and everyday protection.",
+      "name": "Cut X Egypt",
+      "description": "Cut and penetration resistant clothing for daily use, athletes and security teams.",
       "logo": "/favicon.svg",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Cairo",
-        "addressCountry": "EG"
-      },
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "contactType": "customer service",
-        "email": "info@cutx.eg",
-        "availableLanguage": ["English", "Arabic"]
-      },
       "sameAs": [
-        "https://www.facebook.com/p/Cut-X-100088062586202/",
-        "https://www.instagram.com/cutx_eg/"
+        "https://www.instagram.com/cutx_eg/",
+        "https://www.facebook.com/p/Cut-X-100088062586202/"
       ]
     }
     </script>
@@ -59,16 +48,32 @@
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
 
-    <!-- Fonts -->
+    <!-- Fonts: Cairo (universal font family across all languages).
+         Non-blocking load: preconnect + print-media swap so first paint
+         never waits on Google Fonts. System fonts render instantly until
+         Cairo arrives (font-display: swap is set by Google). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap"
+      rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <!-- Theme color -->
-    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#101013" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
   </head>
   <body>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ShoppingBag, Package, Truck, Shield } from "lucide-react";
+import { ShoppingBag, Package, Truck, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,24 +11,32 @@ import { Layout } from "@/components/layout";
 import { useCart } from "@/contexts/CartContext";
 import { useLang } from "@/contexts/LangContext";
 import { formatPrice } from "@/lib/utils";
+import { DEMO_FREE_SHIPPING_THRESHOLD, DEMO_SHIPPING_FEE, getProductName, localizeColorName } from "@/lib/data";
+import { useToast } from "@/hooks/use-toast";
 
+/**
+ * Demo checkout. There is no backend and no payment provider in this
+ * repository, so this page deliberately does NOT process payments.
+ * Submitting records a demo order reference in sessionStorage, clears the
+ * bag, and routes to /success — which verifies that reference before
+ * rendering anything order-like.
+ */
 export default function CheckoutPage() {
   const [, navigate] = useLocation();
-  const { cart } = useCart();
-  const { t } = useLang();
+  const { cart, clearCart } = useCart();
+  const { t, lang } = useLang();
+  const { toast } = useToast();
   const c = t.checkout;
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
-    email: "", name: "", address: "", city: "", country: "", postalCode: "",
+    email: "", name: "", phone: "", address: "", city: "", country: lang === "ar" ? "مصر" : "Egypt", postalCode: "",
   });
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shippingFree = subtotal >= 50;
-  const shipping = shippingFree ? 0 : 5.99;
-  const tax = subtotal * 0.1;
-  const total = subtotal + shipping + tax;
+  const shippingFree = subtotal >= DEMO_FREE_SHIPPING_THRESHOLD;
+  const shipping = shippingFree ? 0 : DEMO_SHIPPING_FEE;
+  const total = subtotal + shipping;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,26 +45,18 @@ export default function CheckoutPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
     setLoading(true);
+    await new Promise((r) => setTimeout(r, 900));
+    const ref = `CX-${Date.now().toString(36).toUpperCase()}`;
     try {
-      const baseUrl = import.meta.env.BASE_URL?.replace(/\/$/, "") ?? "";
-      const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart, customerInfo: formData }),
-      });
-      const data = await response.json();
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        setError(data.error || "Something went wrong. Please try again.");
-        setLoading(false);
-      }
-    } catch (err) {
-      setError("Network error. Please check your connection and try again.");
-      setLoading(false);
+      sessionStorage.setItem("cutx-demo-order", JSON.stringify({ ref, at: Date.now() }));
+    } catch {
+      /* session-only fallback still navigates */
     }
+    clearCart();
+    setLoading(false);
+    toast({ title: c.proceedPayment, description: `${c.orderSummary} · ${formatPrice(total)}` });
+    navigate("/success");
   };
 
   if (cart.length === 0) {
@@ -83,6 +83,14 @@ export default function CheckoutPage() {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* ── FORM ── */}
           <div className="lg:col-span-3 space-y-6">
+            <div className="rounded-[var(--radius-lg)] border border-border/60 bg-muted/30 px-4 py-3 flex gap-3">
+              <ShieldAlert className="h-5 w-5 shrink-0 text-primary" />
+              <div>
+                <p className="font-semibold text-sm">{c.demoTitle}</p>
+                <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">{c.demoBody}</p>
+              </div>
+            </div>
+
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base font-semibold">{c.shippingInfo}</CardTitle>
@@ -96,39 +104,37 @@ export default function CheckoutPage() {
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="name">{c.fullName}</Label>
-                      <Input id="name" name="name" required value={formData.name} onChange={handleChange} placeholder="John Doe" className="h-10" />
+                      <Input id="name" name="name" required value={formData.name} onChange={handleChange} placeholder="Ahmed Ali" className="h-10" />
                     </div>
                   </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="address">{c.address}</Label>
-                    <Input id="address" name="address" required value={formData.address} onChange={handleChange} placeholder="123 Main St, Apt 4" className="h-10" />
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                    <div className="space-y-1.5 col-span-2 sm:col-span-1">
-                      <Label htmlFor="city">{c.city}</Label>
-                      <Input id="city" name="city" required value={formData.city} onChange={handleChange} className="h-10" />
-                    </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <Label htmlFor="postalCode">{c.postalCode}</Label>
-                      <Input id="postalCode" name="postalCode" required value={formData.postalCode} onChange={handleChange} className="h-10" />
+                      <Label htmlFor="phone">{c.phone}</Label>
+                      <Input id="phone" name="phone" type="tel" required value={formData.phone} onChange={handleChange} placeholder="01xxxxxxxxx" className="h-10" dir="ltr" />
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="country">{c.country}</Label>
                       <Input id="country" name="country" required value={formData.country} onChange={handleChange} className="h-10" />
                     </div>
                   </div>
-                  {error && (
-                    <div className="text-sm text-destructive bg-destructive/10 rounded-[var(--radius-lg)] px-3 py-2">
-                      {error}
+                  <div className="space-y-1.5">
+                    <Label htmlFor="address">{c.address}</Label>
+                    <Input id="address" name="address" required value={formData.address} onChange={handleChange} placeholder="Street, building, apartment" className="h-10" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="city">{c.city}</Label>
+                      <Input id="city" name="city" required value={formData.city} onChange={handleChange} placeholder="Cairo" className="h-10" />
                     </div>
-                  )}
+                    <div className="space-y-1.5">
+                      <Label htmlFor="postalCode">{c.postalCode}</Label>
+                      <Input id="postalCode" name="postalCode" value={formData.postalCode} onChange={handleChange} className="h-10" dir="ltr" />
+                    </div>
+                  </div>
                   <Button type="submit" form="checkout-form" className="w-full h-11 text-base font-semibold gap-2" disabled={loading}>
-                    <Shield className="h-4 w-4" />
+                    <Package className="h-4 w-4" />
                     {loading ? c.processing : `${c.proceedPayment} · ${formatPrice(total)}`}
                   </Button>
-                  <p className="text-xs text-center text-muted-foreground">
-                    Secured by Stripe · SSL encrypted
-                  </p>
                 </form>
               </CardContent>
             </Card>
@@ -136,9 +142,9 @@ export default function CheckoutPage() {
             {/* Trust signals */}
             <div className="grid grid-cols-3 gap-3 text-center text-xs text-muted-foreground">
               {[
-                { icon: Truck, label: c.freeShippingNote },
-                { icon: Package, label: "Easy 30-day returns" },
-                { icon: Shield, label: "256-bit SSL security" },
+                { icon: Truck, label: t.cart.shippingNote },
+                { icon: Package, label: c.demoTitle },
+                { icon: ShoppingBag, label: c.orderSummary },
               ].map(({ icon: Icon, label }) => (
                 <div key={label} className="flex flex-col items-center gap-1.5 p-3 rounded-[var(--radius-lg)] border border-border/60">
                   <Icon className="h-4 w-4 text-primary" />
@@ -162,14 +168,14 @@ export default function CheckoutPage() {
                   {cart.map((item) => (
                     <div key={`${item.id}-${item.selectedSize}-${item.selectedColor}`} className="flex gap-3">
                       <div className="relative h-16 w-16 rounded-[var(--radius-lg)] overflow-hidden bg-muted shrink-0">
-                        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                        <img src={item.image} alt={getProductName(item, lang)} className="w-full h-full object-cover" />
                         <Badge className="absolute -top-1 -end-1 h-4 w-4 p-0 flex items-center justify-center text-[9px] rounded-[var(--radius-pill)]">
                           {item.quantity}
                         </Badge>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm line-clamp-1">{item.name}</p>
-                        <p className="text-xs text-muted-foreground">{item.selectedSize} · {item.selectedColor}</p>
+                        <p className="font-medium text-sm line-clamp-1">{getProductName(item, lang)}</p>
+                        <p className="text-xs text-muted-foreground">{item.selectedSize} · {localizeColorName(item.selectedColor, lang)}</p>
                       </div>
                       <p className="font-semibold text-sm shrink-0">{formatPrice(item.price * item.quantity)}</p>
                     </div>
@@ -188,10 +194,6 @@ export default function CheckoutPage() {
                     <span className={shippingFree ? "text-green-600 font-medium" : ""}>
                       {shippingFree ? c.freeShipping : formatPrice(shipping)}
                     </span>
-                  </div>
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>{c.tax}</span>
-                    <span>{formatPrice(tax)}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg pt-1">

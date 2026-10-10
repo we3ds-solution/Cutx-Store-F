@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#1B1B20"/><stop offset="1" stop-color="#101013"/>
+</linearGradient>
+<pattern id="diag" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<rect width="28" height="28" fill="none"/><line x1="0" y1="0" x2="0" y2="28" stroke="#ffffff" stroke-opacity="0.05" stroke-width="2"/>
+</pattern>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" fill="url(#diag)"/>
+<text x="400" y="120" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="56" letter-spacing="14" fill="#ffffff">CUT X</text>
+<text x="400" y="162" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="6" fill="#8E8E96">ILLUSTRATED PREVIEW · PHOTO COMING SOON</text>
+
+<path d="M340 282 L258 298 L168 432 L252 464 L300 432 L300 762 L500 762 L500 432 L548 464 L632 432 L542 298 L460 282 C448 318 352 318 340 282 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<path d="M340 282 C352 318 448 318 460 282" fill="none" stroke="#17171B" stroke-width="12"/>
+<path d="M300 470 L300 730 M500 470 L500 730" fill="none" stroke="#45454E" stroke-width="3" stroke-dasharray="10 7"/>
+<path d="M300 726 L500 726" stroke="#17171B" stroke-width="10"/>
+<path d="M182 420 L244 448 M618 420 L556 448" stroke="#17171B" stroke-width="10"/>
+<text x="400" y="380" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="30" letter-spacing="8" fill="#8E8E96">CUT X</text>
+<path d="M310 440 L490 440" fill="none" stroke="#45454E" stroke-width="3" stroke-dasharray="10 7"/>
+<text x="400" y="858" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="34" letter-spacing="4" fill="#ffffff">EVERYDAY TEE</text>
+<text x="400" y="896" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#8E8E96">Back view</text>
+<rect x="64" y="930" width="672" height="3" fill="#E10600" opacity="0.85"/>
+</svg>

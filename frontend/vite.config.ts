@@ -49,6 +49,45 @@ export default defineConfig({
     strictPort: false,
     host: '0.0.0.0',
     allowedHosts: true,
+    // Warm up the landing-page graph at startup so the first browser hit
+    // doesn't pay transform costs (dev-only; production is pre-bundled).
+    warmup: {
+      clientFiles: [
+        './src/main.tsx',
+        './src/App.tsx',
+        './src/pages/home.tsx',
+        './src/components/layout.tsx',
+        './src/components/navbar.tsx',
+        './src/components/footer.tsx',
+        './src/components/product-card.tsx',
+        './src/components/cart-drawer.tsx',
+      ],
+    },
+  },
+  // Explicit dep list: skips the expensive auto-crawl of 2000+ modules on
+  // every dev-server start. Keep in sync with package.json imports.
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-dom/client',
+      'react/jsx-runtime',
+      'wouter',
+      'framer-motion',
+      'lucide-react',
+      'clsx',
+      'tailwind-merge',
+      'class-variance-authority',
+      '@radix-ui/react-dialog',
+      '@radix-ui/react-dropdown-menu',
+      '@radix-ui/react-label',
+      '@radix-ui/react-radio-group',
+      '@radix-ui/react-select',
+      '@radix-ui/react-separator',
+      '@radix-ui/react-slot',
+      '@radix-ui/react-toast',
+      '@radix-ui/react-tooltip',
+    ],
   },
   preview: {
     port,

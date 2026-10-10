@@ -23,6 +23,8 @@
   --color-ring:                  hsl(var(--ring));
   --color-rating:                hsl(var(--rating));
   --color-wishlist:              hsl(var(--wishlist));
+  --color-brand:                 hsl(var(--brand));
+  --color-brand-foreground:      hsl(var(--brand-foreground));
 
   /* ── Centralised font ── */
   --font-sans:  "Cairo", system-ui, sans-serif;
@@ -70,6 +72,8 @@
     --radius:                0rem;
     --rating:                38 92% 50%;
     --wishlist:              350 80% 58%;
+    --brand:                 4 96% 45%;
+    --brand-foreground:      0 0% 100%;
 
     /* ── Motion & spacing tokens ── */
     --ease-out-expo:      cubic-bezier(0.22, 1, 0.36, 1);
@@ -106,6 +110,8 @@
     --ring:                  40 10% 94%;
     --rating:                38 85% 55%;
     --wishlist:              350 80% 58%;
+    --brand:                 4 90% 55%;
+    --brand-foreground:      0 0% 6%;
   }
 
   /* Default border colour applies the card-alpha level */
@@ -294,6 +300,17 @@ html.theme-transitioning *::after {
   .truncate-line   { @apply truncate; }
   .truncate-lines-2 { @apply line-clamp-2; }
   .truncate-lines-3 { @apply line-clamp-3; }
+
+  /* ── Cut X brand helpers — use these instead of hardcoded red/black ── */
+  .brand-x {
+    @apply inline-flex items-center justify-center font-black text-white leading-none select-none;
+    background-color: hsl(var(--brand));
+    border-radius: var(--radius-sm);
+  }
+  .demo-strip {
+    background-color: color-mix(in srgb, hsl(var(--brand)) 8%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, hsl(var(--brand)) 25%, transparent);
+  }
 
   /* ── Backdrop blur (named to avoid conflict with Tailwind blur-* filter utilities) ── */
   .backdrop-blur-effect    { backdrop-filter: blur(10px); }
