@@ -28,17 +28,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
       - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
           node-version: 24
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+          cache: pnpm
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install frontend dependencies
         working-directory: ./frontend
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: TypeScript typecheck
         working-directory: ./frontend
@@ -47,8 +51,8 @@ jobs:
       - name: Production build
         working-directory: ./frontend
         env:
+          # Demo storefront — no live API or Stripe; placeholder only if referenced at build time
           VITE_API_URL: /api
-          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
         run: pnpm run build
 
   ci-success:
@@ -68,4 +72,3 @@ jobs:
             echo "❌ CI checks failed."
             exit 1
           fi
-
