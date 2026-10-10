@@ -15,7 +15,8 @@ import { useSEO } from "@/lib/useSEO";
 const ITEMS_PER_PAGE = 8;
 
 export default function ShopPage() {
-  useSEO({ title: "Shop", description: "Browse the Cut X Egypt range — daily essentials, athletic protection, security workwear and accessories. Demo catalog priced in EGP." });
+  const { t } = useLang();
+  useSEO({ title: t.shopPage.seoTitle, description: t.shopPage.seoDescription });
   const search = useSearch();
   const params = new URLSearchParams(search);
   const initialCat  = params.get("cat") || "All";
@@ -28,7 +29,6 @@ export default function ShopPage() {
   const [wishlist, setWishlist]                 = useState<number[]>([]);
   const [page, setPage]                         = useState(1);
   const [loading, setLoading]                   = useState(true);
-  const { t } = useLang();
 
   useEffect(() => {
     const p = new URLSearchParams(search);
@@ -138,7 +138,7 @@ export default function ShopPage() {
             ))}
             {hasFilters && (
               <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1 text-xs h-9 shrink-0">
-                <X className="h-3 w-3" /> Clear
+                <X className="h-3 w-3" /> {t.shopPage.clear}
               </Button>
             )}
           </div>
@@ -150,15 +150,15 @@ export default function ShopPage() {
               <span className="inline-block w-44 h-4 bg-muted rounded-[var(--radius-md)] animate-pulse" />
             ) : filteredProducts.length > 0 ? (
               <>
-                Showing {(safePage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(safePage * ITEMS_PER_PAGE, filteredProducts.length)}{" "}
-                of {filteredProducts.length} products
+                {t.shopPage.showing} {(safePage - 1) * ITEMS_PER_PAGE + 1}–{Math.min(safePage * ITEMS_PER_PAGE, filteredProducts.length)}{" "}
+                {t.shopPage.of} {filteredProducts.length} {t.shopPage.products}
                 {selectedCategory !== "All" && (
-                  <> in <span className="font-medium text-foreground">{t.categories[selectedCategory as keyof typeof t.categories]}</span></>
+                  <> {t.shopPage.in} <span className="font-medium text-foreground">{t.categories[selectedCategory as keyof typeof t.categories]}</span></>
                 )}
-                {onlyNew && <> · <span className="font-medium text-foreground">New Arrivals</span></>}
+                {onlyNew && <> · <span className="font-medium text-foreground">{t.home.newArrivals}</span></>}
               </>
             ) : (
-              "No products found"
+              t.shopPage.noProductsFound
             )}
           </p>
         </div>
@@ -194,7 +194,7 @@ export default function ShopPage() {
                   onClick={() => { setPage((p) => p - 1); scrollTop(); }}
                 >
                   <ChevronLeft className="h-4 w-4 rtl:rotate-180" />
-                  <span className="hidden sm:inline">Previous</span>
+                  <span className="hidden sm:inline">{t.shopPage.previous}</span>
                 </Button>
 
                 <div className="flex items-center gap-1">
@@ -221,7 +221,7 @@ export default function ShopPage() {
                   disabled={safePage === totalPages}
                   onClick={() => { setPage((p) => p + 1); scrollTop(); }}
                 >
-                  <span className="hidden sm:inline">Next</span>
+                  <span className="hidden sm:inline">{t.shopPage.next}</span>
                   <ChevronRight className="h-4 w-4 rtl:rotate-180" />
                 </Button>
               </div>
@@ -235,10 +235,10 @@ export default function ShopPage() {
           >
             <NoResultsArt width={200} height={200} />
             <div>
-              <p className="font-semibold text-lg">No products found</p>
-              <p className="text-muted-foreground text-sm mt-1">Try a different search or category</p>
+              <p className="font-semibold text-lg">{t.shopPage.noProductsFound}</p>
+              <p className="text-muted-foreground text-sm mt-1">{t.shopPage.tryDifferent}</p>
             </div>
-            <Button variant="outline" onClick={clearFilters} className="mt-2">Clear filters</Button>
+            <Button variant="outline" onClick={clearFilters} className="mt-2">{t.shopPage.clearFilters}</Button>
           </motion.div>
         )}
       </div>
