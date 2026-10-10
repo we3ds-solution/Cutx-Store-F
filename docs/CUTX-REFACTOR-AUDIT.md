@@ -43,6 +43,15 @@ Date: 2026-10-10 · Scope: `frontend/` only (no backend exists in this tree).
 
 ## 7. First-load performance investigation (2026-10-10)
 
+## 8. PR #167 resolution (Cutx-Store-F, 2026-10-10)
+
+- Root `package.json` (`cutx-store`, `packageManager: pnpm@9.15.0`) + `frontend` package renamed to `cutx-storefront` → Frontend CI green.
+- Created missing `develop` branch from `main`; PR retargeted `refactor/cutx-storefront → develop` → GitFlow validator green (branch name kept: `refactor/*` is an accepted pattern for develop targets).
+- PR body filled (summary, type, testing, breaking changes, GitFlow note); re-review requested from @Mostafa-SAID7.
+- Review follow-ups committed: demo auth labels + dead menu items removed, demo form disclosures, wishlist session note, stock/availability guards, legacy `haven-*` storage keys removed (grep zero in app sources).
+- Real product photo supplied for the everyday tee (`everyday-protective-tee-photo.jpg`); listing otherwise stays `isDemo`.
+- Final CI on branch HEAD: Frontend, All CI Passed, GitFlow, CodeQL, Labels all green.
+
 Complaint: very slow first page load. Measured with a script simulating a cold browser (recursive module fetch, concurrency 6).
 
 - **Baseline (before): 87 modules / 4.36 MB on first paint** — `App.tsx` statically imported all 10 routes, so the browser transformed every page + all Radix/shadcn + framer-motion before painting.
