@@ -451,10 +451,12 @@ export const translations = {
   },
 } as const;
 
+type TranslationDictionary = (typeof translations)[Lang];
+
 interface LangContextType {
   lang: Lang;
   toggleLang: () => void;
-  t: typeof translations.en;
+  t: TranslationDictionary;
   isRTL: boolean;
 }
 
