@@ -1,38 +1,21 @@
-name: 🗃️ Database / Migration Issue
-description: Report a database schema problem, migration failure, or data issue
-title: "[DB]: "
-labels: ["database", "needs-triage"]
+name: Database issue (not applicable)
+description: This repository has no database — use a bug report for storefront issues instead.
+title: "[N/A] Database — "
+labels: ["documentation"]
 body:
-  - type: dropdown
-    id: type
+  - type: markdown
     attributes:
-      label: Issue Type
-      options:
-        - Migration failure (drizzle-kit push / migrate)
-        - Schema mismatch
-        - Query error / data integrity
-        - Performance / slow query
-        - Connection / pool issue
+      value: |
+        **Cut X Egypt** is a **frontend-only demo storefront**.
+
+        There is **no backend, PostgreSQL, Drizzle, or migrations** in this repository.
+        Catalog data lives in `frontend/src/lib/data.ts`; cart/auth use browser storage.
+
+        Please close this form and open a **Bug report** or **Feature request** instead.
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes (optional)
+      description: If you believed a database existed, describe what you expected.
     validations:
-      required: true
-
-  - type: textarea
-    id: description
-    attributes:
-      label: 📝 Description
-      description: Describe the database issue in detail.
-    validations:
-      required: true
-
-  - type: textarea
-    id: error
-    attributes:
-      label: 🪵 Error Output
-      render: shell
-
-  - type: textarea
-    id: schema
-    attributes:
-      label: 📐 Relevant Schema / Query
-      description: Paste the relevant Drizzle schema definition or SQL query.
-      render: typescript
+      required: false
