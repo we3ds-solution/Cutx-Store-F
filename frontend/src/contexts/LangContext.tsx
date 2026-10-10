@@ -187,7 +187,9 @@ export const translations = {
       message: "Message",
       send: "Send Message",
       sending: "Sending...",
-      successMsg: "Demo only — message is not sent. This form does not transmit anywhere yet.",
+      successMsg: "Message recorded (demo).",
+      demoOnlyNote: "Demo only — your message is not actually sent. This form does not transmit anywhere yet.",
+      sendAnother: "Send Another",
       infoTitle: "Official Channels",
       infoNote: "Verified public pages — official phone, address and email are not published yet.",
       info: [
@@ -384,15 +386,15 @@ export const translations = {
       values: [
         { iconId: "shield-check", title: "حماية يومية", desc: "فكر الحماية مدمج في قطع تقدر تلبسها كل يوم فعلاً." },
         { iconId: "zap", title: "الحركة", desc: "قصّات تسمح للرياضيين بالتمرين والجري بحرية." },
-        { iconId: "users", title: "المهام", desc: "طبقات عملية لشركات الأمن والورديات الصناعية." },
-        { iconId: "flag", title: "صنع لمصر", desc: "علامة مصرية تصمم لروتين المصريين ومناخهم وشوارعهم." },
+        { iconId: "users", title: "المهام", desc: "طبقات عملية لفرق الأمن والورديات الصناعية." },
+        { iconId: "flag", title: "مصنوعة لمصر", desc: "علامة مصرية تصمم لروتين ومناخ وشوارع مصر." },
       ],
       statsTitle: "كت إكس في لمحة",
       stats: [
         { value: "3", label: "فئات مستهدفة" },
         { value: "4", label: "خطوط منتجات" },
-        { value: "ج.م", label: "أسعار محلية" },
-        { value: "TV", label: "ظهور في شارك تانك" },
+        { value: "ج.م", label: "تسعير محلي" },
+        { value: "TV", label: "ظهور شارك تانك" },
       ],
     },
     contact: {
@@ -405,20 +407,22 @@ export const translations = {
       message: "الرسالة",
       send: "إرسال",
       sending: "جارٍ الإرسال...",
-      successMsg: "تجريبي فقط — الرسالة لا تُرسَل. هذا النموذج لا ينقل البيانات لأي مكان بعد.",
+      successMsg: "تم تسجيل الرسالة (تجريبي).",
+      demoOnlyNote: "تجريبي فقط — الرسالة لا تُرسَل فعلياً. هذا النموذج لا ينقل البيانات لأي مكان بعد.",
+      sendAnother: "أرسل رسالة أخرى",
       infoTitle: "القنوات الرسمية",
       infoNote: "صفحات عامة موثقة — الهاتف والعنوان والبريد الرسمي غير منشورين بعد.",
       info: [
         { iconId: "instagram", label: "إنستجرام", value: "@cutx_eg" },
         { iconId: "facebook", label: "فيسبوك", value: "Cut X" },
         { iconId: "globe", label: "الموقع", value: "cutx-egy.com (قريباً)" },
-        { iconId: "clock", label: "الدعم", value: "الرد عبر قنوات السوشيال" },
+        { iconId: "clock", label: "الدعم", value: "الرد عبر القنوات الاجتماعية" },
       ],
     },
     notFound: {
       code: "404",
       title: "الصفحة غير موجودة",
-      subtitle: "يبدو أن هذه القطعة لم تصل لمكانها.",
+      subtitle: "القصّة دي ما وصلتش للمكان المتوقع.",
       cta: "العودة للمتجر",
     },
     footer: {
@@ -433,9 +437,9 @@ export const translations = {
         security: "أمن ومهام",
         accessories: "إكسسوارات",
         about: "من نحن",
-        contact: "تواصل معنا",
+        contact: "تواصل",
         privacy: "سياسة الخصوصية",
-        terms: "شروط الخدمة",
+        terms: "شروط الاستخدام",
       },
       newsletterTitle: "ابقَ على اطلاع",
       newsletterPlaceholder: "بريدك@example.com",
@@ -445,7 +449,7 @@ export const translations = {
       demoLine: "واجهة تجريبية — بيانات الكتالوج استرشادية لحين نشر التفاصيل الرسمية.",
     },
   },
-};
+} as const;
 
 interface LangContextType {
   lang: Lang;
