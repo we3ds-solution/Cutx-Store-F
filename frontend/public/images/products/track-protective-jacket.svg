@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#1B1B20"/><stop offset="1" stop-color="#101013"/>
+</linearGradient>
+<pattern id="diag" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<rect width="28" height="28" fill="none"/><line x1="0" y1="0" x2="0" y2="28" stroke="#ffffff" stroke-opacity="0.05" stroke-width="2"/>
+</pattern>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" fill="url(#diag)"/>
+<text x="400" y="120" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="56" letter-spacing="14" fill="#ffffff">CUT X</text>
+<text x="400" y="162" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="6" fill="#8E8E96">ILLUSTRATED PREVIEW · PHOTO COMING SOON</text>
+
+
+<path d="M258 300 L182 690 L262 706 L312 470 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<path d="M542 300 L618 690 L538 706 L488 470 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<rect x="176" y="686" width="92" height="34" rx="10" fill="#17171B"/>
+<rect x="532" y="686" width="92" height="34" rx="10" fill="#17171B"/>
+<path d="M230 340 L200 660 M570 340 L600 660" fill="none" stroke="#45454E" stroke-width="3" stroke-dasharray="10 7"/>
+<rect x="352" y="246" width="96" height="52" rx="12" fill="#17171B"/>
+<path d="M336 296 L262 312 L300 432 L300 762 L500 762 L500 432 L538 312 L464 296 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<line x1="400" y1="298" x2="400" y2="762" stroke="#45454E" stroke-width="5"/>
+<line x1="392" y1="320" x2="408" y2="320" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="348" x2="408" y2="348" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="376" x2="408" y2="376" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="404" x2="408" y2="404" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="432" x2="408" y2="432" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="460" x2="408" y2="460" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="488" x2="408" y2="488" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="516" x2="408" y2="516" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="544" x2="408" y2="544" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="572" x2="408" y2="572" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="600" x2="408" y2="600" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="628" x2="408" y2="628" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="656" x2="408" y2="656" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="684" x2="408" y2="684" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="712" x2="408" y2="712" stroke="#8E8E96" stroke-width="4"/><line x1="392" y1="740" x2="408" y2="740" stroke="#8E8E96" stroke-width="4"/>
+<path d="M300 726 L500 726" stroke="#17171B" stroke-width="10"/>
+<path d="M252 360 L214 640 M548 360 L586 640" stroke="#E10600" stroke-width="7" opacity="0.9"/>
+<path d="M330 600 L330 700 M470 600 L470 700" stroke="#45454E" stroke-width="3"/>
+<g transform="translate(452 460)" stroke="#E10600" stroke-width="12.48" stroke-linecap="round">
+<line x1="-26" y1="-26" x2="26" y2="26"/><line x1="26" y1="-26" x2="-26" y2="26"/>
+</g>
+<text x="400" y="858" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="34" letter-spacing="4" fill="#ffffff">TRACK JACKET</text>
+<text x="400" y="896" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#8E8E96">Full zip · stand collar</text>
+<rect x="64" y="930" width="672" height="3" fill="#E10600" opacity="0.85"/>
+</svg>

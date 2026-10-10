@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Product } from "@/lib/types";
+import { getColorName, getProductName } from "@/lib/data";
 import { useCart } from "@/contexts/CartContext";
 import { useLang } from "@/contexts/LangContext";
 import { formatPrice } from "@/lib/utils";
@@ -20,12 +21,16 @@ interface ProductCardProps {
 export function ProductCard({ product, isWishlisted, onToggleWishlist }: ProductCardProps) {
   const [, navigate] = useLocation();
   const { addToCart, cart } = useCart();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const { toast } = useToast();
   const [imgLoaded, setImgLoaded] = useState(false);
+  const displayName = getProductName(product, lang);
+  const hasRatings = product.reviewCount > 0;
+  const unavailable = product.stock === 0;
 
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (unavailable) return;
     const size = product.sizes[0];
     const color = product.colors[0].name;
     const existingItem = cart.find(
@@ -33,9 +38,9 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
     );
     addToCart({ ...product, quantity: 1, selectedSize: size, selectedColor: color });
     if (existingItem) {
-      toast({ title: "Quantity updated", description: `${product.name} — ${size}, ${color}` });
+      toast({ title: "Quantity updated", description: `${displayName} — ${size}, ${getColorName(product.colors[0], lang)}` });
     } else {
-      toast({ title: "Added to bag!", description: `${product.name} — ${size}, ${color}` });
+      toast({ title: t.product.addedToCart, description: `${displayName} — ${size}, ${getColorName(product.colors[0], lang)}` });
     }
   };
 
@@ -44,7 +49,7 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
     onToggleWishlist(product.id);
     toast({
       title: isWishlisted ? "Removed from wishlist" : "Added to wishlist",
-      description: product.name,
+      description: isWishlisted ? displayName : `${displayName} — ${t.wishlistNote}`,
     });
   };
 
@@ -59,7 +64,7 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
         )}
         <img
           src={product.image}
-          alt={product.name}
+          alt={displayName}
           onLoad={() => setImgLoaded(true)}
           className={`object-cover w-full h-full group-hover:scale-[1.06] transition-transform duration-[var(--duration-base)] ease-[var(--ease-out-expo)] ${
             imgLoaded ? "opacity-100" : "opacity-0"
@@ -74,6 +79,12 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
           {product.originalPrice && (
             <Badge variant="destructive" className="text-[10px] py-0 px-2 h-5">{t.sale}</Badge>
           )}
+          {product.isDemo && (
+            <Badge variant="outline" className="text-[10px] py-0 px-2 h-5 bg-background/80 backdrop-blur">{t.demo}</Badge>
+          )}
+          {unavailable && (
+            <Badge variant="destructive" className="text-[10px] py-0 px-2 h-5">{t.product.outOfStock}</Badge>
+          )}
         </div>
         {/* Wishlist */}
         <button
@@ -85,12 +96,14 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
             className={`h-4 w-4 transition-colors ${isWishlisted ? "fill-[color:var(--color-wishlist)] text-[color:var(--color-wishlist)]" : "text-muted-foreground"}`}
           />
         </button>
-        {/* Quick add on hover */}
-        <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-[var(--duration-base)] ease-[var(--ease-out-expo)] p-2">
-          <Button className="w-full h-10 text-xs" onClick={handleQuickAdd}>
-            {t.addToCart}
-          </Button>
-        </div>
+        {/* Quick add on hover — hidden when unavailable */}
+        {!unavailable && (
+          <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-[var(--duration-base)] ease-[var(--ease-out-expo)] p-2">
+            <Button className="w-full h-10 text-xs" onClick={handleQuickAdd}>
+              {t.addToCart}
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Info */}
@@ -98,12 +111,14 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
         <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-0.5">
           {t.categories[product.category as keyof typeof t.categories] ?? product.category}
         </p>
-        <h3 className="font-semibold text-sm leading-snug line-clamp-1 mb-1.5">{product.name}</h3>
-        {/* Rating */}
-        <div className="flex items-center gap-1 mb-2">
-          <Star className="h-3 w-3 fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" />
-          <span className="text-xs text-muted-foreground">{product.rating} ({product.reviewCount})</span>
-        </div>
+        <h3 className="font-semibold text-sm leading-snug line-clamp-1 mb-1.5">{displayName}</h3>
+        {/* Rating — hidden until real reviews exist */}
+        {hasRatings && (
+          <div className="flex items-center gap-1 mb-2">
+            <Star className="h-3 w-3 fill-[color:var(--color-rating)] text-[color:var(--color-rating)]" />
+            <span className="text-xs text-muted-foreground">{product.rating} ({product.reviewCount})</span>
+          </div>
+        )}
         {/* Price */}
         <div className="flex items-center gap-2">
           <span className="font-bold text-sm">{formatPrice(product.price)}</span>
@@ -116,7 +131,7 @@ export function ProductCard({ product, isWishlisted, onToggleWishlist }: Product
           {product.colors.slice(0, 4).map((c) => (
             <span
               key={c.name}
-              title={c.name}
+              title={getColorName(c, lang)}
               className="h-3 w-3 rounded-[var(--radius-pill)] border border-border/50"
               style={{ backgroundColor: c.hex }}
             />

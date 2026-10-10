@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#1B1B20"/><stop offset="1" stop-color="#101013"/>
+</linearGradient>
+<pattern id="diag" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<rect width="28" height="28" fill="none"/><line x1="0" y1="0" x2="0" y2="28" stroke="#ffffff" stroke-opacity="0.05" stroke-width="2"/>
+</pattern>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" fill="url(#diag)"/>
+<text x="400" y="120" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="56" letter-spacing="14" fill="#ffffff">CUT X</text>
+<text x="400" y="162" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="6" fill="#8E8E96">ILLUSTRATED PREVIEW · PHOTO COMING SOON</text>
+
+<path d="M318 296 C318 196 482 196 482 296 L460 296 C460 226 340 226 340 296 Z" fill="#1E1E24"/>
+
+<path d="M258 300 L182 690 L262 706 L312 470 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<path d="M542 300 L618 690 L538 706 L488 470 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<rect x="176" y="686" width="92" height="34" rx="10" fill="#17171B"/>
+<rect x="532" y="686" width="92" height="34" rx="10" fill="#17171B"/>
+<path d="M230 340 L200 660 M570 340 L600 660" fill="none" stroke="#45454E" stroke-width="3" stroke-dasharray="10 7"/>
+<path d="M340 282 L258 300 L300 432 L300 762 L500 762 L500 432 L542 300 L460 282 C448 318 352 318 340 282 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<path d="M330 620 L470 620 L492 742 L308 742 Z" fill="#1E1E24" stroke="#45454E" stroke-width="3"/>
+<path d="M330 620 L308 742 M470 620 L492 742" fill="none" stroke="#45454E" stroke-width="3" stroke-dasharray="10 7"/>
+<path d="M300 726 L500 726" stroke="#17171B" stroke-width="10"/>
+<line x1="384" y1="344" x2="374" y2="436" stroke="#8E8E96" stroke-width="7" stroke-linecap="round"/>
+<line x1="416" y1="344" x2="426" y2="436" stroke="#8E8E96" stroke-width="7" stroke-linecap="round"/>
+<circle cx="374" cy="444" r="7" fill="#8E8E96"/><circle cx="426" cy="444" r="7" fill="#8E8E96"/>
+<g transform="translate(400 505)" stroke="#E10600" stroke-width="14.879999999999999" stroke-linecap="round">
+<line x1="-31" y1="-31" x2="31" y2="31"/><line x1="31" y1="-31" x2="-31" y2="31"/>
+</g>
+<text x="400" y="858" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="34" letter-spacing="4" fill="#ffffff">URBAN HOODIE</text>
+<text x="400" y="896" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#8E8E96">Hood · kangaroo pocket</text>
+<rect x="64" y="930" width="672" height="3" fill="#E10600" opacity="0.85"/>
+</svg>

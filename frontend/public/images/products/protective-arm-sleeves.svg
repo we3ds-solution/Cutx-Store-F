@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000" role="img">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0" stop-color="#1B1B20"/><stop offset="1" stop-color="#101013"/>
+</linearGradient>
+<pattern id="diag" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<rect width="28" height="28" fill="none"/><line x1="0" y1="0" x2="0" y2="28" stroke="#ffffff" stroke-opacity="0.05" stroke-width="2"/>
+</pattern>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" fill="url(#diag)"/>
+<text x="400" y="120" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="56" letter-spacing="14" fill="#ffffff">CUT X</text>
+<text x="400" y="162" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="6" fill="#8E8E96">ILLUSTRATED PREVIEW · PHOTO COMING SOON</text>
+
+<path d="M296 330 L368 330 L350 730 L278 730 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<path d="M432 330 L504 330 L522 730 L450 730 Z" fill="#2B2B32" stroke="#1E1E24" stroke-width="4"/>
+<rect x="292" y="322" width="80" height="30" rx="10" fill="#17171B"/>
+<rect x="428" y="322" width="80" height="30" rx="10" fill="#17171B"/>
+<rect x="276" y="700" width="76" height="30" rx="10" fill="#17171B"/>
+<rect x="448" y="700" width="76" height="30" rx="10" fill="#17171B"/>
+<path d="M332 380 L322 680 M468 380 L478 680" fill="none" stroke="#45454E" stroke-width="3" stroke-dasharray="10 7"/>
+<g transform="translate(332 530)" stroke="#E10600" stroke-width="10.559999999999999" stroke-linecap="round">
+<line x1="-22" y1="-22" x2="22" y2="22"/><line x1="22" y1="-22" x2="-22" y2="22"/>
+</g>
+<path d="M448 420 L496 420" stroke="#E10600" stroke-width="8" opacity="0.9"/>
+<text x="400" y="858" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="34" letter-spacing="4" fill="#ffffff">ARM SLEEVES</text>
+<text x="400" y="896" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#8E8E96">Sold as a pair</text>
+<rect x="64" y="930" width="672" height="3" fill="#E10600" opacity="0.85"/>
+</svg>
