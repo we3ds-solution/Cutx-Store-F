@@ -2,12 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 export type Lang = "en" | "ar";
 
-/**
- * Cut X Egypt — single translation source of truth.
- * Brand voice: confident, technical, Egyptian-market friendly.
- * No invented contact details, policies, prices or certifications live here —
- * anything unverified is either omitted or explicitly labelled as demo.
- */
 export const translations = {
   en: {
     brand: "Cut X",
@@ -28,15 +22,20 @@ export const translations = {
     addToCart: "Add to Cart",
     wishlist: "Wishlist",
     wishlistNote: "Wishlist is kept for this session only.",
+    qtyUpdated: "Quantity updated",
+    addedToWishlist: "Added to wishlist",
+    removedFromWishlist: "Removed from wishlist",
+    savedToWishlist: "Saved to wishlist",
+    verified: "Verified",
+    helpful: "Helpful",
+    viewOnlyBanner: "Demo catalog — all listings stay labelled demo. Sample stock is for walkthroughs only; nothing is sold or shipped.",
     viewAll: "View All",
     shopNow: "Shop Now",
     explore: "Our Story",
-    demoNotice:
-      "Demo catalog — product details, prices and availability are drafts until official Cut X information is published.",
+    demoNotice: "Demo catalog — product details, prices and availability are drafts until official Cut X information is published.",
     home: {
       heroTitle: "CUT X",
-      heroSubtitle:
-        "Cut and penetration resistant clothing — built for daily use, athletes and security teams across Egypt.",
+      heroSubtitle: "Cut and penetration resistant clothing — built for daily use, athletes and security teams across Egypt.",
       heroBadge: "Cut-Resistant Apparel · Egypt",
       promos: [
         { iconId: "shield-check", text: "Cut-Resistant Concept" },
@@ -52,8 +51,7 @@ export const translations = {
       trending: "Explore the Range",
       trendingSubtitle: "Protective wear for every routine",
       featuredBannerTitle: "Engineered for Real Life",
-      featuredBannerSubtitle:
-        "From morning commutes to night shifts — apparel designed around protection without giving up everyday comfort.",
+      featuredBannerSubtitle: "From morning commutes to night shifts — apparel designed around protection without giving up everyday comfort.",
       audiencesTitle: "Built for Three Fronts",
       audiencesSubtitle: "The audiences Cut X designs for",
       audiences: [
@@ -97,13 +95,11 @@ export const translations = {
       shippingInfo: "Delivery Information",
       freeShipping: "FREE",
       demoTitle: "Demo checkout — no payment connected",
-      demoBody:
-        "Online payment is not connected yet. Placing this order is a demo only: nothing will be charged and no real order is sent. Share your details and we will treat this as an enquiry.",
+      demoBody: "Online payment is not connected yet. Placing this order is a demo only: nothing will be charged and no real order is sent. Share your details and we will treat this as an enquiry.",
     },
     success: {
       title: "Demo Order Received!",
-      subtitle:
-        "This was a demonstration checkout — no payment was processed and no real order was placed. We will announce real ordering once official Cut X sales channels open.",
+      subtitle: "This was a demonstration checkout — no payment was processed and no real order was placed. We will announce real ordering once official Cut X sales channels open.",
       continueShopping: "Continue Shopping",
       orderNumber: "Demo ref #",
       noOrderTitle: "No recent order",
@@ -126,6 +122,8 @@ export const translations = {
       orders: "My Orders",
       logout: "Sign Out",
       demoNote: "Demo sign-in (not connected) — kept on this device only.",
+      passwordMismatch: "Passwords do not match.",
+      demoSessionStarted: "Demo session started",
     },
     product: {
       relatedProducts: "You May Also Like",
@@ -149,19 +147,18 @@ export const translations = {
       sizeTable: {
         size: "Size", chest: "Chest", waist: "Waist", hips: "Hips",
         XS: ["XS", "32–33″", "26–27″", "34–35″"],
-        S:  ["S",  "34–35″", "28–29″", "36–37″"],
-        M:  ["M",  "36–37″", "30–31″", "38–39″"],
-        L:  ["L",  "38–39″", "32–33″", "40–41″"],
+        S: ["S", "34–35″", "28–29″", "36–37″"],
+        M: ["M", "36–37″", "30–31″", "38–39″"],
+        L: ["L", "38–39″", "32–33″", "40–41″"],
         XL: ["XL", "40–42″", "34–36″", "42–44″"],
-        XXL:["XXL","44–46″", "38–40″", "46–48″"],
+        XXL: ["XXL", "44–46″", "38–40″", "46–48″"],
       },
     },
     about: {
       heroTitle: "Our Story",
       heroSubtitle: "Protective clothing for real Egyptian routines",
       missionTitle: "Who We Are",
-      missionText:
-        "Cut X is an Egyptian brand developing cut and penetration resistant clothing for daily use, athletes and security teams. The brand introduced itself to a national audience on Shark Tank Egypt and continues to build its first product range for the local market.",
+      missionText: "Cut X is an Egyptian brand developing cut and penetration resistant clothing for daily use, athletes and security teams. The brand introduced itself to a national audience on Shark Tank Egypt and continues to build its first product range for the local market.",
       valuesTitle: "What We Design For",
       values: [
         { iconId: "shield-check", title: "Everyday Protection", desc: "Protective thinking built into pieces you can actually wear every day." },
@@ -199,12 +196,41 @@ export const translations = {
         { iconId: "clock", label: "Support", value: "Replies via social channels" },
       ],
     },
-    notFound: {
-      code: "404",
-      title: "Page Not Found",
-      subtitle: "This cut didn't land where expected.",
-      cta: "Back to Shop",
+    privacy: {
+      heroTitle: "Privacy Policy",
+      heroSubtitle: "How this demo storefront handles data",
+      lastUpdatedLabel: "Last updated",
+      lastUpdatedDate: "October 10, 2026",
+      intro: "This policy applies to all users of the Cut X Egypt demo storefront.",
+      sections: [
+        { title: "Information We Collect", body: "When you use this Cut X Egypt demo storefront, the following may be stored locally in your own browser only:\n\n• Cart contents and language preference (localStorage).\n• Demo order reference for the current session (sessionStorage).\n• Contact form input — the demo form does not transmit anywhere.\n\nThere is no backend server in this project, so no personal data leaves your device." },
+        { title: "How We Use Your Information", body: "Locally stored data is used only to:\n\n• Keep your bag and language choice between visits on the same device.\n• Show the demo order confirmation after a demo checkout.\n\nNo analytics, advertising trackers, or third-party data sharing are built into this storefront." },
+        { title: "Sharing of Information", body: "We do not sell, trade, or rent personal data. Because there is no backend, there are no service providers receiving your data from this site. When live commerce launches with real payment and shipping providers, this policy will be updated to name them." },
+        { title: "Cookies & Tracking", body: "This demo uses browser storage (localStorage/sessionStorage) to remember cart contents and language — not third-party cookies. You can clear site data in your browser settings at any time." },
+        { title: "Data Retention", body: "Local data stays on your device until you clear it or use the in-app controls (e.g. clearing the bag). No order records are retained anywhere else because no orders are transmitted." },
+        { title: "Your Rights", body: "Because all demo data lives in your own browser, you can access or delete it at any time by clearing this site's storage. Once official sales channels open, contact details for privacy requests will be published here." },
+        { title: "Security", body: "Demo sign-in is local-only and unverified — do not reuse real passwords on this site. No payment card data is ever collected because payment is not connected." },
+        { title: "Contact", body: "For questions about this demo policy, use the official Cut X social channels listed on the Contact page. No official privacy email is published yet." },
+      ],
     },
+    terms: {
+      heroTitle: "Terms of Service",
+      heroSubtitle: "Terms for using this demo storefront",
+      lastUpdatedLabel: "Last updated",
+      lastUpdatedDate: "October 10, 2026",
+      intro: "These terms govern your use of the Cut X Egypt demo storefront.",
+      sections: [
+        { title: "Demo Nature of the Site", body: "This website is a demonstration storefront only. Catalog details, prices (EGP), stock, and shipping rates are drafts. No real orders are placed and no payment is processed." },
+        { title: "Eligibility", body: "You may browse this demo for evaluation and feedback. Creating a demo account does not create a real customer relationship with Cut X." },
+        { title: "Products & Pricing", body: "Product names, descriptions, images, and prices are illustrative until officially confirmed by Cut X. Listings marked Demo are not offered for sale through this site." },
+        { title: "Orders & Payment", body: "The checkout flow is a simulation. Submitting a demo order does not create a binding purchase, charge a card, or trigger shipment." },
+        { title: "Intellectual Property", body: "Cut X branding and any brand-supplied product photography remain the property of their respective owners. Demo illustrations and layout are provided for presentation of this storefront only." },
+        { title: "Limitation of Liability", body: "This demo is provided as-is without warranties. Cut X and the site operators are not liable for decisions made based on draft catalog data shown here." },
+        { title: "Changes", body: "These terms may be updated when the storefront moves from demo to live commerce. The date above reflects the latest revision." },
+        { title: "Contact", body: "Reach Cut X via the official Instagram and Facebook channels listed on the Contact page." },
+      ],
+    },
+    notFound: { code: "404", title: "Page Not Found", subtitle: "This cut didn't land where expected.", cta: "Back to Shop" },
     footer: {
       tagline: "Cut-resistant apparel for daily life, sport and duty.",
       shop: "Shop",
@@ -248,15 +274,20 @@ export const translations = {
     addToCart: "أضف للحقيبة",
     wishlist: "المفضلة",
     wishlistNote: "المفضلة تُحفظ لهذه الجلسة فقط.",
+    qtyUpdated: "تم تحديث الكمية",
+    addedToWishlist: "أُضيفت للمفضلة",
+    removedFromWishlist: "أُزيلت من المفضلة",
+    savedToWishlist: "حُفظت في المفضلة",
+    verified: "موثّق",
+    helpful: "مفيد",
+    viewOnlyBanner: "كتالوج تجريبي — كل الإدراجات مُعلَّمة كتجريبية. المخزون الظاهر للتجربة فقط؛ لا بيع ولا شحن حقيقي.",
     viewAll: "عرض الكل",
     shopNow: "تسوق الآن",
     explore: "قصتنا",
-    demoNotice:
-      "كتالوج تجريبي — تفاصيل المنتجات والأسعار والتوافر مسودات لحين نشر المعلومات الرسمية من كت إكس.",
+    demoNotice: "كتالوج تجريبي — تفاصيل المنتجات والأسعار والتوافر مسودات لحين نشر المعلومات الرسمية من كت إكس.",
     home: {
       heroTitle: "كت إكس",
-      heroSubtitle:
-        "ملابس مقاومة للقطع والاختراق — للاستخدام اليومي والرياضيين وفرق الأمن في جميع أنحاء مصر.",
+      heroSubtitle: "ملابس مقاومة للقطع والاختراق — للاستخدام اليومي والرياضيين وفرق الأمن في جميع أنحاء مصر.",
       heroBadge: "ملابس مقاومة للقطع · مصر",
       promos: [
         { iconId: "shield-check", text: "فكرة مقاومة للقطع" },
@@ -272,8 +303,7 @@ export const translations = {
       trending: "اكتشف التشكيلة",
       trendingSubtitle: "ملابس حماية لكل يوم",
       featuredBannerTitle: "مصممة للحياة الحقيقية",
-      featuredBannerSubtitle:
-        "من مشوار الصبح لشيفت بالليل — ملابس مبنية على الحماية من غير ما تضحي بالراحة اليومية.",
+      featuredBannerSubtitle: "من مشوار الصبح لشيفت بالليل — ملابس مبنية على الحماية من غير ما تضحي بالراحة اليومية.",
       audiencesTitle: "مصممة لثلاث جبهات",
       audiencesSubtitle: "الفئات التي تصمم لها كت إكس",
       audiences: [
@@ -317,13 +347,11 @@ export const translations = {
       shippingInfo: "معلومات التوصيل",
       freeShipping: "مجاناً",
       demoTitle: "دفع تجريبي — لا يوجد دفع إلكتروني بعد",
-      demoBody:
-        "الدفع الإلكتروني غير مفعل بعد. هذا الطلب تجريبي فقط: لن يتم خصم أي مبلغ ولن يُرسل طلب حقيقي.",
+      demoBody: "الدفع الإلكتروني غير مفعل بعد. هذا الطلب تجريبي فقط: لن يتم خصم أي مبلغ ولن يُرسل طلب حقيقي.",
     },
     success: {
       title: "تم استلام طلبك التجريبي!",
-      subtitle:
-        "كانت هذه عملية دفع تجريبية — لم يتم خصم أي مبلغ ولم يُسجَّل طلب حقيقي. سنعلن عن فتح الطلبات الحقيقية مع إطلاق قنوات البيع الرسمية.",
+      subtitle: "كانت هذه عملية دفع تجريبية — لم يتم خصم أي مبلغ ولم يُسجَّل طلب حقيقي. سنعلن عن فتح الطلبات الحقيقية مع إطلاق قنوات البيع الرسمية.",
       continueShopping: "مواصلة التسوق",
       orderNumber: "مرجع تجريبي #",
       noOrderTitle: "لا يوجد طلب حديث",
@@ -346,6 +374,8 @@ export const translations = {
       orders: "طلباتي",
       logout: "خروج",
       demoNote: "تسجيل دخول تجريبي (غير مرتبط بأي نظام) — يُحفظ على جهازك فقط.",
+      passwordMismatch: "كلمتا المرور غير متطابقتين.",
+      demoSessionStarted: "بدأت جلسة تجريبية",
     },
     product: {
       relatedProducts: "قد يعجبك أيضاً",
@@ -369,19 +399,18 @@ export const translations = {
       sizeTable: {
         size: "المقاس", chest: "الصدر", waist: "الخصر", hips: "الوركان",
         XS: ["XS", "٨٣–٨٤ سم", "٦٦–٦٩ سم", "٨٦–٨٩ سم"],
-        S:  ["S",  "٨٦–٨٩ سم", "٧١–٧٤ سم", "٩١–٩٤ سم"],
-        M:  ["M",  "٩١–٩٤ سم", "٧٦–٧٩ سم", "٩٦–٩٩ سم"],
-        L:  ["L",  "٩٦–٩٩ سم", "٨١–٨٤ سم", "١٠١–١٠٤ سم"],
+        S: ["S", "٨٦–٨٩ سم", "٧١–٧٤ سم", "٩١–٩٤ سم"],
+        M: ["M", "٩١–٩٤ سم", "٧٦–٧٩ سم", "٩٦–٩٩ سم"],
+        L: ["L", "٩٦–٩٩ سم", "٨١–٨٤ سم", "١٠١–١٠٤ سم"],
         XL: ["XL", "١٠١–١٠٧ سم", "٨٦–٩١ سم", "١٠٧–١١٢ سم"],
-        XXL:["XXL","١١٢–١١٧ سم", "٩٧–١٠٢ سم", "١١٧–١٢٢ سم"],
+        XXL: ["XXL", "١١٢–١١٧ سم", "٩٧–١٠٢ سم", "١١٧–١٢٢ سم"],
       },
     },
     about: {
       heroTitle: "قصتنا",
       heroSubtitle: "ملابس حماية لروتين المصريين الحقيقي",
       missionTitle: "من نحن",
-      missionText:
-        "كت إكس علامة مصرية تطور ملابس مقاومة للقطع والاختراق للاستخدام اليومي والرياضيين وفرق الأمن. قدّمت العلامة نفسها لجمهور واسع عبر برنامج شارك تانك مصر، وتواصل بناء أولى تشكيلاتها للسوق المحلي.",
+      missionText: "كت إكس علامة مصرية تطور ملابس مقاومة للقطع والاختراق للاستخدام اليومي والرياضيين وفرق الأمن. قدّمت العلامة نفسها لجمهور واسع عبر برنامج شارك تانك مصر، وتواصل بناء أولى تشكيلاتها للسوق المحلي.",
       valuesTitle: "نصمم من أجل",
       values: [
         { iconId: "shield-check", title: "حماية يومية", desc: "فكر الحماية مدمج في قطع تقدر تلبسها كل يوم فعلاً." },
@@ -419,12 +448,41 @@ export const translations = {
         { iconId: "clock", label: "الدعم", value: "الرد عبر القنوات الاجتماعية" },
       ],
     },
-    notFound: {
-      code: "404",
-      title: "الصفحة غير موجودة",
-      subtitle: "القصّة دي ما وصلتش للمكان المتوقع.",
-      cta: "العودة للمتجر",
+    privacy: {
+      heroTitle: "سياسة الخصوصية",
+      heroSubtitle: "كيف تتعامل هذه الواجهة التجريبية مع البيانات",
+      lastUpdatedLabel: "آخر تحديث",
+      lastUpdatedDate: "10 أكتوبر 2026",
+      intro: "تنطبق هذه السياسة على جميع مستخدمي واجهة كت إكس مصر التجريبية.",
+      sections: [
+        { title: "المعلومات التي نجمعها", body: "عند استخدام واجهة كت إكس مصر التجريبية، قد يُحفظ التالي محلياً في متصفحك فقط:\n\n• محتويات الحقيبة وتفضيل اللغة (localStorage).\n• مرجع الطلب التجريبي للجلسة الحالية (sessionStorage).\n• مدخلات نموذج التواصل — النموذج التجريبي لا يُرسل لأي مكان.\n\nلا يوجد خادم خلفي في هذا المشروع، لذا لا تغادر أي بيانات شخصية جهازك." },
+        { title: "كيف نستخدم المعلومات", body: "البيانات المحلية تُستخدم فقط من أجل:\n\n• الإبقاء على حقيبتك واختيار اللغة بين الزيارات على نفس الجهاز.\n• عرض تأكيد الطلب التجريبي بعد الدفع التجريبي.\n\nلا تحليلات ولا متتبعات إعلانية ولا مشاركة بيانات مع أطراف ثالثة مدمجة في هذه الواجهة." },
+        { title: "مشاركة المعلومات", body: "لا نبيع ولا نؤجّر البيانات الشخصية. ولعدم وجود خلفية، لا يستلم أي مزود خدمة بياناتك من هذا الموقع. عند إطلاق التجارة الحية مع مزودي دفع وشحن حقيقيين، ستُحدَّث هذه السياسة لذكرهم." },
+        { title: "ملفات تعريف الارتباط والتتبع", body: "تستخدم هذه التجربة تخزين المتصفح (localStorage/sessionStorage) لتذكر الحقيبة واللغة — وليست كوكيز أطراف ثالثة. يمكنك مسح بيانات الموقع من إعدادات المتصفح في أي وقت." },
+        { title: "الاحتفاظ بالبيانات", body: "تبقى البيانات المحلية على جهازك حتى تمسحها أو تستخدم عناصر التحكم داخل التطبيق. لا تُحفظ سجلات طلبات في أي مكان آخر لأن الطلبات لا تُرسل." },
+        { title: "حقوقك", body: "لأن كل بيانات التجربة داخل متصفحك، يمكنك الوصول إليها أو حذفها في أي وقت بمسح تخزين هذا الموقع. عند فتح قنوات البيع الرسمية ستُنشر هنا بيانات التواصل لطلبات الخصوصية." },
+        { title: "الأمان", body: "تسجيل الدخول التجريبي محلي وغير موثّق — لا تستخدم كلمات مرور حقيقية على هذا الموقع. لا تُجمع بيانات بطاقات دفع لأن الدفع غير موصول." },
+        { title: "التواصل", body: "لأسئلة حول سياسة التجربة، استخدم قنوات كت إكس الرسمية المذكورة في صفحة التواصل. لا يوجد بريد خصوصية رسمي منشور بعد." },
+      ],
     },
+    terms: {
+      heroTitle: "شروط الاستخدام",
+      heroSubtitle: "شروط استخدام الواجهة التجريبية",
+      lastUpdatedLabel: "آخر تحديث",
+      lastUpdatedDate: "10 أكتوبر 2026",
+      intro: "تحكم هذه الشروط استخدامك لواجهة كت إكس مصر التجريبية.",
+      sections: [
+        { title: "طبيعة الموقع التجريبية", body: "هذا الموقع واجهة عرض تجريبية فقط. تفاصيل الكتالوج والأسعار (ج.م) والمخزون وأسعار الشحن مسودات. لا تُسجَّل طلبات حقيقية ولا يُعالج أي دفع." },
+        { title: "الأهلية", body: "يمكنك تصفح هذه التجربة للتقييم والملاحظات. إنشاء حساب تجريبي لا ينشئ علاقة عميل حقيقية مع كت إكس." },
+        { title: "المنتجات والأسعار", body: "أسماء المنتجات والأوصاف والصور والأسعار استرشادية حتى تؤكدها كت إكس رسمياً. الإدراجات المعلَّمة كتجريبية غير معروضة للبيع عبر هذا الموقع." },
+        { title: "الطلبات والدفع", body: "مسار الدفع محاكاة فقط. إرسال طلب تجريبي لا ينشئ شراءً ملزماً ولا يخصم من بطاقة ولا يشغّل شحنة." },
+        { title: "الملكية الفكرية", body: "علامة كت إكس وأي صور منتجات مقدمة من العلامة تبقى ملك أصحابها. الرسوم التوضيحية التجريبية والتخطيط مقدمات لعرض هذه الواجهة فقط." },
+        { title: "حدود المسؤولية", body: "تُقدَّم هذه التجربة كما هي دون ضمانات. كت إكس ومشغّلو الموقع غير مسؤولين عن قرارات مبنية على بيانات الكتالوج المسودة الظاهرة هنا." },
+        { title: "التغييرات", body: "قد تُحدَّث هذه الشروط عند انتقال الواجهة من التجربة إلى التجارة الحية. التاريخ أعلاه يعكس آخر مراجعة." },
+        { title: "التواصل", body: "تواصل مع كت إكس عبر إنستجرام وفيسبوك الرسميين المذكورين في صفحة التواصل." },
+      ],
+    },
+    notFound: { code: "404", title: "الصفحة غير موجودة", subtitle: "القصّة دي ما وصلتش للمكان المتوقع.", cta: "العودة للمتجر" },
     footer: {
       tagline: "ملابس مقاومة للقطع للحياة اليومية والرياضة والمهام.",
       shop: "المتجر",
@@ -482,15 +540,12 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     document.documentElement.lang = lang === "ar" ? "ar-EG" : "en";
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
-    document.documentElement.style.setProperty(
-      "--app-font-sans",
-      "'Cairo', system-ui, sans-serif"
-    );
+    document.documentElement.style.setProperty("--app-font-sans", "'Cairo', system-ui, sans-serif");
     try {
       localStorage.setItem("cutx-lang", lang);
       localStorage.removeItem("sh-lang");
     } catch {
-      /* storage unavailable — language still applies for this session */
+      /* storage unavailable */
     }
   }, [lang, isRTL]);
 
