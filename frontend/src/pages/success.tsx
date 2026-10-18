@@ -10,7 +10,28 @@ import { useLang } from "@/contexts/LangContext";
  * order reference from /checkout exists in this session — direct visits see
  * an explicit "no recent order" state and the bag is never touched here
  * (checkout already cleared it on submit).
+ *
+ * Session value may be a plain string (current checkout) or JSON `{ ref }`
+ * (older shape) — both are accepted.
  */
+function readDemoOrderRef(): string | null {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const fromQuery = params.get("ref");
+    if (fromQuery && fromQuery.trim()) return fromQuery.trim();
+
+    const raw = sessionStorage.getItem("cutx-demo-order");
+    if (!raw) return null;
+    if (raw.startsWith("{")) {
+      const parsed = JSON.parse(raw) as { ref?: string };
+      return parsed.ref?.trim() || null;
+    }
+    return raw.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
 export default function SuccessPage() {
   const [, navigate] = useLocation();
   const { t } = useLang();
@@ -18,12 +39,7 @@ export default function SuccessPage() {
   const [ref, setRef] = useState<string | null>(null);
 
   useEffect(() => {
-    try {
-      const raw = sessionStorage.getItem("cutx-demo-order");
-      if (raw) setRef((JSON.parse(raw) as { ref: string }).ref);
-    } catch {
-      setRef(null);
-    }
+    setRef(readDemoOrderRef());
   }, []);
 
   return (
@@ -44,7 +60,8 @@ export default function SuccessPage() {
                 <p className="text-xs text-muted-foreground leading-relaxed">{s.subtitle}</p>
               </div>
               <p className="text-sm text-muted-foreground">
-                {s.orderNumber}<span className="font-mono font-bold text-foreground">{ref}</span>
+                {s.orderNumber}
+                <span className="font-mono font-bold text-foreground">{ref}</span>
               </p>
 
               <Button onClick={() => navigate("/")} size="lg" className="h-12 px-8 gap-2 mt-8">
