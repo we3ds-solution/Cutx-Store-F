@@ -30,13 +30,24 @@ Each product carries: stable id/slug, EN + natural AR name/description, tags, si
 ## Commerce defaults (configurable, NOT official policy)
 
 - `DEMO_FREE_SHIPPING_THRESHOLD = 2000` EGP, `DEMO_SHIPPING_FEE = 60` EGP (`frontend/src/lib/data.ts`).
-- No tax line (no verified tax handling). Checkout is demo-only: no backend, no payment provider.
-- Sample `stock: 25` on all SKUs is for **demo walkthroughs only** (cart + checkout). It is not confirmed inventory.
+- No tax line (no verified tax handling).
+- Checkout is **demo-only**: amber banner, session-only order ref (`cutx-demo-order`), no payment POST, no secrets in repo.
+
+## Payment decision (portfolio demo)
+
+| Option | Status |
+|--------|--------|
+| **Current** | Simulated order only — suitable for brand/portfolio demos |
+| Recommended for Egypt go-live | **Paymob** (card + wallets) and/or **COD** with a real order backend |
+| Explicitly out of scope here | Shopify Checkout, Stripe (no backend in this repo) |
+
+Until a provider is chosen and a server (or hosted checkout) exists, client totals must never be treated as authoritative.
 
 ## Going live checklist
 
 1. Replace SVGs with official product photography (keep slugs or add redirects).
-2. Confirm names, descriptions, sizes, colors, prices (EGP), and stock per SKU.
-3. Set `isDemo: false` per verified product; add real reviews/ratings.
-4. Connect payment + shipping providers; rewrite Privacy/Terms/Checkout accordingly.
+2. Confirm names, descriptions, sizes, colors, prices (EGP), and stock per SKU with the brand.
+3. Set `isDemo: false` **only** on verified products; add real reviews/ratings when they exist.
+4. Connect payment + shipping providers; rewrite Privacy/Terms/Checkout; store secrets in env only.
 5. Publish real contact details, address, policies; update JSON-LD + `index.html`.
+6. Re-run `pnpm run test:catalog` after catalog edits.
