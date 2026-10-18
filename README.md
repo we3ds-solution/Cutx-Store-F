@@ -1,8 +1,10 @@
 # Cut X Egypt — Demo Storefront
 
+[![CI](https://github.com/we3ds-solution/Cutx-Store-F/actions/workflows/ci.yml/badge.svg)](https://github.com/we3ds-solution/Cutx-Store-F/actions/workflows/ci.yml)
+
 Cut-resistant apparel for daily life, sport and duty. This is a **demo e-commerce storefront** for the Egyptian brand **Cut X** (`@cutx_eg`), built on the previous HAVEN clothing-shop codebase and fully rebranded, relocalized (EN/AR, EGP), and refactored.
 
-> **Status: demo.** The catalog, prices (EGP), availability, shipping rates and checkout are clearly-marked drafts — no payment is processed and no real orders are placed. See [`docs/CUTX-CATALOG.md`](docs/CUTX-CATALOG.md).
+> **Status: demo.** The catalog, prices (EGP), availability, shipping rates and checkout are clearly-marked drafts — **no payment is processed** and no real orders are placed. See [`docs/CUTX-CATALOG.md`](docs/CUTX-CATALOG.md).
 
 ## Brand background (verified)
 
@@ -16,8 +18,9 @@ Cut-resistant apparel for daily life, sport and duty. This is a **demo e-commerc
 |---|---|
 | Frontend | React 19, Vite 7, TypeScript, Tailwind CSS v4, Radix/shadcn UI, Framer Motion, Wouter, React Query (provider only) |
 | Data | Static TypeScript catalog (`frontend/src/lib/data.ts`) — **no backend, no database, no payment provider in this repo** |
+| CI | GitHub Actions: `pnpm` install, typecheck, catalog integrity script, production build (Node 24) |
 
-The old README's backend claims (Express, PostgreSQL, Drizzle, Stripe) do **not** match this tree and were removed. Checkout POSTs nowhere; the demo checkout records a session-only reference.
+Checkout POSTs nowhere; the demo checkout records a **session-only** reference and shows an explicit demo banner.
 
 ## Quick start
 
@@ -33,12 +36,13 @@ npm run dev        # http://localhost:5173
 
 | Command | Purpose |
 |---|---|
-| `npm run dev` | Vite dev server |
-| `npx tsc --noEmit` (`pnpm typecheck`) | Typecheck |
-| `npm run build` (`pnpm build`) | Production build → `frontend/dist` |
-| `npm run serve` | Preview the build |
+| `pnpm dev` / `npm run dev` | Vite dev server |
+| `pnpm typecheck` | TypeScript check |
+| `pnpm test:catalog` | Catalog integrity checks (no extra deps) |
+| `pnpm build` | Production build → `frontend/dist` |
+| `pnpm serve` | Preview the build |
 
-No lint/test scripts exist in `frontend/package.json`.
+Vitest/ESLint/Playwright are not wired yet — prefer adding them with a lockfile update when expanding coverage.
 
 ## Features
 
@@ -47,6 +51,11 @@ No lint/test scripts exist in `frontend/package.json`.
 - Product pages: localized names/descriptions/colors, galleries, related items, demo labelling, reviews section hidden until real reviews exist.
 - Cart drawer persisted to `cutx-cart` (legacy `haven-cart` migrated once); honest demo checkout with session-gated confirmation page.
 - Cut X theming via centralized tokens (`--brand` safety red) in `frontend/src/index.css`; local SVG placeholder assets under `frontend/public/images/`.
+
+## Go-live blockers
+
+1. **Verified catalog** — replace draft SKUs (`isDemo: true`) with brand-confirmed prices, stock, photos (`docs/CUTX-CATALOG.md`).
+2. **Real checkout** — COD/Paymob/hosted payment; never trust client totals; secrets only in env.
 
 ## Documentation
 
