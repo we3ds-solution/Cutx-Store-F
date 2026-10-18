@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   frontend:
-    name: 🎨 Frontend (React / Vite)
+    name: Frontend (React / Vite)
     runs-on: ubuntu-latest
 
     steps:
@@ -48,15 +48,18 @@ jobs:
         working-directory: ./frontend
         run: pnpm run typecheck
 
+      - name: Catalog integrity checks
+        working-directory: ./frontend
+        run: pnpm run test:catalog
+
       - name: Production build
         working-directory: ./frontend
         env:
-          # Demo storefront — no live API or Stripe; placeholder only if referenced at build time
           VITE_API_URL: /api
         run: pnpm run build
 
   ci-success:
-    name: ✅ All CI Checks Passed
+    name: All CI Checks Passed
     runs-on: ubuntu-latest
     needs: [frontend]
     if: always()
@@ -67,8 +70,8 @@ jobs:
         run: |
           echo "Frontend result: $FRONTEND"
           if [[ "$FRONTEND" == "success" ]]; then
-            echo "✅ All CI checks passed."
+            echo "All CI checks passed."
           else
-            echo "❌ CI checks failed."
+            echo "CI checks failed."
             exit 1
           fi
