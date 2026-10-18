@@ -8,7 +8,9 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "serve": "vite preview --host 0.0.0.0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:catalog": "node scripts/check-catalog.mjs",
+    "test": "pnpm run test:catalog"
   },
   "pnpm": {
     "overrides": {
